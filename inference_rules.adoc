@@ -340,7 +340,7 @@ untimed. However, it must be pre-approved and added to the following list:
 * Mean subtraction and normalization provided reference model expect those to be
   done
 
-* May convert among all the whitelisted data formats
+* May convert data among all the whitelisted numerical formats
 
 Any other pre- and post-processing time is included in the wall-clock time for a
 run result.
