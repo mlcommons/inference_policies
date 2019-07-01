@@ -280,7 +280,9 @@ sampling (with replacement) from a library based on a fixed random seed and
 deterministic generator. The trace is usually pre-generated, but may optionally
 be incrementally generated if it does not fit in memory. LoadGen validates
 accuracy via a separate test run that use each sample in the test library
-exactly once but is otherwise identical to the above normal metric run.
+exactly once but is otherwise identical to the above normal metric run. 
+
+Note: For v0.5, the same code must be run for both the accuracy and performance LoadGen modes.
 
 == Divisions
 
