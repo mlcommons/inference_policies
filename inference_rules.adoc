@@ -432,9 +432,10 @@ Examples of legal variance in implementations include, but are not limited to:
   algorithm produces asymptotically accurate results when evaluated with
   asymptotic precision
 
-* Mathematically equivalent transformations (e.g. Tanh versus Logistic, Relu6
-  versus Relu8) or approximations and including but not limited to
-  transcendental functions (or equivalent transformations)
+* Mathematically equivalent transformations (e.g. Tanh versus Logistic, ReluX
+  versus ReluY, any linear transformation of an activation function)
+  
+* Approximations (e.g. replacing a transcendental function with a polynomial)
 
 * Processing queries out-of-order within discretion provided by scenario
 
