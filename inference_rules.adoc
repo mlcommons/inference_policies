@@ -454,6 +454,8 @@ Examples of legal variance in implementations include, but are not limited to:
 
 * Reducing ImageNet classifiers with 1001 classes to 1000 classes
 
+* Dead code elimination
+
 For anything else you want on this list contact submitters five weeks prior to
 the submission deadline.
 
@@ -510,7 +512,7 @@ submission? Or is it sufficient to submit the converted model?
 A: The goal is reproducibility, so you should include the conversion
 routine/scripts.
 
-===SSD
+=== SSD
 
 Q: Is non-maximal suppression (NMS) timed?
 
@@ -522,6 +524,12 @@ Q: Is COCO eval timed?
 
 A: No. COCO eval compares the proposed boxes and classes in all the images
 against ground truth in COCO dataset. COCO eval is not possible in production.
+
+=== ResNet
+
+Q: The ResNet model returns softmax and argmax, but softmax is never used. Can softmax be dead code eliminated?
+
+A: Yes.
 
 == Appendix Number of Queries
 
