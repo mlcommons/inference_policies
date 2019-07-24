@@ -512,6 +512,10 @@ submission? Or is it sufficient to submit the converted model?
 A: The goal is reproducibility, so you should include the conversion
 routine/scripts.
 
+Q: Is it permissible to exceed both the minimum number of queries and minimum time duration in a valid test run?
+
+A: Yes.
+
 === SSD
 
 Q: Is non-maximal suppression (NMS) timed?
