@@ -465,7 +465,7 @@ Examples of illegal variance in implementations include, but are not limited to:
 
 * Wholesale weight replacement or supplements
 
-* Discarding non-zero weight elements
+* Discarding non-zero weight elements, including pruning
 
 * Caching queries or responses
 
