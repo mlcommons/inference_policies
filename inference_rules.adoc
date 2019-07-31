@@ -275,6 +275,10 @@ The execution of LoadGen is restricted as follows:
 
 * Caching of any queries, any query parameters, or any intermediate results is
   prohibited.
+  
+* The LoadGen must be compiled from the latest revision of the mlperf/inference
+  GitHub repository without alteration.  Pull requests addressing portability
+  issues and adding new functionality are welcome.
 
 LoadGen generates queries based on trace. The trace is constructed by uniformly
 sampling (with replacement) from a library based on a fixed random seed and
