@@ -276,7 +276,7 @@ The execution of LoadGen is restricted as follows:
 * Caching of any queries, any query parameters, or any intermediate results is
   prohibited.
   
-* The LoadGen must be compiled from the latest revision of the mlperf/inference
+* The LoadGen must be compiled from the a tagged approved revision of the mlperf/inference
   GitHub repository without alteration.  Pull requests addressing portability
   issues and adding new functionality are welcome.
 
