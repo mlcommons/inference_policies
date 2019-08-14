@@ -387,6 +387,7 @@ that achieves the desired quality. The quantization method must be publicly
 described at a level where it could be reproduced.  The whitelist currently
 includes:
 
+* INT4
 * INT8
 * INT16
 * UINT8
@@ -395,6 +396,8 @@ includes:
 * FP16
 * bfloat16
 * FP32
+
+August 14, 2019 is the deadline to whitelist a numerical format for MLPerf 0.5.
 
 To be considered principled, the description of the quantization method must be
 much much smaller than the non-zero weights it produces.
