@@ -202,6 +202,9 @@ table. Quality and latency targets are still being finalized.
 |Language |Machine translation |GMNT |WMT16 | 99% of FP32 (23.9 BLEU) | 250 ms | 100 ms
 |===
 
+Accuracy results must be reported to five significant figures with round to
+even. For example, 98.9995% should be recorded as 99.000%.
+
 == Load Generator
 
 === LoadGen Operation
