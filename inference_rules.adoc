@@ -190,7 +190,7 @@ time.
 
 === Benchmarks
 
-The benchmark suite consists of the benchmarks shown in the following
+CLOSED: The benchmark suite consists of the benchmarks shown in the following
 table. Quality and latency targets are still being finalized.
 
 |===
@@ -204,6 +204,8 @@ table. Quality and latency targets are still being finalized.
 
 Accuracy results must be reported to five significant figures with round to
 even. For example, 98.9995% should be recorded as 99.000%.
+
+OPEN: benchmarks must perform a task matching an existing benchmark, and be substitutable in loadgen for that benchmark. Latency and accuracy constraints are not applicable: instead the submission must report the accuracy obtained, and the latency constraints under which the reported performance was obtained.
 
 == Load Generator
 
