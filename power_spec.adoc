@@ -8,8 +8,8 @@
 Version 0.5 August 7, 2019
 
 Points of contact: Bing Yu (Bing.Yu@mediatek.com), Hanlin Tang (hanlin.tang@intel.com),
-David Kanter (dkanter@gmail.com), Tejus Rajan (arun.tejusve.raghunath.rajan@intel.com),
-Vijay Janapa Reddi (vj@eecs.harvard.edu), Debajyoti Pal (dpal@cadence.com),
+David Kanter (dkanter@gmail.com), Sachin Idgunji (sidgunji@nvidia.com), Tejus Rajan (arun.tejusve.raghunath.rajan@intel.com),
+Alvin Ng (alvinn@nvidia.com), Vijay Janapa Reddi (vj@eecs.harvard.edu), Debajyoti Pal (dpal@cadence.com),
 Carole-Jean Wu (carolejeanwu@fb.com)
 
 == Goals
@@ -33,7 +33,7 @@ to enable its application for the MLPerf Training Suite.
 
 == Power management
 
-The goal of this benchmark is to mimic real-world usage scenarios as much
+The goal of this measurement methodology is to mimic real-world usage scenarios as much
 as possible, and enable demonstrating of the benefits of realistic power
 management. Therefore, we require any power management system to:
 
@@ -70,7 +70,7 @@ image::sut_power_setup.png[SUT Setup]
 
 == Wall-Powered Measurement Procedure
 
-. Connect an approved power meter from this list to the SUT.
+. Connect an approved power meter from https://www.spec.org/power/docs/SPECpower-Device_List.html[this list] to the SUT.
 
  For single enclosure devices (where all the components are
  contained inside a single chassis), connect the power supply
@@ -86,35 +86,29 @@ image::sut_power_setup.png[SUT Setup]
  and DC systems cannot be compared to one another due to
  differences in conversion efficiency.
 
-. Synchronize system clock of two systems with Network Time Protocol (NTP)
+. Synchronize system clock of the two systems with Network Time Protocol (NTP)
 
- More details to be shared as the procedure is being piloted.
-
-. Perform pre-processing of inference data
-
- As long as pre-processing of inference data is not measured for performance,
- it should be performed ahead of the actual inferencing and not
- measured from a power standpoint.
+ Any method to synchronize with either an external or internal corporate NTP server
+ is permissible. For more details on NTP, see http://www.ntp.org[this link].
 
 . Pause the system for two minutes prior to start of the benchmark.
 
- This allows the system to move to a lower power state after performing the
- pre-processing and before running the benchmark.
+ This allows the system to move to a lower power state.
 
 . Run the MLPerf Inference benchmark for a specific scenario and model
 
- The system is running the benchmark and in the 'Active' state. Only a single
+ The system is now running the benchmark and defined to be 'Active'. Only a single
  combination of scenario and model may be collected.
 
-. Collect 2 minutes of power with the system at active-idle state, subsequent to
-the end of step 5.
-
- Active idle state is a system state where no benchmark-related tasks (e.g. model creation,
- dataset manipulation) are being performed, similar to the MLperf wall clock definition.
- The system must be able and ready to receive queries and meet the quality-of-service
- requirement dictated by the given scenario.
+. Pause the system for two minutes.
 
 . If needed, run the MLPerf Inference benchmark for additional scenarios.
+
+. To compute the average power metric, use the MLperf logs to extract the appropriate time segment.
+
+  The MLPerf LoadGen log includes time-stamped tags for 'POWER_BEGIN' and 'POWER_END' that mark the start
+  time and end times for the 'Active' period of the system. Extract the matching time segments from 
+  your power meter measurements and compute the average power.
 
 == Reporting
 
@@ -123,7 +117,6 @@ the submitter must report:
 
 . Benchmark configuration (scenario and model)
 . Performance metric (see table below)
-. Active idle power (Watts)
 . Power and/or energy metric (see table below)
 . Power supply type: AC or DC
 
