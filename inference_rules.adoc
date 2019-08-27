@@ -533,6 +533,9 @@ Q: Is COCO eval timed?
 A: No. COCO eval compares the proposed boxes and classes in all the images
 against ground truth in COCO dataset. COCO eval is not possible in production.
 
+Q: For the server scenario, there are 'Scheduled samples per second', 'Completed samples per second', and the user input QPS. Which one is reported as the final metric?
+A: Scheduled samples per second
+
 === ResNet
 
 Q: The ResNet model returns softmax and argmax, but softmax is never used. Can softmax be dead code eliminated?
