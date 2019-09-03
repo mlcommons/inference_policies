@@ -520,6 +520,18 @@ Q: Is it permissible to exceed both the minimum number of queries and minimum ti
 
 A: Yes.
 
+Q: Can we give the driver a hint to preload the image data to somewhere closer to the accelerator?
+
+A: No.
+
+Q: Can we preload image data somewhere closer to the accelerator that is mapped into host memory?
+
+A: No.
+
+Q: Can we preload image data in host memory somewhere that is mapped into accelerator memory?
+
+A: Yes, provided the image data isn't eventually cached on the device.
+
 === SSD
 
 Q: Is non-maximal suppression (NMS) timed?
