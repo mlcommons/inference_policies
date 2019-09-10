@@ -536,6 +536,10 @@ Q: Can we preload image data in host memory somewhere that is mapped into accele
 
 A: Yes, provided the image data isn't eventually cached on the device.
 
+Q: For the server scenario, there are 'Scheduled samples per second', 'Completed samples per second', and the user input target QPS. Which one is reported as the final metric?
+A: Scheduled samples per second
+
+
 === SSD
 
 Q: Is non-maximal suppression (NMS) timed?
