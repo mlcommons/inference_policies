@@ -119,7 +119,7 @@ described in the table below.
 
 |===
 |Scenario |Query Generation |Duration |Samples/query |Latency Constraint |Tail Latency | Performance Metric
-|Single stream |LoadGen sends next query as soon as SUT completes the previous query | 1024 queries and 60 seconds |1 |None |90% | 90%-ile measured latency 
+|Single stream |LoadGen sends next query as soon as SUT completes the previous query | 1024 queries and 60 seconds |1 |None |90% | 90%-ile measured latency
 |Multiple stream |LoadGen sends a new query every _latency constraint_ if the SUT has completed the prior query, otherwise the new query is dropped and is counted as one overtime query | 270,336 queries for image models and 90,112 otherwise and 60 seconds |Variable, see metric |Benchmark specific |99% for image models and 97% for otherwise | Maximum number of inferences per query supported
 |Server |LoadGen sends new queries to the SUT according to a Poisson distribution |270,336 queries for image models and 90,112 otherwise and 60 seconds |1 |Benchmark specific |99% for image models and 97% for otherwise | Maximum Poisson throughput parameter supported
 |Offline |LoadGen sends all queries to the SUT at start | 1 query and 60 seconds | At least 24,576 |None |N/A | Measured throughput
@@ -250,7 +250,7 @@ The run procedure is as follows:
 
 1. LoadGen signals system under test (SUT).
 
-2. SUT starts up and signals readiness. 
+2. SUT starts up and signals readiness.
 
 3. LoadGen starts clock and begins generating queries.
 
@@ -278,7 +278,7 @@ The execution of LoadGen is restricted as follows:
 
 * Caching of any queries, any query parameters, or any intermediate results is
   prohibited.
-  
+
 * The LoadGen must be compiled from a tagged approved revision of the mlperf/inference
   GitHub repository without alteration.  Pull requests addressing portability
   issues and adding new functionality are welcome.
@@ -374,11 +374,11 @@ defined by the remainder of this section.
 
 |===
 |Area |Task |Model |Reference implementation |Alternative implementation
-|Vision |Image classification |Resnet50-v1.5 |TensorFlow |PyTorch/ONNX 
-|Vision |Image classification |MobileNets-v1 224 |TensorFlow/TensorFlow Lite |PyTorch/ONNX  
-|Vision |Object detection |SSD-ResNet34 |PyTorch/ONNX |TensorFlow/TensorFlow Lite 
-|Vision |Object detection |SSD-MobileNets-v1 |TensorFlow |PyTorch/ONNX 
-|Language |Machine translation |GMNT |TensorFlow |PyTorch/ONNX 
+|Vision |Image classification |Resnet50-v1.5 |TensorFlow |PyTorch/ONNX
+|Vision |Image classification |MobileNets-v1 224 |TensorFlow/TensorFlow Lite |PyTorch/ONNX
+|Vision |Object detection |SSD-ResNet34 |PyTorch/ONNX |TensorFlow/TensorFlow Lite
+|Vision |Object detection |SSD-MobileNets-v1 |TensorFlow |PyTorch/ONNX
+|Language |Machine translation |GMNT |TensorFlow |PyTorch/ONNX
 |===
 
 OPEN: The benchmark implementation may use a different model to perform the same
@@ -413,7 +413,7 @@ To be considered principled, the description of the quantization method must be
 much much smaller than the non-zero weights it produces.
 
 Calibration is allowed and must only use the calibration data set provided by
-the benchmark owner. Submitters may choose to use only a subset of the 
+the benchmark owner. Submitters may choose to use only a subset of the
 calibration data set.
 
 Additionally, for image classification using MobileNets-v1 224 and object
@@ -449,7 +449,7 @@ Examples of legal variance in implementations include, but are not limited to:
 
 * Mathematically equivalent transformations (e.g. Tanh versus Logistic, ReluX
   versus ReluY, any linear transformation of an activation function)
-  
+
 * Approximations (e.g. replacing a transcendental function with a polynomial)
 
 * Processing queries out-of-order within discretion provided by scenario
