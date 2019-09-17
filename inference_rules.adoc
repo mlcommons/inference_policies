@@ -195,10 +195,10 @@ table. Quality and latency targets are still being finalized.
 
 |===
 |Area |Task |Model |Dataset |QSL Size |Quality |Server latency constraint| Multi-Stream latency constraint
-|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 3072 | 99% of FP32 (76.46%) | 15 ms | 50 ms
-|Vision |Image classification |MobileNets-v1 224 |ImageNet  (224x224) | 500 | 99% of FP32 (71.68%) | 10 ms | 50 ms
-|Vision |Object detection |SSD-ResNet34 |COCO (1200x1200) | 50 | 99% of FP32 (0.20 mAP) | 100 ms | 66 ms
-|Vision |Object detection |SSD-MobileNets-v1 |COCO (300x300) | 250 | 99% of FP32 (0.23 mAP) | 10 ms | 50 ms
+|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 15 ms | 50 ms
+|Vision |Image classification |MobileNets-v1 224 |ImageNet  (224x224) | 1024 | 98% of FP32 (71.68%) | 10 ms | 50 ms
+|Vision |Object detection |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 100 ms | 66 ms
+|Vision |Object detection |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 10 ms | 50 ms
 |Language |Machine translation |GMNT |WMT16 | 3003 | 99% of FP32 (23.9 BLEU) | 250 ms | 100 ms
 |===
 
@@ -282,6 +282,10 @@ The execution of LoadGen is restricted as follows:
 
 * Caching of any queries, any query parameters, or any intermediate results is
   prohibited.
+  
+* The LoadGen must be compiled from a tagged approved revision of the mlperf/inference
+  GitHub repository without alteration.  Pull requests addressing portability
+  issues and adding new functionality are welcome.
 
 LoadGen generates queries based on trace. The trace is constructed by uniformly
 sampling (with replacement) from a library based on a fixed random seed and
@@ -291,7 +295,10 @@ optionally be incrementally generated if it does not fit in memory. LoadGen
 validates accuracy via a separate test run that use each sample in the test
 library exactly once but is otherwise identical to the above normal metric run.
 
-Note: For v0.5, the same code must be run for both the accuracy and performance LoadGen modes.
+One LoadGen validation run is required for each submitted performance result 
+even if two or more performance results share the same source code.
+
+Note: For v0.5, the same code must be run for both the accuracy and performance LoadGen modes. This means the same output should be passed in QuerySampleComplete in both modes. 
 
 == Divisions
 
@@ -411,7 +418,8 @@ To be considered principled, the description of the quantization method must be
 much much smaller than the non-zero weights it produces.
 
 Calibration is allowed and must only use the calibration data set provided by
-the benchmark owner.
+the benchmark owner. Submitters may choose to use only a subset of the 
+calibration data set.
 
 Additionally, for image classification using MobileNets-v1 224 and object
 detection using SSD-MobileNets-v1, MLPerf will provide a retrained INT8
@@ -524,6 +532,22 @@ routine/scripts.
 Q: Is it permissible to exceed both the minimum number of queries and minimum time duration in a valid test run?
 
 A: Yes.
+
+Q: Can we give the driver a hint to preload the image data to somewhere closer to the accelerator?
+
+A: No.
+
+Q: Can we preload image data somewhere closer to the accelerator that is mapped into host memory?
+
+A: No.
+
+Q: Can we preload image data in host memory somewhere that is mapped into accelerator memory?
+
+A: Yes, provided the image data isn't eventually cached on the device.
+
+Q: For the server scenario, there are 'Scheduled samples per second', 'Completed samples per second', and the user input target QPS. Which one is reported as the final metric?
+A: Scheduled samples per second
+
 
 === SSD
 
