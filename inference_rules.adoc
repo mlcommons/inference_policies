@@ -432,7 +432,7 @@ All implementations are allowed as long as the latency and accuracy bounds are
 met and the reference weights are used. Reference weights may be modified
 according to the quantization rules.
 
-Examples of legal variance in implementations include, but are not limited to:
+Examples of allowed techniques include, but are not limited to:
 
 * Arbitrary frameworks and runtimes: TensorFlow, TensorFlow-lite, ONNX, PyTorch,
   etc, provided they conform to the rest of the rules
@@ -472,10 +472,7 @@ Examples of legal variance in implementations include, but are not limited to:
 
 * Dead code elimination
 
-For anything else you want on this list contact submitters five weeks prior to
-the submission deadline.
-
-Examples of illegal variance in implementations include, but are not limited to:
+The following techniques are disallowed:
 
 * Wholesale weight replacement or supplements
 
@@ -498,6 +495,9 @@ Examples of illegal variance in implementations include, but are not limited to:
 
 * Using knowledge of the LoadGen implementation to predict upcoming lulls or
   spikes in the server scenario
+  
+* Treating beams in a beam search differently. For example, employing different
+  precision for different beams.
 
 == FAQ
 
