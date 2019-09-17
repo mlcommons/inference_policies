@@ -499,6 +499,8 @@ The following techniques are disallowed:
 * Treating beams in a beam search differently. For example, employing different
   precision for different beams.
 
+* Changing the number of beams per beam search relative to the reference.
+
 == FAQ
 
 Q: Do I have to use the reference implementation framework?
