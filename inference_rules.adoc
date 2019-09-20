@@ -5,7 +5,8 @@
 
 = MLPerf Inference Rules
 
-Version 0.5 April 16th, 2019
+Version 0.5 
+Sept 20, 2019
 
 Points of contact: David Kanter (dkanter@gmail.com), Vijay Janapa Reddi
 (vjreddi@g.harvard.edu)
@@ -194,16 +195,20 @@ The benchmark suite consists of the benchmarks shown in the following
 table. Quality and latency targets are still being finalized.
 
 |===
-|Area |Task |Model |Dataset |Quality |Server latency constraint| Multi-Stream latency constraint
-|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 99% of FP32 (76.46%) | 15 ms | 50 ms
-|Vision |Image classification |MobileNets-v1 224 |ImageNet  (224x224) | 98% of FP32 (71.68%) | 10 ms | 50 ms
-|Vision |Object detection |SSD-ResNet34 |COCO (1200x1200) | 99% of FP32 (0.20 mAP) | 100 ms | 66 ms
-|Vision |Object detection |SSD-MobileNets-v1 |COCO (300x300) | 99% of FP32 (0.22 mAP) | 10 ms | 50 ms
-|Language |Machine translation |GMNT |WMT16 | 99% of FP32 (23.9 BLEU) | 250 ms | 100 ms
+|Area |Task |Model |Dataset |QSL Size |Quality |Server latency constraint| Multi-Stream latency constraint
+|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 15 ms | 50 ms
+|Vision |Image classification |MobileNets-v1 224 |ImageNet  (224x224) | 1024 | 98% of FP32 (71.68%) | 10 ms | 50 ms
+|Vision |Object detection |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 100 ms | 66 ms
+|Vision |Object detection |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 10 ms | 50 ms
+|Language |Machine translation |GMNT |WMT16 | 3003 | 99% of FP32 (23.9 BLEU) | 250 ms | 100 ms
 |===
 
 Accuracy results must be reported to five significant figures with round to
 even. For example, 98.9995% should be recorded as 99.000%.
+
+For performance runs, the LoadGen will select queries uniformly at random (with
+replacement) from a test set. The size of the test set for each benchmark is
+listed as 'QSL Size' in the table above.
 
 == Load Generator
 
@@ -285,10 +290,11 @@ The execution of LoadGen is restricted as follows:
 
 LoadGen generates queries based on trace. The trace is constructed by uniformly
 sampling (with replacement) from a library based on a fixed random seed and
-deterministic generator. The trace is usually pre-generated, but may optionally
-be incrementally generated if it does not fit in memory. LoadGen validates
-accuracy via a separate test run that use each sample in the test library
-exactly once but is otherwise identical to the above normal metric run. 
+deterministic generator. The size of the library is listed in as 'QSL Size' in
+the 'Benchmarks' table above. The trace is usually pre-generated, but may
+optionally be incrementally generated if it does not fit in memory. LoadGen
+validates accuracy via a separate test run that use each sample in the test
+library exactly once but is otherwise identical to the above normal metric run.
 
 One LoadGen validation run is required for each submitted performance result 
 even if two or more performance results share the same source code.
