@@ -48,6 +48,7 @@ A _run_ is a complete execution of a benchmark implementation on a system under
 the control of the load generator that consists of completing a set of inference
 queries, including data pre- and post-processing, meeting a latency requirement
 and a quality requirement in accordance with a scenario.
+
 A _run result_ consists of the scenario-specific metric.
 
 == General rules
@@ -140,10 +141,14 @@ tail latency for v0.6 and 99% tail latency for v0.7).
 A submission may comprise any combination of benchmark and scenario results.
 
 The number of runs required for each scenario is defined below:
-Single Stream: 1
-Multi-Stream: 1
-Server: 5
-Offline: 1
+
+* Single Stream: 1
+
+* Multi-Stream: 1
+
+* Server: 5
+
+* Offline: 1
 
 == Benchmarks
 
