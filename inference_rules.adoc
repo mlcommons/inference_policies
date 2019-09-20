@@ -325,9 +325,6 @@ The Open division allows using arbitrary pre- or post-processing and model,
 including retraining.  The qualified name “MLPerf Open” must be used when
 referring to an Open Division suite result, e.g. “a MLPerf Open result of 7.2.”
 
-== Number of Runs required per submission
-
-
 == Data Sets
 
 For each benchmark, MLPerf will provide pointers to:
