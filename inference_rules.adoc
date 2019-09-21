@@ -242,8 +242,7 @@ multiple test runs. Each test run evaluates a specific integer number of
 streams. For a specific number of streams, queries are generated with a number
 of samples per query equal to the number of streams tested. All samples in a
 query will be allocated contiguously in memory. LoadGen will use a binary search
-to find a candidate value. It will then verify stability by testing the value 5
-times. If one run fails, it will reduce the number of streams by one and then
+to find a candidate value. If one run fails, it will reduce the number of streams by one and then
 try again.
 
 * Server: LoadGen determines the system throughput using multiple test
