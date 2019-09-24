@@ -225,8 +225,8 @@ submissions. The LoadGen is responsible for:
 
 * Computing final metrics.
 
-Latency is defined as the time from LoadGen passing a query to the SUT, to the
-time it receives a reply.
+Latency is defined as the time from when the LoadGen was scheduled to pass a
+query to the SUT, to the time it receives a reply.
 
 * Single-stream: LoadGen measures average latency using a single test run. For
 the test run, LoadGen sends an initial query then continually sends the next
