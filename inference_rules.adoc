@@ -219,8 +219,9 @@ even. For example, 98.9995% should be recorded as 99.000%.
 OPEN: benchmarks must perform a task matching an existing benchmark, and be substitutable in loadgen for that benchmark. Latency and accuracy constraints are not applicable: instead the submission must report the accuracy obtained, and the latency constraints under which the reported performance was obtained. For latencies other than the default, the minimum number of queries should be set using  the formula in <<Appendix Number of Queries>>
 
 For performance runs, the LoadGen will select queries uniformly at random (with
-replacement) from a test set. The size of the test set for each benchmark is
-listed as 'QSL Size' in the table above.
+replacement) from a test set. The minimum size of the performance test set for
+each benchmark is listed as 'QSL Size' in the table above. However, the accuracy
+ test must be run with one copy of the MLPerf specified validation dataset.
 
 == Load Generator
 
