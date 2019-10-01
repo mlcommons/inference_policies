@@ -221,7 +221,7 @@ OPEN: benchmarks must perform a task matching an existing benchmark, and be subs
 For performance runs, the LoadGen will select queries uniformly at random (with
 replacement) from a test set. The minimum size of the performance test set for
 each benchmark is listed as 'QSL Size' in the table above. However, the accuracy
- test must be run with one copy of the validation dataset provided.
+ test must be run with one copy of the MLPerf specified validation dataset.
 
 == Load Generator
 
