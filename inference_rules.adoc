@@ -519,6 +519,9 @@ The following techniques are disallowed:
 
 * Changing the number of beams per beam search relative to the reference.
 
+* Techniques that take advantage of upsampled images. For example,
+  downsampling inputs and kernels for the first convolution.
+
 == FAQ
 
 Q: Do I have to use the reference implementation framework?
