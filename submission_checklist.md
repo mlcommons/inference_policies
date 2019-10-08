@@ -1,8 +1,10 @@
 # MLPerf Inference 0.5 Self-Certification Checklist
 
 Name of Certifying Engineer(s):
+
 Email of Certifying Engineer(s):
-Name of System Under Test:
+
+Name of System(s) Under Test:
 
 Division (check one):
 - [ ] Open
@@ -22,6 +24,7 @@ Benchmark (check one):
 - [ ] Other, please specify:
 
 Please fill in the following tables adding lines as necessary:
+97%-tile latency is required for NMT only. 99%-tile is required for all other models.
 
 ### Single Stream Results Table
 | SUT Name | Benchmark | Query Count | Accuracy |
@@ -30,20 +33,20 @@ Please fill in the following tables adding lines as necessary:
 
 ### Multi-Stream Results Table
 | SUT Name | Benchmark | Query Count |  Accuracy | 97%-tile Latency | 99%-tile Latency |
-|----------|-----------|-------------|-----------|-----------------|------------------|
-|          |           |             |           |                 |                  |
+|----------|-----------|-------------|-----------|------------------|------------------|
+|          |           |             |           |                  |                  |
 
 
 ### Server Results Table
 | SUT Name | Benchmark | Query Count | Accuracy | 97%-tile Latency | 99%-tile Latency |
-|----------|-----------|-------------|----------|-----------------|------------------|
-|          |           |             |          |                 |                  |
+|----------|-----------|-------------|----------|------------------|------------------|
+|          |           |             |          |                  |                  |
 
 
 ### Offline Results Table
-| SUT Name | Benchmark | Query Count | Accuracy | 
-|----------|-----------|-------------|----------|
-|          |           |             |          |
+| SUT Name | Benchmark | Sample Count | Accuracy | 
+|----------|-----------|--------------|----------|
+|          |           |              |          |
 
 Scenario (check all that apply):
 - [ ] Single-Stream
@@ -66,9 +69,6 @@ combination of benchmark and scenario? (check all that apply)
 - [ ] Yes (NMT x Server 250 ms @ 97%)
 - [ ] No
 
-Number of Queries:
-Samples per Query:
-
 For each SUT, is the appropriate minimum number of queries or samples
 met, depending on the Scenario x Benchmark? (check all that apply)
 - [ ] Yes (Single-Stream 1,024 queries)
@@ -76,8 +76,6 @@ met, depending on the Scenario x Benchmark? (check all that apply)
 - [ ] Yes (NMT Server and Multi-Stream 90,112 queries)
 - [ ] Yes (Image Models Server and Multi-Stream 270,336 queries)
 - [ ] No
-
-Accuracy:
 
 For each SUT and scenario, is the benchmark accuracy target met?
 (check all that apply)
