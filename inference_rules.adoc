@@ -528,6 +528,9 @@ The following techniques are disallowed:
 * Incorporating explicit statistical information about the performance or
   accuracy sets (eg. min, max, mean, distribution)
 
+* Techniques that take advantage of upsampled images. For example,
+  downsampling inputs and kernels for the first convolution.
+
 == FAQ
 
 Q: Do I have to use the reference implementation framework?
