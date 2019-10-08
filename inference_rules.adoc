@@ -490,6 +490,9 @@ Examples of allowed techniques include, but are not limited to:
 
 * Dead code elimination
 
+* Sorting samples in a query when it improves performance even when
+  all samples are distinct.
+
 The following techniques are disallowed:
 
 * Wholesale weight replacement or supplements
@@ -518,6 +521,9 @@ The following techniques are disallowed:
   precision for different beams.
 
 * Changing the number of beams per beam search relative to the reference.
+
+* Techniques that only improve performance when there are identical
+  samples in a query. For example, sorting samples in SSD.
 
 == FAQ
 
