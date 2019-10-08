@@ -51,10 +51,6 @@ Scenario (check all that apply):
 - [ ] Server
 - [ ] Offline
 
-90th Percentile Latency:
-97th Percentile Latency: 
-99th Percentile Latency:
-
 For each SUT, does the submission meet the latency target for each
 combination of benchmark and scenario? (check all that apply)
 - [ ] Yes (Single-Stream and Offline no requirements)
