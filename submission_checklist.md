@@ -137,7 +137,7 @@ For each SUT and scenario, is the submission run the correct number of
 times for the relevant scenario? (check one)
 - [ ] Yes (Accuracy 1x Performance 1x Single-Stream, Multi-Stream,
 Offline)
-- [ ] Yes (Accuracy 1x Performance 1x Server)
+- [ ] Yes (Accuracy 1x Performance 5x Server)
 - [ ] No
 
 Are the weights calibrated using data outside of the calibration set?
