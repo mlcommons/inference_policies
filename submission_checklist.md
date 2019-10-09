@@ -188,6 +188,9 @@ lulls or spikes in the server scenario
 - [ ] Treating beams in a beam search differently. For example,
 employing different precision for different beams
 - [ ] Changing the number of beams per beam search relative to the reference
+- [ ] Incorporating explicit statistical information about the performance or accuracy sets
+- [ ] Techniques that take advantage of upsampled images.
+- [ ] Techniques that only improve performance when there are identical samples in a query.
 - [ ] None of the above
 
 Is the submission congruent with all relevant MLPerf rules?
