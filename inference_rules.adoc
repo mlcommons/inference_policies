@@ -484,14 +484,20 @@ Examples of allowed techniques include, but are not limited to:
 
 * Mixture of experts combining differently quantized weights
 
-* Stochastic quantization algorithms with seeds for reproducibility.
+* Stochastic quantization algorithms with seeds for reproducibility
 
 * Reducing ImageNet classifiers with 1001 classes to 1000 classes
 
 * Dead code elimination
 
 * Sorting samples in a query when it improves performance even when
-  all samples are distinct.
+  all samples are distinct
+
+* Incorporating explicit statistical information about the calibration set
+  (eg. min, max, mean, distribution)
+
+* Empirical performance and accuracy tuning based on the performance and accuracy
+  set (eg. selecting batch sizes or numerics experimentally)
 
 The following techniques are disallowed:
 
@@ -518,9 +524,15 @@ The following techniques are disallowed:
   spikes in the server scenario
   
 * Treating beams in a beam search differently. For example, employing different
-  precision for different beams.
+  precision for different beams
 
-* Changing the number of beams per beam search relative to the reference.
+* Changing the number of beams per beam search relative to the reference
+
+* Incorporating explicit statistical information about the performance or
+  accuracy sets (eg. min, max, mean, distribution)
+
+* Techniques that take advantage of upsampled images. For example,
+  downsampling inputs and kernels for the first convolution.
 
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD.
