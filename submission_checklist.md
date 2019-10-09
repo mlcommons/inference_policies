@@ -133,6 +133,18 @@ Where is the LoadGen trace stored? (check one)
 - [ ] Host DRAM
 - [ ] Other, please specify:
 
+For the submitted result, what is the QSL random number generator seed?
+- [ ] 0x2b7e151628aed2a6ULL (3133965575612453542)
+- [ ] Other, please specify:
+
+For the submitted results, what is the sample index random number generator seed?
+- [ ] 0x093c467e37db0c7aULL (665484352860916858)
+- [ ] Other, please specify:
+
+For the submitted results, what is the schedule random number generator seed?
+- [ ] 0x3243f6a8885a308dULL (3622009729038561421)
+- [ ] Other, please specify:
+
 For each SUT and scenario, is the submission run the correct number of
 times for the relevant scenario? (check one)
 - [ ] Yes (Accuracy 1x Performance 1x Single-Stream, Multi-Stream,
