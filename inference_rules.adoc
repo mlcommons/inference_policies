@@ -490,10 +490,13 @@ Examples of allowed techniques include, but are not limited to:
 
 * Dead code elimination
 
+* Sorting samples in a query when it improves performance even when
+  all samples are distinct
+
 * Incorporating explicit statistical information about the calibration set
   (eg. min, max, mean, distribution)
 
-* Empiral performance and accuracy tuning based on the performance and accuracy
+* Empirical performance and accuracy tuning based on the performance and accuracy
   set (eg. selecting batch sizes or numerics experimentally)
 
 The following techniques are disallowed:
@@ -530,6 +533,9 @@ The following techniques are disallowed:
 
 * Techniques that take advantage of upsampled images. For example,
   downsampling inputs and kernels for the first convolution.
+
+* Techniques that only improve performance when there are identical
+  samples in a query. For example, sorting samples in SSD.
 
 == FAQ
 
