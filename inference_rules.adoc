@@ -343,7 +343,7 @@ For each benchmark, MLPerf will provide pointers to:
 * A speed/performance data set that is a subset of the accuracy data set to be
   used to measure performance
 
-For each benchmark except GNMT, MLPerf will provide pointers to:
+For each benchmark, MLPerf will provide pointers to:
 
 * A calibration data set, to be used for quantization (see quantization
   section), that is a small subset of the training data set used to generate the
