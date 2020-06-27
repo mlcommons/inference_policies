@@ -31,7 +31,38 @@ The retraining models are the same as the models in MLPerf Inference closed divi
 
 == General rules
 
-TBD
+=== Strive to be fair
+
+Benchmarking should be conducted to measure the framework and system performance as fairly as possible. Ethics and reputation matter.
+
+=== System and framework must be consistent
+
+The same system and framework must be used for a submission result set. Note that the reference implementations do not all use the same framework.
+
+=== System and framework must be available
+
+If you are measuring the performance of a publicly available and widely-used
+system or framework, you must use publicly available and widely-used versions of
+the system or framework.
+
+If you are measuring the performance of an experimental framework or system, you
+must make the system and framework you use available upon demand for
+replication.
+
+=== Benchmark implementations must be shared
+
+Source code used for the benchmark implementations must be open-sourced under a
+license that permits a commercial entity to freely use the implementation for
+benchmarking. The code must be available as long as the results are actively
+used.
+
+=== Benchmark detection is not allowed
+
+The framework and system should not detect and behave differently for benchmarks.
+
+=== Replicability is mandatory
+
+Results that cannot be replicated are not valid results.
 
 == Basics 
 
