@@ -1,0 +1,181 @@
+:toc:
+:toclevels: 4
+
+:sectnums:
+
+= MLPerf Inference Retraining Rules
+
+Version 0.7 
+June 27, 2020
+
+Points of contact: David Kanter (dkanter@gmail.com), Cormac Brick (cormac.brick@intel.com), Ephrem Wu (ephremw@xilinx.com), and Dilip Sequeira (dsequeira@nvidia.com)
+
+== Overview
+
+This document describes an experimental set of rules that govern how to retrain one or more benchmarks in the MLPerf Inference Suite and how to use those implementations to measure the performance of an ML system performing inference.
+
+Implementations that comply with these rules may be submitted within the Open division of MLPerf Inference and tagged as valid Retraining submission. The intent of these rules is to provide a set of contraints for retraining that is more restrictive than the broader Open division rules and enables comparison of retrained implementations. Accordingly, these rules govern both the process of retraining and the resulting retrained inference implementation.
+
+The MLPerf name and logo are trademarks. In order to refer to a result using the
+MLPerf name, the result must conform to the letter and spirit of the rules
+specified in this document. The MLPerf organization reserves the right to solely
+determine if a use of its name or logo is acceptable.
+
+=== Definitions (read this section carefully)
+
+TBD
+
+== Models
+
+The retraining models are the same as the models in MLPerf Inference closed division. In the future, each retraining model will be accompanied by a training script that defines the reference training and hyperparameters such as batch size and numerics and a number of training epochs. In the current version, each retraining model will be assigned a reference number of epochs.
+
+== General rules
+
+TBD
+
+== Basics 
+
+=== Random numbers for sample selection
+
+Random numbers used to select which samples will be processed during retraining must be generated using a fixed generator, using a fixed seed. The seed will be kept secret until 2 weeks prior to submission.
+
+=== Random numbers for retraining
+
+Random numbers must be generated using stock random number generators. 
+
+Random number generators may be seeded from the following sources:
+
+* Clock
+* System source of randomness, e.g. /dev/random or /dev/urandom
+* Another random number generator initialized with an allowed seed
+
+Random number generators may be initialized repeatedly in multiple processes or threads. For a single run, the same seed may be shared across multiple processes or threads.
+
+
+=== Numerical formats
+
+Any format and scaling may be used.
+
+=== Epoch numbering
+
+Epochs should always be numbered from 0.
+
+
+== Data Set
+
+=== Data State at Start of Run
+
+Each reference implementation includes an optional script to download the input dataset and a mandatory script to verify the dataset using a checksum.
+
+The data must then be preprocessed in a manner equivalent to the reference training implementation, excepting any transformations that must be done for each run (e.g. random transformations). The data may also be reformatted for the target system provided that the reformatting does not introduce new information or introduce duplicate copies of data. 
+
+No extensions to original dataset and no new data augmentation techniques are allowed compared to reference training scripts
+
+=== Preprocessing During the Run
+
+The same preprocessing steps as the reference training implementation must be used. 
+
+=== Data Representation
+
+Images must have the same size as in the training reference implementation. Mathematically equivalent padding of images is allowed.
+
+For benchmarks with sequence inputs, you may choose a length N and either truncate all examples to length N or throw out all examples which exceed length N. This must be done uniformly for all examples. This may only be done on the training set and not the evaluation set.
+
+=== Reraining Data Order
+
+The training and test data must be traversed in the same conceptual order as the reference implementation. For instance, the data might be traversed sequentially or randomly with uniform distribution. Batch size, shard size, and the random number generator will affect order.
+
+Future versions of the retraining rules may specify the traversal order.
+
+== Model
+
+=== Graph Definition
+
+Each of the current frameworks has a graph that describes the operations performed during the forward propagation of training. The frameworks automatically infer and execute the corresponding back-propagation computations from this graph. Benchmark implementations must use the same graph as the reference implementation with changes allowed as defined in "Section 9.4 Runtime Model Equivalence??"
+
+=== Weight and Bias Initialization
+
+Weights and biases must be initialized in accordance with the reference trained implementation.
+
+== Retraining Loop
+
+The training code must be Available (according to the MLPerf inference rules for Available software components), with the final retrained network also available.
+
+Where applicable, submissions should follow the closed division training rules by default. The retraining rules take precedence and override this default.
+
+=== Hyperparameters
+
+Hyperparameters and optimizer may be freely changed, but must be publicly described at a level where the retraining could be reproduced.
+
+=== Loss function 
+
+Any loss function may be used. Do not confuse the loss function with target quality measure.
+
+=== Quality measure
+
+Each run must reach the inference target quality level on the reference inference implementation accuracy measure.
+
+=== Runtime model equivalence
+
+A reference graph is the graph of a model for the closed division. A retrained graph may differ from the reference graph in the following ways:
+
+* A linear layer in the reference graph may be substituted by a subgraph of linear layers.
+
+* Tensor shapes may change, except those of primary input tensors and primary output tensors.
+
+* Conversion layers may be added
+
+* Additional alterations may be considered upon request, at least one month prior to submission
+
+Submitters must document other differences in the benchmark implementation inference graph no later than one month prior to the submission deadline for submission approval.
+
+Examples of equivalent transformations include, but are not limited to:
+
+* Using INT4 weights
+
+* Compressing weights or activations
+
+* Retraining to increase sparsity in weights
+
+* Channel pruning
+
+* Replacing a linear layer by a depth-wise separable convolution
+
+* Replacing a linear layer by a low-rank approximation
+
+Examples of prohibited transformations include, but are not limited to:
+
+* Removing a layer
+
+* Adding a linear layer
+
+* Replacing a 3x3 max pooling layer with an average pooling layer
+
+=== Retraining limitations
+
+The scope of retraining is limited to avoid architecture search:
+
+* The retraining must use a subset of the training data samples. The retraining data fraction is (# of training data samples used during retraining) / (# of retraining data samples) and must be less than or equal to 1.
+
+* Retraining the network must use fewer epochs than the number of epochs to train the network. The retraining epoch fraction is (# of retraining epochs) / (# of training epochs) and must be less than or equal to 1. The number of retraining epochs is defined by the table below.
+
+|===
+|Model|ResNet-50v1.5 |SSD-ResNet34 |SSD-MobileNets|BERT finetuning|DLRM|RNN-T|3DUnet
+|Epochs|?? |65 |?? |5 epoch finetuning|0.9 (90 mini-epochs)|100|600??
+|===
+
+== Retraining convergence
+
+The number of epochs of retraining for a retraining benchmark result is based on a set of retraining run results. The number of results for each benchmark is based on a combination of the variance of the benchmark result, the cost of each run, and the likelihood of convergence for the training of the original benchmark.
+
+|===
+|Area|Number of Retraining Runs
+|Vision|5
+|Other|10
+|===
+
+The number of epochs of retraining is computed by dropping the fastest and slowest runs, then taking the mean of the epochs of the remaining retraining runs.
+
+== Run Results
+
+A run result is an inference run result produced by the Load Generator using the run time model.
