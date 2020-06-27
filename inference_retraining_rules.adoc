@@ -51,7 +51,6 @@ Random number generators may be seeded from the following sources:
 
 Random number generators may be initialized repeatedly in multiple processes or threads. For a single run, the same seed may be shared across multiple processes or threads.
 
-
 === Numerical formats
 
 Any format and scaling may be used.
@@ -59,7 +58,6 @@ Any format and scaling may be used.
 === Epoch numbering
 
 Epochs should always be numbered from 0.
-
 
 == Data Set
 
@@ -179,3 +177,17 @@ The number of epochs of retraining is computed by dropping the fastest and slowe
 == Run Results
 
 A run result is an inference run result produced by the Load Generator using the run time model.
+
+== Reporting
+
+A valid run result must additionally report:
+
+* Accuracy, which must exceed the closed inference accuracy requirement.
+
+* The retraining cost metric. The retraining cost metric is (retraining data fraction) * (retraining epoch fraction). The retraining cost metric must be less than or equal to 1.
+
+* The number of non-zero parameters of the retrained network.
+
+* The total retrained model size and numerics used.
+
+* A public description of the quantization method employed that is sufficient to enable reproduction.
