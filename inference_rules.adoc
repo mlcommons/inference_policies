@@ -334,8 +334,8 @@ including retraining.  The qualified name “MLPerf Open” must be used when
 referring to an Open Division suite result, e.g. “a MLPerf Open result of 7.2.”
 
 In 0.7 https://github.com/mlperf/inference_policies/blob/master/inference_retraining_rules.adoc[Restricted retraining rules]
-characterize a subset of Open division retraining possibilies expected to be straightforward for customers to use. The restrictions 
-are optional; conformance will be indicated by a tag on the submission.
+characterize a subset of Open division retraining possibilities that are expected to be straightforward for customers to use. 
+The restrictions are optional; conformance will be indicated by a tag on the submission.
 
 == Data Sets
 
