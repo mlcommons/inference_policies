@@ -17,6 +17,8 @@ This document describes how to implement one or more benchmarks in the MLPerf
 Inference Suite and how to use those implementations to measure the performance
 of an ML system performing inference.
 
+There are seperate rules for the submission, review, and publication process for all MLPerf benchmarks https://github.com/mlperf/policies/blob/master/submission_rules.adoc[here].
+
 The MLPerf name and logo are trademarks. In order to refer to a result using the
 MLPerf name, the result must conform to the letter and spirit of the rules
 specified in this document. The MLPerf organization reserves the right to solely
@@ -201,16 +203,54 @@ time.
 
 === Benchmarks
 
-CLOSED: The benchmark suite consists of the benchmarks shown in the following
-table. Quality and latency targets are still being finalized.
+CLOSED: There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The suites share multiple benchmarks, but characterize them with different requirement. Read the specifications carefully.
+
+The Datacenter benchmark suite is as follows:
 
 |===
-|Area |Task |Model |Dataset |QSL Size |Quality |Server latency constraint| Multi-Stream latency constraint
-|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 15 ms | 50 ms
-|Vision |Image classification |MobileNets-v1 224 |ImageNet  (224x224) | 1024 | 98% of FP32 (71.68%) | 10 ms | 50 ms
-|Vision |Object detection |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 100 ms | 66 ms
-|Vision |Object detection |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 10 ms | 50 ms
-|Language |Machine translation |GNMT |WMT16 | 3,903,900 | 99% of FP32 (23.9 BLEU) | 250 ms | 100 ms
+|Area |Task |Model |Dataset |QSL Size |Quality |Server latency constraint
+|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 15 ms
+|Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 100 ms
+|Vision |Medical image segementation |3D UNET |?? |?? |99% of FP32 and 99.9% of FP32 (??) |N/A  
+|Speech |Speech-to-text |RNNT |?? |?? | 99% of FP32 (??) |1000 ms
+|Language |Machine translation |BERT |?? |?? |99% of FP32 and 99.9% of FP32 (??) | 130 ms
+|Commerce |Recommendation |DLRM |1TB Click Logs |?? |99% of FP32 and 99.9% of FP32 (??) | 30 ms 
+|===
+
+The Datacenter benchmarks *require* the following scenarios:
+
+|===
+|Area |Task |Required Scenarios 
+|Vision |Image classification |Server, Offline
+|Vision |Object detection (large) |Server, Offline
+|Vision |Medical image segementation |Offline
+|Speech |Speech-to-text |Server, Offline
+|Language |Machine translation |Server, Offline
+|Commerce |Recommendation |Server, Offline
+|===
+
+The Edge benchmark suite is as follows:
+
+|===
+|Area |Task |Model |Dataset |QSL Size |Quality |Multi-stream latency constraint
+|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 50 ms
+|Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 66 ms
+|Vision |Object detection (small) |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 50 ms
+|Vision |Medical image segementation |3D UNET |??| ?? | 99% of FP32 and 99.9% of FP32 (??) | N/A  
+|Speech |Speech-to-text |RNNT |??| ?? | 99% of FP32 (??) | N/A
+|Language |Machine translation |BERT |??| ?? |99% of FP32 (??) | N/A
+|===
+
+The Edge benchmarks *require* the following scenarios, and sometimes permit an optional scenario:
+
+|===
+|Area |Task |Required Scenarios |Optional Scenarios
+|Vision |Image classification |Single Stream, Offline |Multi-stream
+|Vision |Object detection (large) |Single Stream, Offline |Multi-stream
+|Vision |Object detection (small) |Single Stream, Offline |Multi-stream
+|Vision |Medical image segementation |Single Stream, Offline | N/A
+|Speech |Speech-to-text |Single Stream, Offline | N/A
+|Language |Machine translation |Single Stream, Offline | N/A
 |===
 
 Accuracy results must be reported to five significant figures with round to
@@ -384,20 +424,8 @@ allowed subject to latency requirements.
 
 == Model
 
-CLOSED: For v0.5, MLPerf provides a reference implementation in a first
-framework and an alternative implementation in a second framework in accordance
-with the table below.  The benchmark implementation must use a model that is
-equivalent to the reference implementation or the alternative implementation, as
-defined by the remainder of this section.
-
-|===
-|Area |Task |Model |Reference implementation |Alternative implementation
-|Vision |Image classification |Resnet50-v1.5 |TensorFlow |PyTorch/ONNX
-|Vision |Image classification |MobileNets-v1 224 |TensorFlow/TensorFlow Lite |PyTorch/ONNX
-|Vision |Object detection |SSD-ResNet34 |PyTorch/ONNX |TensorFlow/TensorFlow Lite
-|Vision |Object detection |SSD-MobileNets-v1 |TensorFlow |PyTorch/ONNX
-|Language |Machine translation |GMNT |TensorFlow |PyTorch/ONNX
-|===
+CLOSED: MLPerf provides a reference implementation of each benchmark. The benchmark implementation must use a model that is
+equivalent, as defined in these rules, to the model used in the reference implementation.
 
 OPEN: The benchmark implementation may use a different model to perform the same
 task. Retraining is allowed.
