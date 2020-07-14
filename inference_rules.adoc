@@ -498,6 +498,10 @@ Examples of allowed techniques include, but are not limited to:
 
 * Empirical performance and accuracy tuning based on the performance and accuracy
   set (eg. selecting batch sizes or numerics experimentally)
+  
+* Sorting an embedding table based on frequency of access in the training set.
+  (Submtters should include in their submission details of how the ordering was
+  derived.)
 
 The following techniques are disallowed:
 
