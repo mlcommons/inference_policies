@@ -5,8 +5,9 @@
 
 = MLPerf Inference Rules
 
-Version 0.5 
-Sept 20, 2019
+Version 0.7
+Updated July 17, 2019
+This version has been updated, but is not yet final.
 
 Points of contact: David Kanter (dkanter@gmail.com), Vijay Janapa Reddi
 (vjreddi@g.harvard.edu)
