@@ -587,6 +587,10 @@ A: No, you don’t have to use the reference scripts. The reference is there to
 settle conformance questions - with a few exceptions, a submission to the closed
 division must match what the reference is doing.
 
+Q: Do I have to submit all the benchmarks in the suite, or can I pick and choose from the suite?
+
+A: You can submit any of the benchmarks that are interesting, from just one benchmark and set of scenarios to the entire set of benchmarks.
+
 Q: Why does a run require so many individual inference queries?
 
 A: The numbers were selected to be sufficiently large to statistically verify
