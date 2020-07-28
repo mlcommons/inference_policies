@@ -600,6 +600,10 @@ A: No, you don’t have to use the reference scripts. The reference is there to
 settle conformance questions - with a few exceptions, a submission to the closed
 division must match what the reference is doing.
 
+Q: Can I submit a single benchmark (e.g., object detection) in a suite (e.g., data center), or do I have to submit all benchmarks?
+
+A: You can submit any of the benchmarks that are interesting, from just one benchmark to the entire set of benchmarks. Keep in mind that submitting one benchmark typically requires running several scenarios as described in Section 4. For example, submitting object detection in the data center suite requires the server and offline scenario and submitting object detection in the edge suite requires the single stream and offline scenarios and optionally the multi-stream scenario. 
+
 Q: Why does a run require so many individual inference queries?
 
 A: The numbers were selected to be sufficiently large to statistically verify
