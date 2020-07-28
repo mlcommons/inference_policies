@@ -526,7 +526,7 @@ Examples of allowed techniques include, but are not limited to:
 
 * Dynamically switching between one or more batch sizes
 
-* Different implementations based on dynamically determined batch size or input size
+* Different implementations based on scenario (e.g., single stream vs. offline) or dynamically determined batch size or input size
 
 * Mixture of experts combining differently quantized weights
 
