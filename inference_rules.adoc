@@ -217,52 +217,52 @@ time.
 
 === Benchmarks
 
-CLOSED: There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The suites share multiple benchmarks, but characterize them with different requirement. Read the specifications carefully.
+CLOSED: There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
 
-The Datacenter benchmark suite is as follows:
+The Datacenter suite includes the following benchmarks:
 
 |===
 |Area |Task |Model |Dataset |QSL Size |Quality |Server latency constraint
 |Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 15 ms
 |Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 100 ms
-|Vision |Medical image segementation |3D UNET |?? |?? |99% of FP32 and 99.9% of FP32 (??) |N/A  
+|Vision |Medical image segmentation |3D UNET |?? |?? |99% of FP32 and 99.9% of FP32 (??) |N/A  
 |Speech |Speech-to-text |RNNT |?? |?? | 99% of FP32 (??) |1000 ms
 |Language |Machine translation |BERT |?? |?? |99% of FP32 and 99.9% of FP32 (??) | 130 ms
 |Commerce |Recommendation |DLRM |1TB Click Logs |?? |99% of FP32 and 99.9% of FP32 (??) | 30 ms 
 |===
 
-The Datacenter benchmarks *require* the following scenarios:
+Each Datacenter benchmark *requires* the following scenarios:
 
 |===
 |Area |Task |Required Scenarios 
 |Vision |Image classification |Server, Offline
 |Vision |Object detection (large) |Server, Offline
-|Vision |Medical image segementation |Offline
+|Vision |Medical image segmentation |Offline
 |Speech |Speech-to-text |Server, Offline
 |Language |Machine translation |Server, Offline
 |Commerce |Recommendation |Server, Offline
 |===
 
-The Edge benchmark suite is as follows:
+The Edge suite incudes the following benchmarks:
 
 |===
 |Area |Task |Model |Dataset |QSL Size |Quality |Multi-stream latency constraint
 |Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 50 ms
 |Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 66 ms
 |Vision |Object detection (small) |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 50 ms
-|Vision |Medical image segementation |3D UNET |??| ?? | 99% of FP32 and 99.9% of FP32 (??) | N/A  
+|Vision |Medical image segmentation |3D UNET |??| ?? | 99% of FP32 and 99.9% of FP32 (??) | N/A  
 |Speech |Speech-to-text |RNNT |??| ?? | 99% of FP32 (??) | N/A
 |Language |Machine translation |BERT |??| ?? |99% of FP32 (??) | N/A
 |===
 
-The Edge benchmarks *require* the following scenarios, and sometimes permit an optional scenario:
+Each Edge benchmark *requires* the following scenarios, and sometimes permit an optional scenario:
 
 |===
 |Area |Task |Required Scenarios |Optional Scenarios
 |Vision |Image classification |Single Stream, Offline |Multi-stream
 |Vision |Object detection (large) |Single Stream, Offline |Multi-stream
 |Vision |Object detection (small) |Single Stream, Offline |Multi-stream
-|Vision |Medical image segementation |Single Stream, Offline | N/A
+|Vision |Medical image segmentation |Single Stream, Offline | N/A
 |Speech |Speech-to-text |Single Stream, Offline | N/A
 |Language |Machine translation |Single Stream, Offline | N/A
 |===
