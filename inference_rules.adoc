@@ -654,7 +654,7 @@ Q: The ResNet model returns softmax and argmax, but softmax is never used. Can s
 A: Yes.
 
 === DLRM
-Q: What's the distribution for user-item pairs in the Server Scenario?
+Q: What's the distribution for user-item pairs in DLRM sampls for all scenarios?
 A: In the case of DLRM we have agreed that we should use multiple samples drawn from a distribution, similar to the one shown on Fig. 5: "Queries for personalized recommendation models" in the https://arxiv.org/abs/2001.02772[DeepRecSys] paper.
 
 The DLRM MLPerf inference code has an option to aggregate multiple consecutive samples together into a single aggregated sample. The number of samples to be aggregated can be selected using either of the following options
