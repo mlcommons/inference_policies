@@ -154,6 +154,19 @@ The number of runs required for each scenario is defined below:
 
 * Offline: 1
 
+Each sample has the following definition:
+
+|===
+|Model| definition of one sample
+|Resnet50-v1.5	    |one image
+|SSD-ResNet34	    |one image
+|SSD-MobileNet-v1   | one image
+|3D UNET	        |one image
+|RNNT	            |one raw speech sample up to 15 seconds
+|BERT	            |one sequence
+|DLRM	            |up to 700 user-item pairs (more details in FAQ)
+|===
+
 == Benchmarks
 
 The MLPerf organization provides a reference implementation of each benchmark,
@@ -639,6 +652,23 @@ against ground truth in COCO dataset. COCO eval is not possible in production.
 Q: The ResNet model returns softmax and argmax, but softmax is never used. Can softmax be dead code eliminated?
 
 A: Yes.
+
+=== DLRM
+Q: What's the distribution for user-item pairs in DLRM sampls for all scenarios?
+A: In the case of DLRM we have agreed that we should use multiple samples drawn from a distribution, similar to the one shown on Fig. 5: "Queries for personalized recommendation models" in the https://arxiv.org/abs/2001.02772[DeepRecSys] paper.
+
+The DLRM MLPerf inference code has an option to aggregate multiple consecutive samples together into a single aggregated sample. The number of samples to be aggregated can be selected using either of the following options
+(i) fixed [`--samples-to-aggregate-fix`]
+(ii) drawn uniformly from interval [`--samples-to-aggregate-min`, `--samples-to-aggregate-max`]
+(iii) drawn from a custom distribution, with its quantile (inverse of CDP) specified in `--samples-to-aggregate-quantile-file=./tools/dist_quantile.txt`.
+
+The benchmark provides a pre-defined quantile distribution in `./tools/dist_quantile.txt` from which the samples will be drawn using the inverse transform algorithm. This algorithm relies on randomly drawn numbers from the interval [0,1) and that depend on the `--numpy-rand-seed`, which specific value will be provided shortly before MLPerf inference submissions.
+
+In order to eliminate the discrepancy between different number generators, the submitters can verify their compatibility by using the default `--numpy-rand-seed` and comparing the trace generated on their system with `./tools/dist_trace_verification.txt` using the following command
+```
+./run_local.sh pytorch dlrm terabyte cpu --count-samples=100 --scenario Offline --max-ind-range=40000000 --samples-to-aggregate-quantile-file=./tools/dist_quantile.txt --max-batchsize=128
+```
+
 
 == Appendix Number of Queries
 
