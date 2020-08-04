@@ -184,7 +184,7 @@ Examples of prohibited transformations include, but are not limited to:
 
 The scope of retraining is limited to avoid architecture search:
 
-* The retraining must use a subset of the training data samples. The retraining data fraction is (# of training data samples used during retraining) / (# of retraining data samples) and must be less than or equal to 1.
+* The retraining must use a subset of the training data samples. The retraining data fraction is (# of training data samples used during retraining) / (# of training data samples) and must be less than or equal to 1.
 
 * Retraining the network must use fewer epochs than the number of epochs to train the network. The retraining epoch fraction is (# of retraining epochs) / (# of training epochs) and must be less than or equal to 1. The number of retraining epochs is defined by the table below.
 
