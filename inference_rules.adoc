@@ -227,7 +227,7 @@ The Datacenter suite includes the following benchmarks:
 |Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 100 ms
 |Vision |Medical image segmentation |3D UNET |?? |?? |99% of FP32 and 99.9% of FP32 (??) |N/A  
 |Speech |Speech-to-text |RNNT |?? |?? | 99% of FP32 (??) |1000 ms
-|Language |Machine translation |BERT |?? |?? |99% of FP32 and 99.9% of FP32 (??) | 130 ms
+|Language |Question answering |fine-tuned BERT |SQuAD 1.1 |?? |99% of FP32 and 99.9% of FP32 (??) | 130 ms
 |Commerce |Recommendation |DLRM |1TB Click Logs |?? |99% of FP32 and 99.9% of FP32 (??) | 30 ms 
 |===
 
@@ -239,7 +239,7 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Vision |Object detection (large) |Server, Offline
 |Vision |Medical image segmentation |Offline
 |Speech |Speech-to-text |Server, Offline
-|Language |Machine translation |Server, Offline
+|Language |Question answering |Server, Offline
 |Commerce |Recommendation |Server, Offline
 |===
 
@@ -252,7 +252,7 @@ The Edge suite includes the following benchmarks:
 |Vision |Object detection (small) |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 50 ms
 |Vision |Medical image segmentation |3D UNET |??| ?? | 99% of FP32 and 99.9% of FP32 (??) | N/A  
 |Speech |Speech-to-text |RNNT |??| ?? | 99% of FP32 (??) | N/A
-|Language |Machine translation |BERT |??| ?? |99% of FP32 (??) | N/A
+|Language |Question answering |fine-tuned BERT |SQuAD 1.1| ?? |99% of FP32 (??) | N/A
 |===
 
 Each Edge benchmark *requires* the following scenarios, and sometimes permit an optional scenario:
@@ -264,7 +264,7 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 |Vision |Object detection (small) |Single Stream, Offline |Multi-stream
 |Vision |Medical image segmentation |Single Stream, Offline | N/A
 |Speech |Speech-to-text |Single Stream, Offline | N/A
-|Language |Machine translation |Single Stream, Offline | N/A
+|Language |Question answering |Single Stream, Offline | N/A
 |===
 
 Accuracy results must be reported to five significant figures with round to
