@@ -226,7 +226,7 @@ The Datacenter suite includes the following benchmarks:
 |Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 15 ms
 |Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 100 ms
 |Vision |Medical image segmentation |3D UNET |BraTS 2019 (224x224x160) | 16 | 99% of FP32 and 99.9% of FP32 (0.85300 mean DICE score) | N/A
-|Speech |Speech-to-text |RNNT |Librispeech dev-clean | 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | 1000 ms
+|Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds) | 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | 1000 ms
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 and 99.9% of FP32 (f1_score=90.874%) | 130 ms
 |Commerce |Recommendation |DLRM |1TB Click Logs | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.25%) | 30 ms
 |===
@@ -251,7 +251,7 @@ The Edge suite includes the following benchmarks:
 |Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 66 ms
 |Vision |Object detection (small) |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 50 ms
 |Vision |Medical image segmentation |3D UNET |BraTS 2019 (224x224x160) | 16 | 99% of FP32 and 99.9% of FP32 (0.85300 mean DICE score) | N/A
-|Speech |Speech-to-text |RNNT |Librispeech dev-clean | 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | N/A
+|Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds)| 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | N/A
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 (f1_score=90.874%) | N/A
 |===
 
