@@ -251,7 +251,7 @@ The Edge suite includes the following benchmarks:
 |Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 66 ms
 |Vision |Object detection (small) |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 50 ms
 |Vision |Medical image segmentation |3D UNET |??| ?? | 99% of FP32 and 99.9% of FP32 (??) | N/A  
-|Speech |Speech-to-text |RNNT |??| ?? | 99% of FP32 (??) | N/A
+|Speech |Speech-to-text |RNNT |Librispeech dev-clean| 2513 | 99% of FP32 | N/A
 |Language |Machine translation |BERT |??| ?? |99% of FP32 (??) | N/A
 |===
 
