@@ -226,7 +226,7 @@ The Datacenter suite includes the following benchmarks:
 |Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 15 ms
 |Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 100 ms
 |Vision |Medical image segmentation |3D UNET |?? |?? |99% of FP32 and 99.9% of FP32 (??) |N/A  
-|Speech |Speech-to-text |RNNT |?? |?? | 99% of FP32 (??) |1000 ms
+|Speech |Speech-to-text |RNNT |Librispeech dev-clean |2513 | 99% of FP32 |1000 ms
 |Language |Machine translation |BERT |?? |?? |99% of FP32 and 99.9% of FP32 (??) | 130 ms
 |Commerce |Recommendation |DLRM |1TB Click Logs |?? |99% of FP32 and 99.9% of FP32 (??) | 30 ms 
 |===
