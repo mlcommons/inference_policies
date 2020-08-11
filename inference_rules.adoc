@@ -508,7 +508,7 @@ Examples of allowed techniques include, but are not limited to:
 
 * Arbitrary data arrangement
 
-* Different input and in-memory representations of weights
+* Different in-memory representations of inputs, weights, activations, and outputs
 
 * Variation in matrix-multiplication or convolution algorithm provided the
   algorithm produces asymptotically accurate results when evaluated with
