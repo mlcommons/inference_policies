@@ -665,9 +665,9 @@ Q: Is COCO eval timed?
 A: No. COCO eval compares the proposed boxes and classes in all the images
 against ground truth in COCO dataset. COCO eval is not possible in production.
 
-=== ResNet
+=== Softmax
 
-Q: The ResNet model returns softmax and argmax, but softmax is never used. Can softmax be dead code eliminated?
+Q: In classification and segmentation models (ResNet50, 3DUNet) the final softmax does not change the order of class probabilities. Can it be omitted?
 
 A: Yes.
 
