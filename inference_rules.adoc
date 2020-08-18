@@ -280,9 +280,13 @@ each benchmark is listed as 'QSL Size' in the table above. However, the accuracy
 ==== Relaxed constraints for the Open division
 
 1. An Open benchmark must perform a task matching an existing Closed benchmark, and be substitutable in LoadGen for that benchmark.
+1. The accuracy dataset must be the same as an existing Closed benchmark.
 1. Accuracy constraints are not applicable: instead the submission must report the accuracy obtained.
-1. Latency constraints are not applicable: instead the submission must report the latency constraints under which the reported performance was obtained. For latencies other than the default, the minimum number of queries should be set using the formula in <<Appendix Number of Queries>>.
+1. Latency constraints are not applicable: instead the submission must report the latency constraints under which the reported performance was obtained.
+1. The minimum number of queries should be set using the formula in <<Appendix Number of Queries>>.
 1. Scenario constraints are not applicable: any combination of scenarios is permitted.
+1. A open submission must be classified as available, preview, RDI, or closed.
+1. The model can be of any origin (trained on any dataset, quantized in any way, and sparsified in anyway).
 
 == Load Generator
 
