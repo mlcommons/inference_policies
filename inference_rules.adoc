@@ -217,7 +217,9 @@ time.
 
 === Benchmarks
 
-CLOSED: There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
+==== Constraints for the Closed division
+
+There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
 
 The Datacenter suite includes the following benchmarks:
 
@@ -270,12 +272,17 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 Accuracy results must be reported to five significant figures with round to
 even. For example, 98.9995% should be recorded as 99.000%.
 
-OPEN: benchmarks must perform a task matching an existing benchmark, and be substitutable in loadgen for that benchmark. Latency and accuracy constraints are not applicable: instead the submission must report the accuracy obtained, and the latency constraints under which the reported performance was obtained. For latencies other than the default, the minimum number of queries should be set using  the formula in <<Appendix Number of Queries>>
-
 For performance runs, the LoadGen will select queries uniformly at random (with
 replacement) from a test set. The minimum size of the performance test set for
 each benchmark is listed as 'QSL Size' in the table above. However, the accuracy
  test must be run with one copy of the MLPerf specified validation dataset.
+
+==== Relaxed constraints for the Open division
+
+1. An Open benchmark must perform a task matching an existing Closed benchmark, and be substitutable in LoadGen for that benchmark.
+1. Accuracy constraints are not applicable: instead the submission must report the accuracy obtained.
+1. Latency constraints are not applicable: instead the submission must report the latency constraints under which the reported performance was obtained. For latencies other than the default, the minimum number of queries should be set using the formula in <<Appendix Number of Queries>>.
+1. Scenario constraints are not applicable: any combination of scenarios is permitted.
 
 == Load Generator
 
