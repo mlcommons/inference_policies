@@ -656,7 +656,7 @@ against ground truth in COCO dataset. COCO eval is not possible in production.
 
 === Softmax
 
-Q: Some models (ResNet, 3D Unet, etc.) compute softmax and argmax, but never use softmax. Can softmax be dead code eliminated in these cases?
+Q: In classification and segmentation models (ResNet50, 3DUNet) the final softmax does not change the order of class probabilities. Can it be omitted?
 
 A: Yes.
 
