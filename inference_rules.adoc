@@ -656,9 +656,11 @@ Q: Can we preload image data in host memory somewhere that is mapped into accele
 A: Yes, provided the image data isn't eventually cached on the device.
 
 Q: For the server scenario, there are 'Scheduled samples per second', 'Completed samples per second', and the user input target QPS. Which one is reported as the final metric?
+
 A: Scheduled samples per second
 
 Q: For the multi-stream scenario, does the tail-latency constraint apply on a per-query basis or on a per-sample basis?
+
 A: It applies on a per-query basis. The latency of a query is the maximum latency of its samples, including any cross-thread communication within the loadgen. If the loadgen has to skip producing for an interval because it couldn't detect that all samples were completed in time, then the query will not be considered meeting the latency constraint. This is fair since the loadgen skipping production will reduce pressure on the SUT and should be reflected negatively in the latency percentiles. The last query is special cased since there isn't a subsequent query to delay. For the last query, the query latency without cross-thread communication is used.
 
 === SSD
