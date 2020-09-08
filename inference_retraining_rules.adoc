@@ -8,7 +8,7 @@
 Version 0.7 
 June 27, 2020
 
-Points of contact: David Kanter (dkanter@gmail.com), Cormac Brick (cormac.brick@intel.com), Ephrem Wu (ephremw@xilinx.com), and Dilip Sequeira (dsequeira@nvidia.com)
+Points of contact: David Kanter (david@mlcommons.org), Cormac Brick (cormac.brick@intel.com), Ephrem Wu (ephremw@xilinx.com), and Dilip Sequeira (dsequeira@nvidia.com)
 
 == Overview
 
