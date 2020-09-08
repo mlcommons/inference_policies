@@ -9,7 +9,7 @@ Version 0.7
 Updated July 17, 2019
 This version has been updated, but is not yet final.
 
-Points of contact: David Kanter (dkanter@gmail.com), Vijay Janapa Reddi
+Points of contact: David Kanter (david@mlcommons.org), Vijay Janapa Reddi
 (vjreddi@g.harvard.edu)
 
 == Overview
