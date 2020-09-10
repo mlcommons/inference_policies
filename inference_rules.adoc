@@ -610,6 +610,12 @@ The following techniques are disallowed:
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD.
 
+== Audit
+After submission, the submitters working group may request that a submission be audited. The audit will be funded by MLCommons with a limited time budget. An auditor will be selected by the review committee who has no conflict of interest with the audited submitter. 
+
+The burden is on the submitter to provide to the auditor under NDA sufficient materials to demonstrate that the submission is compliant with the rules. The auditor will submit to the review committee a report containing their recommendation together with an account of any unresolved questions, based on which the committee will decide whether the submission is compliant. If the submission is determined to be non-compliant in significant ways, it will be moved to Open Division.
+
+
 == FAQ
 
 Q: Do I have to use the reference implementation framework?
@@ -697,7 +703,22 @@ In order to eliminate the discrepancy between different number generators, the s
 ```
 ./run_local.sh pytorch dlrm terabyte cpu --count-samples=100 --scenario Offline --max-ind-range=40000000 --samples-to-aggregate-quantile-file=./tools/dist_quantile.txt --max-batchsize=128
 ```
+=== Audit
 
+Q: what characteristics of my submission will make it more likely to be audited?
+
+A: a submission is more likely to be audited if
+* the submission's performance is not consistent with the known or expected characteristics of the hardware
+* the review committee lacks insight into how the measured performance was achieved
+* the hardware and software is not reasonably available to the general public
+
+Q:what should I be expected to provide for audit?
+
+A: You should expect to provide to the auditor an explanation of the hardware and software mechanisms used to achieve the claimed performance. In addition, the auditor will expect to exercise the hardware through the APIs used in the submission, to verify that performance-critical elements perform as claimed. The auditor may also request source code access to binary elements of the submission software. Where information or access is not provided, the auditor's report will list the issues that could not be resolved.
+
+Q: is it expected that an audit will be concluded during the review period?
+
+A: No. If an audit concludes that a submission is non-compliant, it will be moved to Open Division post-publication.
 
 == Appendix Number of Queries
 
