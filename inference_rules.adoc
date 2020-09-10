@@ -500,8 +500,7 @@ To be considered principled, the description of the quantization method must be
 much much smaller than the non-zero weights it produces.
 
 Calibration is allowed and must only use the calibration data set provided by
-the benchmark owner. Submitters may choose to use only an initial segment of the
-calibration data set whose length is a power of 2.
+the benchmark owner. Submitters may choose to use only a subset of the calibration data set.
 
 Additionally, for image classification using MobileNets-v1 224 and object
 detection using SSD-MobileNets-v1, MLPerf will provide a retrained INT8
