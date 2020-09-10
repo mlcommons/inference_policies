@@ -611,7 +611,7 @@ The following techniques are disallowed:
   samples in a query. For example, sorting samples in SSD.
 
 == Audit
-After submission, the submitters working group may request that a submission be audited. The audit will be funded by MLCommons with a limited time budget. An auditor will be selected by the review committee who has no conflict of interest with the audited submitter. 
+After submission, the submitters working group may request that an Available submission be audited. The audit will be funded by MLCommons with a limited time budget (in 0.7, 40 hours) and will be completed within 1 month of publication. An auditor will be selected by the review committee who has no conflict of interest with the audited submitter. 
 
 The burden is on the submitter to provide to the auditor under NDA sufficient materials to demonstrate that the submission is compliant with the rules. The auditor will submit to the review committee a report listing the work that was performed, a list of unresolved questions, and a recommendation of whether the submission is compliant. Based on the report, the committee will decide whether the submission is compliant. If the submission is determined to be non-compliant in significant ways, it will be moved to Open Division.
 
@@ -715,7 +715,13 @@ A: A submission is more likely to be audited if:
 
 Q: What should I be expected to provide for audit?
 
-A: You should expect to provide to the auditor an explanation of the hardware and software mechanisms used to achieve the claimed performance. In addition, the auditor will expect to exercise the hardware through the APIs used in the submission, to verify that performance-critical elements perform as claimed. The auditor may also request source code access to binary elements of the submission software. Where information or access is not provided, the auditor's report will list the issues that could not be resolved.
+A: You should expect to provide the following:
+
+* An explanation of the hardware and software mechanisms required to achieve the measured performance
+* Hardware access to enable the auditor to replicate submission runs (or partial runs in the case of very long-running submission)
+* Hardware access to enable performance tests through the APIs used in the submission, to verify that performance-critical elements perform as claimed
+
+The auditor may also request source code access to binary elements of the submission software. Where information or access is not provided, the auditor's report will list the issues that could not be resolved.
 
 Q: Is it expected that an audit will be concluded during the review period?
 
