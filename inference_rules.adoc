@@ -707,7 +707,8 @@ In order to eliminate the discrepancy between different number generators, the s
 
 Q: what characteristics of my submission will make it more likely to be audited?
 
-A: a submission is more likely to be audited if
+A: a submission is more likely to be audited if:
+
 * the submission's performance is not consistent with the known or expected characteristics of the hardware
 * the review committee lacks insight into how the measured performance was achieved
 * the hardware and software is not reasonably available to the general public
