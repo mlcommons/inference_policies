@@ -118,11 +118,14 @@ Results that cannot be replicated are not valid results.
 === Audit Process
 
 There will be an external audit which will require HW access on the submitter for 2 days towards the end of review period or another 2 days agreed by the submitter. Day 1 will be used to run a pre-agreed list of test, verifying other system parameters if needed. Day 2 will allow auditor to run additional tests based on outcome of the first day. 
+
 The auditor should not have the conflict of interest.
 The relavant software, documentation and testing results will be provided to the auditor under NDA.
 The audit is only for available category.
+
 If you fail the audit to a material level, your result will be moved to open or removed based review committee decision.
-We will select 2 entries to audit, one will be random, one will be based on review committee decision. One entry is a submitter-hardware combination.
+We will select two entries to audit per round. One entry will be randomly chosen, one entry will be based on review committee decision. One entry here means a submitter-hardware combination.
+
 The burden is on the submitter to provide to the auditor under NDA sufficient materials to demonstrate that the submission is compliant with the rules. The auditor will submit to the review committee a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant. 
 
 == Scenarios
