@@ -118,6 +118,12 @@ Results that cannot be replicated are not valid results.
 === Audit Process
 
 There will be an external audit which will require HW access on the submitter for 2 days towards the end of review period or another 2 days agreed by the submitter. Day 1 will be used to run a pre-agreed list of test, verifying other system parameters if needed. Day 2 will allow auditor to run additional tests based on outcome of the first day. 
+The auditor should not have the conflict of interest.
+The relavant software, documentation and testing results will be provided to the auditor under NDA.
+The audit is only for available category.
+If you fail the audit to a material level, your result will be moved to open or removed based review committee decision.
+We will select 2 entries to audit, one will be random, one will be based on review committee decision. One entry is a submitter-hardware combination.
+The burden is on the submitter to provide to the auditor under NDA sufficient materials to demonstrate that the submission is compliant with the rules. The auditor will submit to the review committee a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant. 
 
 == Scenarios
 
@@ -701,6 +707,29 @@ In order to eliminate the discrepancy between different number generators, the s
 ./run_local.sh pytorch dlrm terabyte cpu --count-samples=100 --scenario Offline --max-ind-range=40000000 --samples-to-aggregate-quantile-file=./tools/dist_quantile.txt --max-batchsize=128
 ```
 
+
+=== Audit
+
+Q: What characteristics of my submission will make it more likely to be audited?
+
+A: A submission is more likely to be audited if:
+
+* the submission's performance is not consistent with the known or expected characteristics of the hardware
+* the review committee lacks insight into how the measured performance was achieved
+* the hardware and software is not reasonably available to the general public
+
+Q: What should I be expected to provide for audit?
+
+A: You should expect to provide the following:
+
+* An explanation of the hardware and software mechanisms required to achieve the measured performance
+* Hardware access to enable the auditor to replicate submission runs (or partial runs in the case of very long-running submission)
+* Hardware access to enable performance tests through the APIs used in the submission, to verify that performance-critical elements perform as claimed
+
+The auditor may also request source code access to binary elements of the submission software. Where information or access is not provided, the auditor's report will list the issues that could not be resolved.
+
+Q: Is it expected that an audit will be concluded during the review period?
+A: No. We should try to finish the audit before the publication date. 
 
 == Appendix Number of Queries
 
