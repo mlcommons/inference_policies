@@ -115,6 +115,10 @@ input dataset in any form.
 
 Results that cannot be replicated are not valid results.
 
+=== Audit Process
+
+There will be an external audit which will require HW access on the submitter for 2 days towards the end of review period or another 2 days agreed by the submitter. Day 1 will be used to run a pre-agreed list of test, verifying other system parameters if needed. Day 2 will allow auditor to run additional tests based on outcome of the first day. 
+
 == Scenarios
 
 In order to enable representative testing of a wide variety of inference
