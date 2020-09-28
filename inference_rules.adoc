@@ -117,16 +117,20 @@ Results that cannot be replicated are not valid results.
 
 === Audit Process
 
-There will be an external audit which will require HW access on the submitter for 2 days towards the end of review period or another 2 days agreed by the submitter. Day 1 will be used to run a pre-agreed list of test, verifying other system parameters if needed. Day 2 will allow auditor to run additional tests based on outcome of the first day. 
+In each round, two submissions will be audited: one selected by the review committee, and one at random from all submissions. A "submission" for audit purposes shall denote a combination of a submitter and a platform (equivalent to a line in the results table). Only Available submissions in Closed division are auditable.
 
-The auditor should not have the conflict of interest.
-The relavant software, documentation and testing results will be provided to the auditor under NDA.
-The audit is only for available category.
+The process of random selection is in two stages: first a submitter is randomly chosen from all submitters with auditable submissions, then one of those submissions is randomly chosen.
 
-If you fail the audit to a material level, your result will be moved to open or removed based review committee decision.
-We will select two entries to audit per round. One entry will be randomly chosen, one entry will be based on review committee decision. One entry here means a submitter-hardware combination.
+An auditor shall be chosen by the review committee who has no conflict of interest with the submitter.
 
-The burden is on the submitter to provide to the auditor under NDA sufficient materials to demonstrate that the submission is compliant with the rules. The auditor will submit to the review committee a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant. 
+The burden is on the submitter to provide sufficient materials to demonstrate that the submission is compliant with the rules. Any such materials, including software, documentation, testing results and machine access will be provided to the auditor under NDA.
+
+The submitter shall provide two days of hardware access, at a time mutually agreed with the auditor. The first day will be used to run a pre-agreed list of tests, and to verify other system parameters if needed. The second day will allow the auditor to run additional tests based on outcome of the first day.
+
+The audit will ideally conclude before publication, but in any case, no more than 30 days after publication. The auditor shall submit to the review committee a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant.
+
+Submissions that fail the audit at a material level will be moved to open or removed, by review committee decision.
+
 
 == Scenarios
 
