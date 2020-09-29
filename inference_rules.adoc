@@ -466,7 +466,7 @@ untimed. However, it must be pre-approved and added to the following list:
 * Mean subtraction and normalization provided reference model expect those to be
   done
 
-* May convert data among all the whitelisted numerical formats
+* May convert data among numerical formats
 
 Any other pre- and post-processing time is included in the wall-clock time for a
 run result.
@@ -493,24 +493,9 @@ the reference and alternative implementations.
 MLPerf will provide a calibration data set for all models except
 GNMT. Submitters may do arbitrary purely mathematical, reproducible quantization
 using only the calibration data and weight and bias tensors from the benchmark
-owner provided model to any combination of permissive whitelist numerical format
+owner provided model to any numerical format
 that achieves the desired quality. The quantization method must be publicly
-described at a level where it could be reproduced.  The whitelist currently
-includes:
-
-* INT4
-* INT8
-* INT16
-* INT32
-* UINT8
-* UINT16
-* UINT32
-* FP11 (1-bit sign, 5-bit exponent, 5-bit mantissa)
-* FP16
-* bfloat16
-* FP32
-
-August 14, 2019 is the deadline to whitelist a numerical format for MLPerf 0.5.
+described at a level where it could be reproduced.
 
 To be considered principled, the description of the quantization method must be
 much much smaller than the non-zero weights it produces.
