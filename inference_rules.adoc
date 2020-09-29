@@ -167,7 +167,7 @@ The number of runs required for each scenario is defined below:
 
 * Multi-Stream: 1
 
-* Server: 5
+* Server: 1
 
 * Offline: 1
 
@@ -339,8 +339,7 @@ try again.
 runs. Each test run evaluates a specific throughput value in queries-per-second
 (QPS). For a specific throughput value, queries are generated at that QPS using
 a Poisson distribution. LoadGen will use a binary search to find a candidate
-value. It will then verify stability by testing the value 5 times. If one run
-fails, it will reduce the value by a small delta then try again.
+value. If a run fails, it will reduce the value by a small delta then try again.
 
 * Offline: LoadGen measures throughput using a single test run. For the test
 run, LoadGen sends all queries at once.
