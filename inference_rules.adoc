@@ -395,7 +395,7 @@ library exactly once but is otherwise identical to the above normal metric run.
 One LoadGen validation run is required for each submitted performance result 
 even if two or more performance results share the same source code.
 
-Note: For v0.5, the same code must be run for both the accuracy and performance LoadGen modes. This means the same output should be passed in QuerySampleComplete in both modes. 
+Note: The same code must be run for both the accuracy and performance LoadGen modes. This means the same output should be passed in QuerySampleComplete in both modes. 
 
 == Divisions
 
