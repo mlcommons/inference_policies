@@ -115,6 +115,23 @@ input dataset in any form.
 
 Results that cannot be replicated are not valid results.
 
+=== Audit Process
+
+In each round, two submissions will be audited: one selected by the review committee, and one at random from all submissions. A "submission" for audit purposes shall denote a combination of a submitter and a platform (equivalent to a line in the results table). Only Available submissions in Closed division are auditable.
+
+The process of random selection is in two stages: first a submitter is randomly chosen from all submitters with auditable submissions, then one of those submissions is randomly chosen.
+
+An auditor shall be chosen by the review committee who has no conflict of interest with the submitter.
+
+The burden is on the submitter to provide sufficient materials to demonstrate that the submission is compliant with the rules. Any such materials, including software, documentation, testing results and machine access will be provided to the auditor under NDA.
+
+The submitter shall provide two days of hardware access, at a time mutually agreed with the auditor. The first day will be used to run a pre-agreed list of tests, and to verify other system parameters if needed. The second day will allow the auditor to run additional tests based on outcome of the first day.
+
+The audit will ideally conclude before publication, but in any case, no more than 30 days after publication. The auditor shall submit to the review committee a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant.
+
+Submissions that fail the audit at a material level will be moved to open or removed, by review committee decision.
+
+
 == Scenarios
 
 In order to enable representative testing of a wide variety of inference
@@ -697,6 +714,29 @@ In order to eliminate the discrepancy between different number generators, the s
 ./run_local.sh pytorch dlrm terabyte cpu --count-samples=100 --scenario Offline --max-ind-range=40000000 --samples-to-aggregate-quantile-file=./tools/dist_quantile.txt --max-batchsize=128
 ```
 
+
+=== Audit
+
+Q: What characteristics of my submission will make it more likely to be audited?
+
+A: A submission is more likely to be audited if:
+
+* the submission's performance is not consistent with the known or expected characteristics of the hardware
+* the review committee lacks insight into how the measured performance was achieved
+* the hardware and software is not reasonably available to the general public
+
+Q: What should I be expected to provide for audit?
+
+A: You should expect to provide the following:
+
+* An explanation of the hardware and software mechanisms required to achieve the measured performance
+* Hardware access to enable the auditor to replicate submission runs (or partial runs in the case of very long-running submission)
+* Hardware access to enable performance tests through the APIs used in the submission, to verify that performance-critical elements perform as claimed
+
+The auditor may also request source code access to binary elements of the submission software. Where information or access is not provided, the auditor's report will list the issues that could not be resolved.
+
+Q: Is it expected that an audit will be concluded during the review period?
+A: No. We should try to finish the audit before the publication date. 
 
 == Appendix Number of Queries
 
