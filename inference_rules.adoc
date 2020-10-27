@@ -444,7 +444,7 @@ using a checksum. The dataset must be unchanged at the start of each run.
 
 As input, before preprocessing:
 
-* all imaging benchmarks take uncropped uncompressed bitmap
+* all imaging benchmarks take uncropped compressed images
 
 * BERT takes text
 
@@ -452,23 +452,7 @@ As input, before preprocessing:
 
 * DLRM takes a variable sized set of items, each a sequence of embedding indices
 
-Sample-independent pre-processing that matches the reference model is
-untimed. However, it must be pre-approved and added to the following list:
-
-* May resize to processed size (e.g. SSD-large)
-
-* May reorder channels / do arbitrary transpositions
-
-* May pad to arbitrary size (don’t be creative)
-
-* May do a single, consistent crop
-
-* Mean subtraction and normalization provided reference model expect those to be
-  done
-
-* May convert data among numerical formats
-
-Any other pre- and post-processing time is included in the wall-clock time for a
+Pre- and post-processing time is included in the wall-clock time for a
 run result.
 
 === Test Data Traversal Order
