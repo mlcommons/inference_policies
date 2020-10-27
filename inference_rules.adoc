@@ -236,7 +236,7 @@ time.
 
 ==== Constraints for the Closed division
 
-There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
+There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM. The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
 
 The Datacenter suite includes the following benchmarks:
 
