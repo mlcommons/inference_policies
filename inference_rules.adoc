@@ -272,9 +272,9 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 For Edge submitters' convenience, they are allowed to obtain only a Single Stream result
 and have Offline and optionally Multi-Stream results inferred according to the following rules:
 
-- The corresponding Offline result can be _inferred_ as 1000 divided by the
-  Single Stream result (taken at the 90th percentile).  For example, a Single
-Stream result of 20 milliseconds per sample would imply an Offline result of 50
+- The corresponding Offline result can be _inferred_ as the Queries per Second reported
+in the Single Stream result, that is 1000 divided by the Mean latency.  For example, a Single
+Stream mean latency of 20 milliseconds would imply an Offline result of 50
 samples per second. The inferred Offline accuracy will be the same as the
 Single Stream accuracy.
 
@@ -286,9 +286,10 @@ Constraint of 50 milliseconds and 3 streams under the Latency Constraint of 66
 milliseconds. The inferred Multi-Stream accuracy will be the same as the Single
 Stream accuracy.
 
-To simplify automated processing of inferred results, the submitter must still
-create directory structures for the Offline scenario and, if to be submitted,
-for the Multi-Stream scenario, but leave them empty.
+To simplify automated processing of inferred results, the submitter should
+create copies of the correponding Single Stream directories under `results/`
+and `measurements/`, calling them `offline` for the Offline scenario and, if to
+be submitted, `multistream` for the Multi Stream scenario.
 
 Accuracy results must be reported to five significant figures with round to
 even. For example, 98.9995% should be recorded as 99.000%.
