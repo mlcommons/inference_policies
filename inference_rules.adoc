@@ -286,6 +286,8 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 |Language |Language processing |Single Stream, Offline | N/A
 |===
 
+If a system does not achieve the required Server target tail latency for a model required by a suite then its Server performance will be recorded as "Not Supported," in the results table.
+
 Accuracy results must be reported to five significant figures with round to
 even. For example, 98.9995% should be recorded as 99.000%.
 
