@@ -379,7 +379,7 @@ The execution of LoadGen is restricted as follows:
   show how the input activation bandwidth utilized by each benchmark/scenario combination can be delivered from the 
   network or I/O device to that memory
 
-* Caching of any queries, any query parameters, or any intermediate results is
+* Caching values derived from the shapes of input tensors is allowed. Caching of any other queries, query parameters, or intermediate results is
   prohibited.
 
 * The LoadGen must be compiled from a tagged approved revision of the mlperf/inference
