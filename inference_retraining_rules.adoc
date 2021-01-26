@@ -8,7 +8,7 @@
 Version 0.7 
 June 27, 2020
 
-Points of contact: David Kanter (dkanter@gmail.com), Cormac Brick (cormac.brick@intel.com), Ephrem Wu (ephremw@xilinx.com), and Dilip Sequeira (dsequeira@nvidia.com)
+Points of contact: David Kanter (david@mlcommons.org), Cormac Brick (cormac.brick@intel.com), Ephrem Wu (ephremw@xilinx.com), and Dilip Sequeira (dsequeira@nvidia.com)
 
 == Overview
 
@@ -110,7 +110,7 @@ Images must have the same size as in the training reference implementation. Math
 
 For benchmarks with sequence inputs, you may choose a length N and either truncate all examples to length N or throw out all examples which exceed length N. This must be done uniformly for all examples. This may only be done on the training set and not the evaluation set.
 
-=== Reraining Data Order
+=== Retraining Data Order
 
 The training and test data must be traversed in the same conceptual order as the reference implementation. For instance, the data might be traversed sequentially or randomly with uniform distribution. Batch size, shard size, and the random number generator will affect order.
 
