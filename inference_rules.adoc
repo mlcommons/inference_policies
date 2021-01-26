@@ -278,13 +278,33 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 
 |===
 |Area |Task |Required Scenarios |Optional Scenarios
-|Vision |Image classification |Single Stream, Offline |Multi-stream
-|Vision |Object detection (large) |Single Stream, Offline |Multi-stream
-|Vision |Object detection (small) |Single Stream, Offline |Multi-stream
+|Vision |Image classification |Single Stream, Offline |Multi-Stream
+|Vision |Object detection (large) |Single Stream, Offline |Multi-Stream
+|Vision |Object detection (small) |Single Stream, Offline |Multi-Stream
 |Vision |Medical image segmentation |Single Stream, Offline | N/A
 |Speech |Speech-to-text |Single Stream, Offline | N/A
 |Language |Language processing |Single Stream, Offline | N/A
 |===
+
+For Edge submitters' convenience, they are allowed to obtain only a Single Stream result
+and have Offline and optionally Multi-Stream results inferred according to the following rules:
+
+- The corresponding Offline result is 1000 divided by the Mean latency in
+  milliseconds.  For example, a Single Stream mean latency of 20 milliseconds
+would imply an Offline result of 50 samples per second. The inferred Offline
+accuracy will be the same as the Single Stream accuracy.
+
+- The corresponding Multi-Stream result is the Latency Constraint divided by
+  the Single Stream result (taken at the 99th percentile) and rounded down.
+For example, a Single Stream result of 20 milliseconds per sample would imply a
+Multi-Stream result of 2 streams under the Latency Constraint of 50
+milliseconds and 3 streams under the Latency Constraint of 66 milliseconds. The
+inferred Multi-Stream accuracy will be the same as the Single Stream accuracy.
+
+To simplify automated processing of inferred results, the submitter should
+create copies of the correponding Single Stream directories under `results/`
+and `measurements/`, calling them `offline` for the Offline scenario and, if to
+be submitted, `multistream` for the Multi-Stream scenario.
 
 If a system does not achieve the required Server target tail latency for a model required by a suite then its Server performance will be recorded as "Not Supported" in the results table.
 
