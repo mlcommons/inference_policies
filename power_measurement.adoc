@@ -162,3 +162,6 @@ Am I required to use the MLPerf Power automation tools?
 
 Yes - for a valid submission. The MLPerf Power automation flow enables in itself a number of checks and balances that ensures the highest quality power measurement possible are being incorporated.
 
+How can I obtain the MLPerf Power automation tools?
+
+To access the MLPerf Power automation tools, your company's representative must sign the MLPerf Power EULA (INSERT EULA LINK HERE), and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
