@@ -1,0 +1,164 @@
+:toc:
+:toclevels: 4
+
+:sectnums:
+
+= MLPerf Inference Power Measurement Rules
+
+Version 0.4
+Updated Jan 22, 2021. This version has been updated, but is not yet final.
+
+Points of contact: Sachin Idgunji (sidgunji@mlcommons.org), Arun Tejusve Raghunath Rajan (tejus@mlcommons.org).
+
+== Preamble
+
+The MLPerf Power rules are an extension of the MLPerf Rules for Inference listed [here](https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc). This document only outlines the deltas between what are the added steps to be considered for power submission along with the original performance submissions.
+
+== Overview
+
+This document describes how to measure power for the benchmarks in the MLPerf Inference Suite.
+
+There are separate rules for the submission, review, and publication process for all MLPerf benchmarks in the MLPerf Inference rules referenced above.
+
+The MLPerf name and logo are trademarks. In order to refer to a result using the MLPerf name, the result must conform to the letter and spirit of the rules specified in this document. The MLPerf organization reserves the right to solely determine if a use of its name or logo is acceptable.
+
+=== Definitions (read this section carefully)
+
+A *system under test (SUT)* consists of a defined set of hardware and
+software resources that will be measured for performance. The hardware
+resources may include processors, accelerators, memories, disks, and
+interconnect. The software resources may include an operating system,
+compilers, libraries, and drivers that significantly influences the
+running time of a benchmark.
+
+*A Director/Server* system is any system that can act as the host for
+the power measurements, e.g., a standard PC with an interface that
+connects to the power analyzer
+
+A *power analyzer* (aka power meter) is a device that is used for
+measuring the wall power of a system. The SUT is powered using the power
+analyzer and the power, voltage and current drawn by the SUT are
+measured by the power analyzer. The other end of the power analyzer is
+connected to the director system that uses a software for logging the
+collected data.
+
+*NTP* stands for Network Time Protocol and it ensures time
+synchronization between the different systems that are used for power
+collection. It is required that the SUT and the Director are
+synchronized with NTP.
+
+*PTD (Power Thermal Utility)* is a utility that is developed by SPEC® for the purposes of power measurements and logging. MLCommons has licensed the use of this utility from SPEC. Please ensure to adhere to all things related to MLC and SPEC NDA. PTD by itself cannot be distributed.
+
+== Power Measurement BKM
+
+The power measurement BKM (Best Known Method) is documente [here](https://docs.google.com/document/d/1in1bcJGhOYbKcHKaJ4h6oPLvmcJtneIb_oQJBbvxnys/edit). This document also contains the block diagram for the power measurement process. This setup will need to be followed for all power submissions.
+
+== Power Measurement Flow
+
+The power measurement flow is indicated in both high level and detailed flow charts [here](https://docs.google.com/presentation/d/1NO2mmDpdyqWIHBn5v7SEdfqkCBI1IEyW3aqr2LyYY24/edit#slide=id.gb17a547c25_0_50). This is part of the power automation tool that is found [here](https://github.com/mlcommons/power). Only these will need to be used if submitting for power. Any other means of power measurement submission will not be allowed. This is because the power measurement flow incorporates within itself a "Dynamic Ranging" method that ensures the power measurements being done are at high precision and accuracy. The flow also ensures that only the performance section of the benchmark is being measured.
+
+== Rules
+
+All rules for performance are applicable for power. In addition:
+
+=== System should be consistent with platform descriptions
+
+The system used for power measurements should match the ones described
+in the platform descriptions as part of the submission.
+
+=== Changes to Loadgen
+
+Added the system timestamp indicator at the start of the performance
+phase and a timestamp where the performance phase ends. This was done in
+v0.5 version of the Inference submissions.
+
+=== System and framework must be available
+
+If you are measuring the performance of a publicly available and widely-used
+system or framework, you must use publicly available and widely-used versions of
+the system or framework.
+
+If you are measuring the performance of an experimental framework or system, you
+must make the system and framework you use available upon demand for
+replication.
+
+=== Power is measured in performance phase of the Benchmark/Scenario
+
+There are multiple phases to a benchmark as listed in the MLPerf
+Inference Rules document. Power measured is evaluated only on the
+performance phase of the benchmark and not in any other phases. To
+determine this exact section, Loadgen has been instrumented to indicate
+the start and stop of the performance phase of the benchmark and all
+power measurements are evaluated within this phase from the power
+logging done as part of the benchmark.
+
+The submission process has to use the software flow and scripts
+developed as part of the MLPerf benchmark Power measurement. The
+infrastructure has been developed by the MLPerf Power working group.
+
+=== Audit process and Benchmark Logging
+
+As part of the submissions and logging, all the logs generated by the
+MLPerf Power SW infrastructure need to be submitted. These include the
+power meter ranging logs and the power measurement logs that are
+generated during the performance runs.
+
+=== Replicability is mandatory
+
+Results that cannot be replicated are not valid results.
+
+=== Power and Performance Reporting and Measurement
+
+Power and performance measurements should be from the same run for a
+given benchmark and scenario. The current script takes care of this by
+default and it cannot and should not be changed. Example: We cannot run
+the same benchmark and scenario 3 times and report the highest
+performance and lowest power among the 3 runs.
+
+== Power Analyzer Support
+
+For version 1.0 , we will only support Yokogawa power analyzers (aka meters).
+
+== Power Analyzer settings
+
+The power analyzer settings will not be set manually, but through the
+software that is part of the MLPerf Power measurement infrastructure.
+
+For v1.0 , the software supports a single meter connected to a node
+through single or multiple channel or configured in 3-phase mode.
+Multiple meter connectivity to a single node (SUT) is not supported in
+this version.
+
+== Power Management
+
+
+The goal of the testing is to mimic real-world usage scenarios as much
+as possible and enable showing the benefits of realistic power
+management, therefore we require:
+
+* Any power management system be qualified for use appropriate for the submission type (e.g., a generally available system must use software/firmware qualified for general availability and shipping with the platform)
+* No benchmark- or benchmarking-specific hacks
+* Any changes in power management behavior must not have manual intervention or have awareness of the benchmark.
+
+== Power Logs
+
+Power logs will need to be submitted. All logs created as part of Power
+measurement will need to be submitted including the power analyzer
+ranging and the performance measurement.
+
+Power Logs are generated by the software running on the Director.
+
+== Loadgen
+
+The flow for power uses the same Loadgen as used for the performance
+runs. No additions are being made. Power flow uses the start and stop
+timestamp given by the loadgen for synchronizing the performance section
+of the benchmark and uses these markers for anchoring the window in
+which power is measured.
+
+== FAQs
+
+Am I required to use the MLPerf Power automation tools?
+
+Yes - for a valid submission. The MLPerf Power automation flow enables in itself a number of checks and balances that ensures the highest quality power measurement possible are being incorporated.
+
