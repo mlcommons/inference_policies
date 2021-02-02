@@ -158,9 +158,15 @@ which power is measured.
 
 == FAQs
 
+Q: Is MLPerf Power measurement accessible to anyone, or is it for member organizations only?
+
+A: The MLPerf Power measurement tools include some proprietary software that is only available to members. Therefore, your organization must be a member of MLCommons, and additionally your organization must sign a EULA.
+
+
 Q: Am I required to use the MLPerf Power automation tools?
 
 A: Yes, you must use the automation tools for any results submitted to MLPerf. The MLPerf Power automation flow enables in itself a number of checks and balances that ensures the highest quality power measurement possible are being incorporated.
+
 
 Q: How can I obtain the MLPerf Power automation tools?
 
