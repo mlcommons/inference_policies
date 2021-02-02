@@ -164,4 +164,4 @@ A: Yes, you must use the automation tools for any results submitted to MLPerf. T
 
 Q: How can I obtain the MLPerf Power automation tools?
 
-A: To access the MLPerf Power automation tools, your company's representative must sign the MLPerf Power EULA (INSERT EULA LINK HERE), and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
+A: To access the MLPerf Power automation tools, your company's representative must sign the [MLPerf Power EULA](https://drive.google.com/file/d/1dRHme1GhFJ6X96PDukKiU5Qk1Ft1yqhF/view?usp=sharing), and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
