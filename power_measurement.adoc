@@ -12,7 +12,7 @@ Points of contact: Sachin Idgunji (sidgunji@mlcommons.org), Arun Tejusve Raghuna
 
 == Preamble
 
-The MLPerf Power rules are an extension of the MLPerf Rules for Inference listed [here](https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc). This document only outlines the deltas between what are the added steps to be considered for power submission along with the original performance submissions.
+The MLPerf Power rules are an extension of the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[MLPerf Inference rules]. This document only outlines the deltas between what are the added steps to be considered for power submission along with the original performance submissions.
 
 == Overview
 
@@ -51,11 +51,11 @@ synchronized with NTP.
 
 == Power Measurement BKM
 
-The power measurement BKM (Best Known Method) is documente [here](https://docs.google.com/document/d/1in1bcJGhOYbKcHKaJ4h6oPLvmcJtneIb_oQJBbvxnys/edit). This document also contains the block diagram for the power measurement process. This setup will need to be followed for all power submissions.
+The power measurement BKM (Best Known Method) is documented https://docs.google.com/document/d/1in1bcJGhOYbKcHKaJ4h6oPLvmcJtneIb_oQJBbvxnys/edit[here]. This document also contains the block diagram for the power measurement process. This setup will need to be followed for all power submissions.
 
 == Power Measurement Flow
 
-The power measurement flow is indicated in both high level and detailed flow charts [here](https://docs.google.com/presentation/d/1NO2mmDpdyqWIHBn5v7SEdfqkCBI1IEyW3aqr2LyYY24/edit#slide=id.gb17a547c25_0_50). This is part of the power automation tool that is found [here](https://github.com/mlcommons/power). Only these will need to be used if submitting for power. Any other means of power measurement submission will not be allowed. This is because the power measurement flow incorporates within itself a "Dynamic Ranging" method that ensures the power measurements being done are at high precision and accuracy. The flow also ensures that only the performance section of the benchmark is being measured.
+The power measurement flow is indicated in both high level and detailed flow charts https://docs.google.com/presentation/d/1NO2mmDpdyqWIHBn5v7SEdfqkCBI1IEyW3aqr2LyYY24/edit#slide=id.gb17a547c25_0_50[here]. This is part of the power automation tool that is found https://github.com/mlcommons/power[here]. Only these will need to be used if submitting for power. Any other means of power measurement submission will not be allowed. This is because the power measurement flow incorporates within itself a "Dynamic Ranging" method that ensures the power measurements being done are at high precision and accuracy. The flow also ensures that only the performance section of the benchmark is being measured.
 
 == Rules
 
@@ -164,4 +164,4 @@ A: Yes, you must use the automation tools for any results submitted to MLPerf. T
 
 Q: How can I obtain the MLPerf Power automation tools?
 
-A: To access the MLPerf Power automation tools, your company's representative must sign the [MLPerf Power EULA](https://drive.google.com/file/d/1dRHme1GhFJ6X96PDukKiU5Qk1Ft1yqhF/view?usp=sharing), and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
+A: To access the MLPerf Power automation tools, your company's representative must sign the https://drive.google.com/file/d/1dRHme1GhFJ6X96PDukKiU5Qk1Ft1yqhF/view?usp=sharing[MLPerf Power EULA], and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
