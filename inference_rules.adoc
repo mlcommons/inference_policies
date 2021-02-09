@@ -675,16 +675,6 @@ Q: For the multi-stream scenario, does the tail-latency constraint apply on a pe
 
 A: It applies on a per-query basis. The latency of a query is the maximum latency of its samples, including any cross-thread communication within the loadgen. If the loadgen has to skip producing for an interval because it couldn't detect that all samples were completed in time, then the query will not be considered meeting the latency constraint. This is fair since the loadgen skipping production will reduce pressure on the SUT and should be reflected negatively in the latency percentiles. The last query is special cased since there isn't a subsequent query to delay. For the last query, the query latency without cross-thread communication is used.
 
-Q: Can I cache the shapes of the queries from the LoadGen and build a lookup
-table of query id and shapes?
-
-A: Yes.
-
-Q: Can I cache the shapes of pre-processed data inputs like the feature
-dimensions in the rnnt model inputs?
-
-A: Yes.
-
 === SSD
 
 Q: Is non-maximal suppression (NMS) timed?
