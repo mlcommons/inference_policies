@@ -695,21 +695,9 @@ Q: In classification and segmentation models (ResNet50, 3DUNet) the final softma
 A: Yes.
 
 === DLRM
-Q: What's the distribution for user-item pairs in DLRM sampls for all scenarios?
-A: In the case of DLRM we have agreed that we should use multiple samples drawn from a distribution, similar to the one shown on Fig. 5: "Queries for personalized recommendation models" in the https://arxiv.org/abs/2001.02772[DeepRecSys] paper.
+Q: What's the distribution for user-item pairs in DLRM samples for all scenarios?
 
-The DLRM MLPerf inference code has an option to aggregate multiple consecutive samples together into a single aggregated sample. The number of samples to be aggregated can be selected using either of the following options
-(i) fixed [`--samples-to-aggregate-fix`]
-(ii) drawn uniformly from interval [`--samples-to-aggregate-min`, `--samples-to-aggregate-max`]
-(iii) drawn from a custom distribution, with its quantile (inverse of CDP) specified in `--samples-to-aggregate-quantile-file=./tools/dist_quantile.txt`.
-
-The benchmark provides a pre-defined quantile distribution in `./tools/dist_quantile.txt` from which the samples will be drawn using the inverse transform algorithm. This algorithm relies on randomly drawn numbers from the interval [0,1) and that depend on the `--numpy-rand-seed`, which specific value will be provided shortly before MLPerf inference submissions.
-
-In order to eliminate the discrepancy between different number generators, the submitters can verify their compatibility by using the default `--numpy-rand-seed` and comparing the trace generated on their system with `./tools/dist_trace_verification.txt` using the following command
-```
-./run_local.sh pytorch dlrm terabyte cpu --count-samples=100 --scenario Offline --max-ind-range=40000000 --samples-to-aggregate-quantile-file=./tools/dist_quantile.txt --max-batchsize=128
-```
-
+A: For all scenarios, the distribution for user-item pairs in DLRM samples is specifed by https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt]. To verify that your sample aggregation trace matches the reference, please follow the steps in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_trace_verification.txt[dist_trace_verification.txt]. Or simply download the reference https://zenodo.org/record/3941795/files/dlrm_trace_of_aggregated_samples.txt?download=1[dlrm_trace_of_aggregated_samples.txt] from Zenodo (MD5:3db90209564316f2506c99cc994ad0b2).
 
 === Audit
 
