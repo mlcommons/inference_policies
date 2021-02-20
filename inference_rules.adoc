@@ -695,9 +695,9 @@ Q: In classification and segmentation models (ResNet50, 3DUNet) the final softma
 A: Yes.
 
 === DLRM
-Q: What's the distribution for user-item pairs in DLRM samples for all scenarios?
+Q: For DLRM, what's the distribution for user-item pairs per sample for all scenarios?
 
-A: For all scenarios, the distribution for user-item pairs in DLRM samples is specifed by https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt]. To verify that your sample aggregation trace matches the reference, please follow the steps in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_trace_verification.txt[dist_trace_verification.txt]. Or simply download the reference https://zenodo.org/record/3941795/files/dlrm_trace_of_aggregated_samples.txt?download=1[dlrm_trace_of_aggregated_samples.txt] from Zenodo (MD5:3db90209564316f2506c99cc994ad0b2).
+A: For all scenarios, the distribution for user-item pairs per sample is specifed by https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt]. To verify that your sample aggregation trace matches the reference, please follow the steps in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_trace_verification.txt[dist_trace_verification.txt]. Or simply download the reference https://zenodo.org/record/3941795/files/dlrm_trace_of_aggregated_samples.txt?download=1[dlrm_trace_of_aggregated_samples.txt] from Zenodo (MD5:3db90209564316f2506c99cc994ad0b2).
 
 === Audit
 
