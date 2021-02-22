@@ -675,6 +675,10 @@ Q: For the multi-stream scenario, does the tail-latency constraint apply on a pe
 
 A: It applies on a per-query basis. The latency of a query is the maximum latency of its samples, including any cross-thread communication within the loadgen. If the loadgen has to skip producing for an interval because it couldn't detect that all samples were completed in time, then the query will not be considered meeting the latency constraint. This is fair since the loadgen skipping production will reduce pressure on the SUT and should be reflected negatively in the latency percentiles. The last query is special cased since there isn't a subsequent query to delay. For the last query, the query latency without cross-thread communication is used.
 
+Q: What can I cache based on the query indices?
+
+A: Query indices are an artifact of using a finite set of samples to represent an infinite set, and would have no counterpart in production scenarios. As such, the system under test should not cache any information associated with query indices.
+
 === SSD
 
 Q: Is non-maximal suppression (NMS) timed?
