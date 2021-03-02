@@ -515,8 +515,7 @@ much much smaller than the non-zero weights it produces.
 Calibration is allowed and must only use the calibration data set provided by
 the benchmark owner. Submitters may choose to use only a subset of the calibration data set.
 
-Additionally, MLPerf may provide a retrained INT8 model when post-training quantization cannot reach
-the desired accuracies in with some models. Model weights and
+Additionally, MLPerf may provide an INT8 reference for some models. Model weights and
 input activations are scaled per tensor, and must preserve the same shape modulo
 padding. Convolution layers are allowed to be in either NCHW or NHWC format.  No
 other retraining is allowed.
