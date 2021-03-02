@@ -515,9 +515,7 @@ much much smaller than the non-zero weights it produces.
 Calibration is allowed and must only use the calibration data set provided by
 the benchmark owner. Submitters may choose to use only a subset of the calibration data set.
 
-Additionally, for image classification using MobileNets-v1 224 and object
-detection using SSD-MobileNets-v1, MLPerf will provide a retrained INT8
-(asymmetric for TFLite and symmetric for pyTorch/ONNX) model. Model weights and
+Additionally, MLPerf may provide an INT8 reference for some models. Model weights and
 input activations are scaled per tensor, and must preserve the same shape modulo
 padding. Convolution layers are allowed to be in either NCHW or NHWC format.  No
 other retraining is allowed.
