@@ -55,7 +55,7 @@ The power measurement BKM (Best Known Method) is documented https://docs.google.
 
 == Power Measurement Flow
 
-The power measurement flow is indicated in both high level and detailed flow charts https://docs.google.com/presentation/d/1NO2mmDpdyqWIHBn5v7SEdfqkCBI1IEyW3aqr2LyYY24/edit#slide=id.gb17a547c25_0_50[here]. This is part of the power automation tool that is found https://github.com/mlcommons/power[here]. Only these will need to be used if submitting for power. Any other means of power measurement submission will not be allowed. This is because the power measurement flow incorporates within itself a "Dynamic Ranging" method that ensures the power measurements being done are at high precision and accuracy. The flow also ensures that only the performance section of the benchmark is being measured.
+The power measurement flow is indicated in both high level and detailed flow charts https://docs.google.com/presentation/d/1NO2mmDpdyqWIHBn5v7SEdfqkCBI1IEyW3aqr2LyYY24/edit#slide=id.gb17a547c25_0_50[here]. This is part of the power automation tool that is found https://github.com/mlcommons/power[here]. Only these will need to be used if submitting for power. Any other means of power measurement submission will not be allowed. This is because the power measurement flow incorporates within itself a "Dynamic Ranging" method that ensures the power measurements being done are at high precision and accuracy. The flow also ensures that only the performance section of the benchmark is being measured. For power measurement, this flow does not apply to disaggregated systems in this version of the submission.
 
 == Rules
 
@@ -65,6 +65,20 @@ All rules for performance are applicable for power. In addition:
 
 The system used for power measurements should match the ones described
 in the platform descriptions as part of the submission.
+
+=== Platform Description for Power submission
+
+A valid submission has to  have all the fields of the platform description
+deemed mandatory to be filled by the submitter.  Power is  measured at the
+system level, and so a detailed description of the system/platform has to
+be provided as has been agreed.  
+
+=== SUT and Power Analyzer to remain unchanged from submission to results
+
+It is required that the SUT and the Power Analyzer remain unchanged
+from the time of the submission until the results are published. This is to
+ensure that in case there are audits, it is easiest to verify and reproduce the results
+from an existing setup.
 
 === Changes to Loadgen
 
