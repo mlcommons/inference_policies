@@ -5,8 +5,8 @@
 
 = MLPerf Inference Power Measurement Rules
 
-Version 0.4
-Updated Jan 22, 2021. This version has been updated, but is not yet final.
+Version 0.5
+Updated Mar 04, 2021.  
 
 Points of contact: Sachin Idgunji (sidgunji@mlcommons.org), Arun Tejusve Raghunath Rajan (tejus@mlcommons.org).
 
