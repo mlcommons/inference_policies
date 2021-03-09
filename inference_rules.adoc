@@ -303,7 +303,7 @@ even. For example, 98.9995% should be recorded as 99.000%.
 
 For performance runs, the LoadGen will select queries uniformly at random (with
 replacement) from a test set. The minimum size of the performance test set for
-each benchmark is listed as 'QSL Size' in the table above. However, the accuracy
+each benchmark is listed as 'QSL Size' in the table above. The minimum performance runtime is 10 minutes. In addition, the accuracy
  test must be run with one copy of the MLPerf specified validation dataset.
 
 ==== Relaxed constraints for the Open division
