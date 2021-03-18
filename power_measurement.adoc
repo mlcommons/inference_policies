@@ -73,6 +73,13 @@ deemed mandatory to be filled by the submitter.  Power is  measured at the
 system level, and so a detailed description of the system/platform has to
 be provided as has been agreed.  
 
+For each submission the Power Management settings for the system to achieve
+the measured performance and power for the submissions must be documented.
+This is needed for reproducibility and verifiability
+
+An example file is here :  https://docs.google.com/document/d/1-j7TWCFBlTGi_EIpS2mQpgQLobtV0ITn2BJCakOgAZ4
+
+
 === SUT and Power Analyzer to remain unchanged from submission to results
 
 It is required that the SUT and the Power Analyzer remain unchanged
