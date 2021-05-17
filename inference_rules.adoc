@@ -117,7 +117,9 @@ The burden is on the submitter to provide sufficient materials to demonstrate th
 
 The submitter shall provide two days of hardware access, at a time mutually agreed with the auditor. The first day will be used to run a pre-agreed list of tests, and to verify other system parameters if needed. The second day will allow the auditor to run additional tests based on outcome of the first day.
 
-The audit will ideally conclude before publication, but in any case, no more than 30 days after publication. The auditor shall submit to the review committee a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant.
+The auditor shall write a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant.
+
+The auditor will submit their report to the audited submitter no more than thirty days after executing all relevant NDAs. The submitter will flag any necessary redactions due to NDAs to the auditor within four days. Subsequently, the auditor will submit the finalized report to the review committee within three days. 
 
 Submissions that fail the audit at a material level will be moved to open or removed, by review committee decision.
 
