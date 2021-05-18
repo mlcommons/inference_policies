@@ -119,7 +119,9 @@ The submitter shall provide two days of hardware access, at a time mutually agre
 
 The auditor shall write a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant.
 
-The auditor will submit their report to the audited submitter no more than thirty days after executing all relevant NDAs. The submitter will flag any necessary redactions due to NDAs to the auditor within four days. Subsequently, the auditor will submit the finalized report to the review committee within three days. 
+The submitter will provide the auditor an NDA within seven days of the auditor's selection. The auditor and submitter will negotiate and execute the NDA within 14 days of the auditor's selection.
+
+The auditor will submit their report to the submitter no more than thirty days after executing all relevant NDAs. The submitter will make any necessary redactions due to NDAs and forward the finalized report to the review committee within seven days. The auditor will confirm the accuracy of the forwarded report.
 
 Submissions that fail the audit at a material level will be moved to open or removed, by review committee decision.
 
