@@ -73,12 +73,16 @@ deemed mandatory to be filled by the submitter.  Power is  measured at the
 system level, and so a detailed description of the system/platform has to
 be provided as has been agreed.  
 
+Any numerical value of Power referenced in the system/platform description should be stated as a 
+constraint to differentiate it from measured system power. It can be added to the notes section
+of the platform description.
+
 For each submission the Power Management settings for the system to achieve
 the measured performance and power for the submissions must be documented.
 This is needed for reproducibility and verifiability
 
 An example file is here :  https://docs.google.com/document/d/1-j7TWCFBlTGi_EIpS2mQpgQLobtV0ITn2BJCakOgAZ4
-
+The file needs to be uploaded with the code drop needed for reproducing the results.
 
 === SUT and Power Analyzer to remain unchanged from submission to results
 
@@ -192,3 +196,8 @@ A: Yes, you must use the automation tools for any results submitted to MLPerf. T
 Q: How can I obtain the MLPerf Power automation tools?
 
 A: To access the MLPerf Power automation tools, your company's representative must sign the https://drive.google.com/file/d/1dRHme1GhFJ6X96PDukKiU5Qk1Ft1yqhF/view?usp=sharing[MLPerf Power EULA], and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
+
+Q: What are the constraints on system configuration for power measurement?
+A: Any reproducible configuration that runs the benchmark at the reported performance and power is valid. This is described in the Rules "Platform description for Submission"
+
+
