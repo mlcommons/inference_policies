@@ -135,7 +135,6 @@ described in the table below.
 |===
 |Scenario |Query Generation |Duration |Samples/query |Latency Constraint |Tail Latency | Performance Metric
 |Single stream |LoadGen sends next query as soon as SUT completes the previous query | 1024 queries and 600 seconds |1 |None |90% | 90%-ile measured latency
-|Multiple stream |LoadGen sends a new query every _latency constraint_ if the SUT has completed the prior query, otherwise the new query is dropped and is counted as one overtime query | 270,336 queries and 600 seconds |Variable, see metric |Benchmark specific |99% | Maximum number of inferences per query supported
 |Server |LoadGen sends new queries to the SUT according to a Poisson distribution |270,336 queries and 600 seconds |1 |Benchmark specific |99% | Maximum Poisson throughput parameter supported
 |Offline |LoadGen sends all samples to the SUT at start in a single query | 1 query and 600 seconds | At least 24,576 |None |N/A | Measured throughput
 |===
@@ -158,8 +157,6 @@ A submission may comprise any combination of benchmark and scenario results.
 The number of runs required for each scenario is defined below:
 
 * Single Stream: 1
-
-* Multi-Stream: 1
 
 * Server: 1
 
@@ -259,46 +256,38 @@ Each Datacenter benchmark *requires* the following scenarios:
 The Edge suite includes the following benchmarks:
 
 |===
-|Area |Task |Model |Dataset |QSL Size |Quality |Multi-stream latency constraint
-|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%) | 50 ms
-|Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP) | 66 ms
-|Vision |Object detection (small) |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP) | 50 ms
-|Vision |Medical image segmentation |3D UNET |BraTS 2019 (224x224x160) | 16 | 99% of FP32 and 99.9% of FP32 (0.85300 mean DICE score) | N/A
-|Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds)| 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | N/A
-|Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 (f1_score=90.874%) | N/A
+|Area |Task |Model |Dataset |QSL Size |Quality
+|Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%)
+|Vision |Object detection (large) |SSD-ResNet34 |COCO (1200x1200) | 64 | 99% of FP32 (0.20 mAP)
+|Vision |Object detection (small) |SSD-MobileNets-v1 |COCO (300x300) | 256 | 99% of FP32 (0.22 mAP)
+|Vision |Medical image segmentation |3D UNET |BraTS 2019 (224x224x160) | 16 | 99% of FP32 and 99.9% of FP32 (0.85300 mean DICE score)
+|Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds)| 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%)
+|Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 (f1_score=90.874%)
 |===
 
 Each Edge benchmark *requires* the following scenarios, and sometimes permit an optional scenario:
 
 |===
-|Area |Task |Required Scenarios |Optional Scenarios
-|Vision |Image classification |Single Stream, Offline |Multi-Stream
-|Vision |Object detection (large) |Single Stream, Offline |Multi-Stream
-|Vision |Object detection (small) |Single Stream, Offline |Multi-Stream
-|Vision |Medical image segmentation |Single Stream, Offline | N/A
-|Speech |Speech-to-text |Single Stream, Offline | N/A
-|Language |Language processing |Single Stream, Offline | N/A
+|Area |Task |Required Scenarios
+|Vision |Image classification |Single Stream, Offline
+|Vision |Object detection (large) |Single Stream, Offline
+|Vision |Object detection (small) |Single Stream, Offline
+|Vision |Medical image segmentation |Single Stream, Offline
+|Speech |Speech-to-text |Single Stream, Offline
+|Language |Language processing |Single Stream, Offline
 |===
 
 For Edge submitters' convenience, they are allowed to obtain only a Single Stream result
-and have Offline and optionally Multi-Stream results inferred according to the following rules:
+and have Offline results inferred according to the following rules:
 
 - The corresponding Offline result is 1000 divided by the Mean latency in
   milliseconds.  For example, a Single Stream mean latency of 20 milliseconds
 would imply an Offline result of 50 samples per second. The inferred Offline
 accuracy will be the same as the Single Stream accuracy.
 
-- The corresponding Multi-Stream result is the Latency Constraint divided by
-  the Single Stream result (taken at the 99th percentile) and rounded down.
-For example, a Single Stream result of 20 milliseconds per sample would imply a
-Multi-Stream result of 2 streams under the Latency Constraint of 50
-milliseconds and 3 streams under the Latency Constraint of 66 milliseconds. The
-inferred Multi-Stream accuracy will be the same as the Single Stream accuracy.
-
 To simplify automated processing of inferred results, the submitter should
 create copies of the correponding Single Stream directories under `results/`
-and `measurements/`, calling them `offline` for the Offline scenario and, if to
-be submitted, `multistream` for the Multi-Stream scenario.
+and `measurements/`, calling them `offline` for the Offline scenario.
 
 Accuracy results must be reported to five significant figures with round to
 even. For example, 98.9995% should be recorded as 99.000%.
@@ -342,14 +331,6 @@ query to the SUT, to the time it receives a reply.
 * Single-stream: LoadGen measures average latency using a single test run. For
 the test run, LoadGen sends an initial query then continually sends the next
 query as soon as the previous query is processed.
-
-* Multi-stream: LoadGen determines the maximum supported number of streams using
-multiple test runs. Each test run evaluates a specific integer number of
-streams. For a specific number of streams, queries are generated with a number
-of samples per query equal to the number of streams tested. All samples in a
-query will be allocated contiguously in memory. LoadGen will use a binary search
-to find a candidate value. If one run fails, it will reduce the number of streams by one and then
-try again.
 
 * Server: LoadGen determines the system throughput using multiple test
 runs. Each test run evaluates a specific throughput value in queries-per-second
@@ -492,7 +473,7 @@ run result.
 === Test Data Traversal Order
 
 Test data is determined by the LoadGen. For scenarios where processing multiple
-samples can occur (i.e., server, multi-stream, and offline), any ordering is
+samples can occur (i.e., and offline), any ordering is
 allowed subject to latency requirements.
 
 == Model
@@ -641,7 +622,7 @@ division must match what the reference is doing.
 
 Q: Can I submit a single benchmark (e.g., object detection) in a suite (e.g., data center), or do I have to submit all benchmarks?
 
-A: You can submit any of the benchmarks that are interesting, from just one benchmark to the entire set of benchmarks. Keep in mind that submitting one benchmark typically requires running several scenarios as described in Section 4. For example, submitting object detection in the data center suite requires the server and offline scenario and submitting object detection in the edge suite requires the single stream and offline scenarios and optionally the multi-stream scenario. 
+A: You can submit any of the benchmarks that are interesting, from just one benchmark to the entire set of benchmarks. Keep in mind that submitting one benchmark typically requires running several scenarios as described in Section 4. For example, submitting object detection in the data center suite requires the server and offline scenario and submitting object detection in the edge suite requires the single stream and offline scenarios. 
 
 Q: Why does a run require so many individual inference queries?
 
@@ -674,10 +655,6 @@ A: Yes, provided the image data isn't eventually cached on the device.
 Q: For the server scenario, there are 'Scheduled samples per second', 'Completed samples per second', and the user input target QPS. Which one is reported as the final metric?
 
 A: Scheduled samples per second
-
-Q: For the multi-stream scenario, does the tail-latency constraint apply on a per-query basis or on a per-sample basis?
-
-A: It applies on a per-query basis. The latency of a query is the maximum latency of its samples, including any cross-thread communication within the loadgen. If the loadgen has to skip producing for an interval because it couldn't detect that all samples were completed in time, then the query will not be considered meeting the latency constraint. This is fair since the loadgen skipping production will reduce pressure on the SUT and should be reflected negatively in the latency percentiles. The last query is special cased since there isn't a subsequent query to delay. For the last query, the query latency without cross-thread communication is used.
 
 Q: What can I cache based on the query indices?
 
