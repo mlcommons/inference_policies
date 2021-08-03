@@ -64,7 +64,15 @@ All rules for performance are applicable for power. In addition:
 === System should be consistent with platform descriptions
 
 The system used for power measurements should match the ones described
-in the platform descriptions as part of the submission.
+in the platform descriptions as part of the submission. Power needs to be 
+measured for the Inference submission system(s) that includes all components 
+that are sensitized by loadgen executing including the processor on which loadgen runs.
+
+=== Power Delivery for Measurements
+
+MLPerf Power for Inference measures wall AC power consumed. The expectation is that the power delivery to the unit of computation  (node) 
+must  not have any battery  or alternate power storage in conjunction to the AC power , 
+before the power is provided to the PSUs of the system.
 
 === Platform Description for Power submission
 
