@@ -5,8 +5,8 @@
 
 = MLPerf Inference Power Measurement Rules
 
-Version 0.5
-Updated Mar 04, 2021.  
+Version 1.1
+Updated Aug 06, 2021.  
 
 Points of contact: Sachin Idgunji (sidgunji@mlcommons.org), Arun Tejusve Raghunath Rajan (tejus@mlcommons.org).
 
@@ -55,7 +55,7 @@ The power measurement BKM (Best Known Method) is documented https://docs.google.
 
 == Power Measurement Flow
 
-The power measurement flow is indicated in both high level and detailed flow charts https://docs.google.com/presentation/d/1NO2mmDpdyqWIHBn5v7SEdfqkCBI1IEyW3aqr2LyYY24/edit#slide=id.gb17a547c25_0_50[here]. This is part of the power automation tool that is found https://github.com/mlcommons/power[here]. Only these will need to be used if submitting for power. Any other means of power measurement submission will not be allowed. This is because the power measurement flow incorporates within itself a "Dynamic Ranging" method that ensures the power measurements being done are at high precision and accuracy. The flow also ensures that only the performance section of the benchmark is being measured. For power measurement, this flow does not apply to disaggregated systems in this version of the submission.
+The power measurement flow detailed below : https://docs.google.com/presentation/d/1NO2mmDpdyqWIHBn5v7SEdfqkCBI1IEyW3aqr2LyYY24/edit#slide=id.gb17a547c25_0_50[here]. This is part of the power automation tool that is found https://github.com/mlcommons/power[here]. Only these will need to be used if submitting for power. Any other means of power measurement submission will not be allowed. This is because the power measurement flow incorporates within itself a "Dynamic Ranging" method that ensures the power measurements being done are at high precision and accuracy. The flow also ensures that only the performance section of the benchmark is being measured. For power measurement, this flow does not apply to disaggregated systems in this version of the submission.
 
 == Rules
 
@@ -99,7 +99,7 @@ from an existing setup.
 
 Added the system timestamp indicator at the start of the performance
 phase and a timestamp where the performance phase ends. This was done in
-v0.5 version of the Inference submissions.
+v0.5 version of the Inference submissions and remains a valid change for the current submission.
 
 === System and framework must be available
 
@@ -146,14 +146,14 @@ performance and lowest power among the 3 runs.
 
 == Power Analyzer Support
 
-For version 1.0 , we will only support Yokogawa power analyzers (aka meters).
+For version 1.0 and version 1.1 , we will only support Yokogawa power analyzers (aka meters).
 
 == Power Analyzer settings
 
 The power analyzer settings will not be set manually, but through the
 software that is part of the MLPerf Power measurement infrastructure.
 
-For v1.0 , the software supports a single meter connected to a node
+For v1.0 and v1.1 , the software supports a single meter connected to a node
 through single or multiple channel or configured in 3-phase mode.
 Multiple meter connectivity to a single node (SUT) is not supported in
 this version.
@@ -199,4 +199,5 @@ A: Yes, you must use the automation tools for any results submitted to MLPerf. T
 
 Q: How can I obtain the MLPerf Power automation tools?
 
-A: To access the MLPerf Power automation tools, your company's representative must sign the https://drive.google.com/file/d/1dRHme1GhFJ6X96PDukKiU5Qk1Ft1yqhF/view?usp=sharing[MLPerf Power EULA], and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
+A: To access the MLPerf Power automation tools, your company's representative must sign thehttps://drive.google.com/file/d/1u9MdO4v5-uvbaJoElQoAwGb5_suMTZyH/view[MLPerf Power EULA], and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
+
