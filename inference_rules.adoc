@@ -125,6 +125,7 @@ The auditor will submit their report to the submitter no more than thirty days a
 
 Submissions that fail the audit at a material level will be moved to open or removed, by review committee decision.
 
+MLCommons shall retain a library of past audit reports and send copies to MLCommons members, auditors, and potential auditors by request.
 
 == Scenarios
 
