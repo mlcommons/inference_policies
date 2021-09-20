@@ -185,6 +185,25 @@ timestamp given by the loadgen for synchronizing the performance section
 of the benchmark and uses these markers for anchoring the window in
 which power is measured.
 
+== Power/Energy Performance Metrics
+
+For each inference scenario there are one or more corresponding
+power or energy performance metrics. The correspondence is as
+follows:
+
+|===
+|Scenario|Performance Metric|Normalized Performance Metric
+|Single Stream|NA|Queries per Joule
+|Server|Watts|Queries per Joule
+|Offline|Watts|Samples per Joule
+|===
+
+For each scenario, the normalized performance metric is the
+primary performance metric divided by system power, simplifying
+Watt seconds to Joules wherever possible. For the purposes of the
+MLPerf Results Guidelines, the normalized performance metrics are
+primary metrics.
+
 == FAQs
 
 Q: Is MLPerf Power measurement accessible to anyone, or is it for member organizations only?
