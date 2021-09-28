@@ -192,7 +192,7 @@ power or energy performance metrics. The correspondence is as
 follows:
 
 |===
-|Scenario|Performance Metric|Normalized Performance Metric
+|Scenario|Metric|Normalized Metric
 |Single Stream|NA|Queries per Joule
 |Server|Watts|Queries per Joule
 |Offline|Watts|Samples per Joule
