@@ -228,8 +228,18 @@ time.
 
 ==== Constraints for the Closed division
 
-There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM. The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
+There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The minimum requirements for a datacenter system are defined below:
 
+===== Minimum requirements of a datacenter system
+====== Memories
+A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM.
+
+====== Networking
+Since the constraints for a Closed division datacenter submission (described below) require both offline and server scenario submissions, a datacenter system must have at least as much networking ingress bandwidth to the system as is required to sustain its Server scenario performance for all its submissions.  This can be in the form of integrated networking built into the accelerator(s) themselves or in the form of dedicated NICs and must be described in the system JSON as mentioned in the general submission rules (https://github.com/mlcommons/policies/blob/master/submission_rules.adoc).  All necessary networking as mentioned here must be populated if power is measured along with performance. 
+Additionally, systems running with start_from_device enabled should have adequate bandwidth between the networking and the accelerator. 
+
+
+The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
 The Datacenter suite includes the following benchmarks:
 
 |===
