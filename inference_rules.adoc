@@ -231,12 +231,11 @@ time.
 There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The minimum requirements for a datacenter system are defined below:
 
 ===== Minimum requirements of a datacenter system
-====== Memories
+====== ECC
 A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM.
 
 ====== Networking
-Since the constraints for a Closed division datacenter submission (described below) require both offline and server scenario submissions, a datacenter system must have at least as much networking ingress bandwidth to the system as is required to sustain its Server scenario performance for all its submissions.  This can be in the form of integrated networking built into the accelerator(s) themselves or in the form of dedicated NICs and must be described in the system JSON as mentioned in the general submission rules (https://github.com/mlcommons/policies/blob/master/submission_rules.adoc).  All necessary networking as mentioned here must be populated if power is measured along with performance. 
-Additionally, systems running with start_from_device enabled should have adequate bandwidth between the networking and the accelerator. 
+A datacenter system must be equipped with all the necessary networking required by the system architecture described in the Section 5.1: LoadGen Operation.  The details of the networking components must be described in the appropriate field of the System JSON (https://github.com/mlcommons/policies/blob/master/submission_rules.adoc).  All necessary networking must be populated if power is measured along with performance. 
 
 
 The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
@@ -382,10 +381,9 @@ The execution of LoadGen is restricted as follows:
   Similarly, the response provided to Loadgen must be stored in the DRAM that most faithfully simulates transfer 
   to the most logical destination, which is a CPU process unless otherwise specified for the benchmark.
 
-  Submitters seeking to use anything other than the DRAM attached to the processor on which loadgen is running must 
-  seek prior approval, and must provide with their submission sufficient details system architecture and software to  
-  show how the I/O bandwidth utilized by each benchmark/scenario combination can be transferred between that memory and
-  the network or I/O device.
+  Submitters must provide with their submission sufficient details of the system architecture and software to  
+  show how the I/O bandwidth utilized by each benchmark/scenario combination can be transferred between the memory where the trace is stored and
+  the network or I/O device.  All components mentioned in the system architecture description must be populated during the run. 
 
 * Caching values derived from the shapes of input tensors is allowed. Caching of any other queries, query parameters, or intermediate results is
   prohibited. In particular, caching values derived from activations is prohibited.
