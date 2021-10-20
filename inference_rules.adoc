@@ -138,6 +138,7 @@ described in the table below.
 |Single stream |LoadGen sends next query as soon as SUT completes the previous query | 1024 queries and 600 seconds |1 |None |90% | 90%-ile measured latency
 |Server |LoadGen sends new queries to the SUT according to a Poisson distribution |270,336 queries and 600 seconds |1 |Benchmark specific |99% | Maximum Poisson throughput parameter supported
 |Offline |LoadGen sends all samples to the SUT at start in a single query | 1 query and 600 seconds | At least 24,576 |None |N/A | Measured throughput
+|Multistream | Loadgen sends next query, containing 8 samples, as soon as SUT completes the previous query | 270,336 queries and 600 seconds | None | 99% | 99%-ile measured latency|
 |===
 
 The number of queries is selected to ensure sufficient statistical confidence in
@@ -162,6 +163,8 @@ The number of runs required for each scenario is defined below:
 * Server: 1
 
 * Offline: 1
+
+* Multistream: 1
 
 Each sample has the following definition:
 
@@ -271,23 +274,33 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 |===
 |Area |Task |Required Scenarios
 |Vision |Image classification |Single Stream, Offline
-|Vision |Object detection (large) |Single Stream, Offline
-|Vision |Object detection (small) |Single Stream, Offline
+|Vision |Object detection (large) |Single Stream, Multistream, Offline
+|Vision |Object detection (small) |Single Stream, Multistream, Offline
 |Vision |Medical image segmentation |Single Stream, Offline
 |Speech |Speech-to-text |Single Stream, Offline
 |Language |Language processing |Single Stream, Offline
 |===
 
-For Edge submitters' convenience, they are allowed to obtain only a Single Stream result
-and have Offline results inferred according to the following rules:
 
-- The corresponding Offline result is 1000 divided by the Mean latency in
-  milliseconds.  For example, a Single Stream mean latency of 20 milliseconds
-would imply an Offline result of 50 samples per second. The inferred Offline
-accuracy will be the same as the Single Stream accuracy.
+Edge submitters are allowed to infer a multistream result from single stream, and
+an offline result from either a single stream result or a measured multistream result, 
+according to the following rules:
+
+- a multistream result inferred from a single stream result is 8 times the 99th percentile latency
+reported by loadgen. For example, if the single stream 99%th percentile latency is 25ms, the inferred multistream result is 200ms.
+
+- an offline result inferred from a multistream result is 8000 divided by the mean latency in milliseconds. For example,
+if the multistream result is 200ms, the inferred offline result is 40 img/s. The inferred accuracy will be the same as
+multi-stream accuracy.
+
+- an offline result inferred from a multistream result is 1000 divided by the mean latency in milliseconds. For example,
+if the multistream result is 25ms, the inferred offline result is 40 img/s. The inferred accuracy will be the same as
+multi-stream accuracy.
+
+The accuracy and power of an inferred result will be the same as the result from which it was inferred.
 
 To simplify automated processing of inferred results, the submitter should
-create copies of the correponding Single Stream directories under `results/`
+create copies of the corresponding Single Stream directories under `results/`
 and `measurements/`, calling them `offline` for the Offline scenario.
 
 Accuracy results must be reported to five significant figures with round to
@@ -341,6 +354,10 @@ value. If a run fails, it will reduce the value by a small delta then try again.
 
 * Offline: LoadGen measures throughput using a single test run. For the test
 run, LoadGen sends all samples at once in a single query.
+
+* Multistream: LoadGen measures 99th percentil latency using a single test run. For
+the test run, LoadGen sends an initial query then continually sends the next
+query as soon as the previous query is processed.
 
 The run procedure is as follows:
 
