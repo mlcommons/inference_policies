@@ -273,7 +273,7 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 
 |===
 |Area |Task |Required Scenarios
-|Vision |Image classification |Single Stream, Offline
+|Vision |Image classification |Single Stream, Multistream, Offline
 |Vision |Object detection (large) |Single Stream, Multistream, Offline
 |Vision |Object detection (small) |Single Stream, Multistream, Offline
 |Vision |Medical image segmentation |Single Stream, Offline
