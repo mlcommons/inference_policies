@@ -300,8 +300,8 @@ multi-stream accuracy.
 The accuracy and power of an inferred result will be the same as the result from which it was inferred.
 
 To simplify automated processing of inferred results, the submitter should
-create copies of the corresponding Single Stream directories under `results/`
-and `measurements/`, calling them `offline` for the Offline scenario.
+create copies of the directories for the inferred results under `results/`
+and `measurements/`, named according to the inferred result (either `offline` or `multistream`).
 
 Accuracy results must be reported to five significant figures with round to
 even. For example, 98.9995% should be recorded as 99.000%.
