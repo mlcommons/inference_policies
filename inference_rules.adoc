@@ -340,7 +340,7 @@ submissions. The LoadGen is responsible for:
 Latency is defined as the time from when the LoadGen was scheduled to pass a
 query to the SUT, to the time it receives a reply.
 
-* Single-stream: LoadGen measures average latency using a single test run. For
+* Single Stream: LoadGen measures 90th percentile latency using a single test run. For
 the test run, LoadGen sends an initial query then continually sends the next
 query as soon as the previous query is processed.
 
@@ -353,7 +353,7 @@ value. If a run fails, it will reduce the value by a small delta then try again.
 * Offline: LoadGen measures throughput using a single test run. For the test
 run, LoadGen sends all samples at once in a single query.
 
-* Multistream: LoadGen measures 99th percentil latency using a single test run. For
+* Multistream: LoadGen measures 99th percentile latency using a single test run. For
 the test run, LoadGen sends an initial query then continually sends the next
 query as soon as the previous query is processed.
 
