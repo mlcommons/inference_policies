@@ -293,7 +293,7 @@ reported by loadgen. For example, if the single stream 99%th percentile latency 
 if the multistream result is 200ms, the inferred offline result is 40 img/s. 
 
 - an offline result inferred from a single stream result is 1000 divided by the mean latency in milliseconds. For example,
-if the multistream result is 25ms, the inferred offline result is 40 img/s. 
+if the single stream result is 25ms, the inferred offline result is 40 img/s. 
 
 The accuracy and power of an inferred result will be the same as the result from which it was inferred.
 
