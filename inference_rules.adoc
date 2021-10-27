@@ -295,7 +295,7 @@ if the multistream result is 200ms, the inferred offline result is 40 img/s.
 - an offline result inferred from a single stream result is 1000 divided by the mean latency in milliseconds. For example,
 if the single stream result is 25ms, the inferred offline result is 40 img/s. 
 
-The accuracy and power of an inferred result will be the same as the result from which it was inferred.
+The accuracy of an inferred result will be the same as the result from which it was inferred. When inferring a metric for the power table, the measured power used to calculate the metric is the same as for the base result
 
 To simplify automated processing of inferred results, the submitter should
 create copies of the directories for the inferred results under `results/`
