@@ -1,0 +1,44 @@
+:toc:
+:toclevels: 4
+
+:sectnums:
+
+= MLPerf Model Ownership Guidelines
+
+The owner of a benchmark is the custodian of the reference code for that benchmark. The benchmark owner is also the gatekeeper for all changes to the reference by others, and for all model implementation contributions. 
+
+In the even that an owner is no longer able to maintain ownership, they should make a good faith effort to find a replacement owner.
+
+== Models
+
+Owners are expected to provide primary reference models in at least TensorFlow and PyTorch. Model weights should be in a form that allows submitters maximum freedom in model export or creating an in-framework submission (for example, PyTorch models should not be JIT'd.) Models should be uploaded on Zenodo, accompanied by open source retraining scripts if the model was trained by the owner, or provenance information otherwise.
+
+== Dataset
+
+Owners must provide instructions for how submitters obtain the dataset. The responsibility of obtaining the dataset falls to each submitter.
+
+== Integration
+
+Owners are also responsible for integrating the reference models into loadgen. The integration should include:
+
+* a preprocessing script to convert the dataset to a form suitable for QSL import
+* an accuracy script to postprocess the loadgen output.
+
+== Additional Model Versions
+
+Ideally the owner would provide the following additional versions of the model:
+
+* a quantized implementation according to MLPerf’s lowest-common-denominator rules (symmetric with per-tensor quantization.)
+* An ONNX model.
+
+Where third-party versions of model are contributed (e.g. with an alternate quantization scheme), the owner is responsible for ensuring their integration into loadgen (typically by the contributor.)
+
+== Schedule
+During development, the owner should provide the following milestones:
+
+* model definition (dataset chosen, model chosen)
+* model availability (PyTorch & TF models exist on zenodo)
+* model integration into loadgen
+* model freeze
+
+Owners should expect 4-8 eng-weeks for model development and initial integration, depending on the complexity of the model, then a few days per release of MLPerf to adapt to any required changes in loadgen or rules.
