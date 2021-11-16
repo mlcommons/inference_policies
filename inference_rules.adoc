@@ -382,7 +382,7 @@ The execution of LoadGen is restricted as follows:
   to the most logical destination, which is a CPU process unless otherwise specified for the benchmark. 
   Submitters must provide with their submission sufficient details of the system architecture and software to  
   show how the I/O bandwidth utilized by each benchmark/scenario combination can be transferred between the memory where the trace is stored and
-  the network or I/O device. Minimum bandwidths for each benchmark can be found in <<appendix-bw>>. All components mentioned in the system architecture description must be populated during the run. 
+  the network or I/O device. Minimum bandwidths for each benchmark can be found in <<appendix-bw>>. From 2.1, all components mentioned in the system architecture must be present in the system during the run. In 2.0 it is sufficient for the system architecture description to demonstrate that the system could be populated with additional NICs, and that their addition would provide sufficient bandwidth to be delivered to the accelerator. 
 
 * Caching values derived from the shapes of input tensors is allowed. Caching of any other queries, query parameters, or intermediate results is
   prohibited. In particular, caching values derived from activations is prohibited.
