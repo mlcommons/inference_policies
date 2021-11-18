@@ -382,7 +382,7 @@ The execution of LoadGen is restricted as follows:
   to the most logical destination, which is a CPU process unless otherwise specified for the benchmark. 
   Submitters must provide with their submission sufficient details of the system architecture and software to  
   show how the I/O bandwidth utilized by each benchmark/scenario combination can be transferred between the memory where the trace is stored and
-  the network or I/O device. Minimum bandwidths for each benchmark can be found in <<appendix-bw>>. From 2.1, all components mentioned in the system architecture must be present in the system during the run. In 2.0 it is sufficient for the system architecture description to demonstrate that the system could be populated with additional NICs, and that their addition would provide sufficient bandwidth to be delivered to the accelerator. 
+  the network or I/O device. Minimum bandwidths for each benchmark can be found in <<appendix-bw>>. From 2.1, all components mentioned in the system architecture must be present in the system during the run. In 2.0 it is sufficient for the system architecture description to demonstrate that the system could be populated with additional NICs, and that their addition would provide sufficient bandwidth to be delivered to and from the accelerator. 
 
 * Caching values derived from the shapes of input tensors is allowed. Caching of any other queries, query parameters, or intermediate results is
   prohibited. In particular, caching values derived from activations is prohibited.
@@ -791,15 +791,32 @@ latency. The other scenario may continue to use lower samples sizes.
 [appendix]
 == Datacenter Bandwidth Requirements
 
+Datacenter systems must satisfy both the ingress and egress bandwidth requirements for each benchmark.
+
+=== Ingress Bandwidth
 Datacenter systems must provide at least the following bandwidths from the network or I/O device to the location where the trace is stored (e.g. DRAM). The minimum bandwidth is a function of the throughput achieved by the SUT and the input data types. The formulas below assume that the inputs are not pre-processed in any way (e.g. padded). If the inputs are pre-processed, and pre-processing affects the input size, submitters must adjust the formulas below accordingly.
 
 |===
 |Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
 |Vision |Resnet50-v1.5 |ImageNet (224x224) | __C*H*W*dtype_size__ | __3*224*224*dtype_size__ | __throughput*150528*dtype_size
 __|Vision |SSD-ResNet34 |COCO (1200x1200) | __C*H*W*dtype_size__ | __3*1200*1200*dtype_size__ | __throughput*4320000*dtype_size__
-|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
+|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | __max_audio_duration*num_samples_per_sec*dtype_size__ | __15*44100*dtype_size__ | __throughput*661500*dtype_size__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | __num_inputs*max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
 |Commerce |DLRM | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRM sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
+|===
+
+=== Egress Bandwidth
+
+Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet, the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
+
+|===
+|Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
+|Vision |Resnet50-v1.5 |ImageNet (224x224) | negligible | negligible | __> 0
+__|Vision |SSD-ResNet34 |COCO (1200x1200) | negligible | negligible | __> 0__
+|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
+|Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | negligible | negligible | __> 0__
+|Language |BERT |SQuAD v1.1 (max_seq_len=384) | negligible | negligible | __> 0__
+|Commerce |DLRM | 1TB Click Logs | negligible | negligible | __> 0__
 |===
 
