@@ -382,7 +382,11 @@ The execution of LoadGen is restricted as follows:
   to the most logical destination, which is a CPU process unless otherwise specified for the benchmark. 
   Submitters must provide with their submission sufficient details of the system architecture and software to  
   show how the I/O bandwidth utilized by each benchmark/scenario combination can be transferred between the memory where the trace is stored and
-  the network or I/O device. Minimum bandwidths for each benchmark can be found in <<appendix-bw>>. From 2.1, all components mentioned in the system architecture must be present in the system during the run. In 2.0 it is sufficient for the system architecture description to demonstrate that the system could be populated with additional NICs, and that their addition would provide sufficient bandwidth to be delivered to and from the accelerator. 
+  the network or I/O device. Minimum bandwidths for each benchmark can be found in <<appendix-bw>>. From 2.1, all components mentioned in the system architecture must be present in the system during the run. In 2.0 it is sufficient for the system architecture description to demonstrate that the system could be populated with additional NICs, and that their addition would provide sufficient bandwidth to be delivered to and from the accelerator. A system architecture description must be provided along with the submission.  This write-up must include:
+  
+** Bandwidth of each NIC and total number of NIC(s)
+** Description of the data path from the NIC(s) to the accelerator(s)
+** Specifications or measurements indicating that the path from the NIC to the memory in which loadgen data resides can sustain the required bandwidth
 
 * Caching values derived from the shapes of input tensors is allowed. Caching of any other queries, query parameters, or intermediate results is
   prohibited. In particular, caching values derived from activations is prohibited.
@@ -791,7 +795,7 @@ latency. The other scenario may continue to use lower samples sizes.
 [appendix]
 == Datacenter Bandwidth Requirements
 
-Datacenter systems must satisfy both the ingress and egress bandwidth requirements for each benchmark.
+Datacenter systems must satisfy both the ingress and egress bandwidth requirements for each benchmark. 
 
 === Ingress Bandwidth
 Datacenter systems must provide at least the following bandwidths from the network or I/O device to the location where the trace is stored (e.g. DRAM). The minimum bandwidth is a function of the throughput achieved by the SUT and the input data types. The formulas below assume that the inputs are not pre-processed in any way (e.g. padded). If the inputs are pre-processed, and pre-processing affects the input size, submitters must adjust the formulas below accordingly.
