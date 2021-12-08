@@ -5,20 +5,18 @@
 
 = MLPerf Inference Power Measurement Rules
 
-Version 1.1
-Updated Aug 06, 2021.  
+Version 2.0
+Updated Dec 08, 2021.
 
 Points of contact: Sachin Idgunji (sidgunji@mlcommons.org), Arun Tejusve Raghunath Rajan (tejus@mlcommons.org).
 
 == Preamble
 
-The MLPerf Power rules are an extension of the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[MLPerf Inference rules]. This document only outlines the deltas between what are the added steps to be considered for power submission along with the original performance submissions.
+This document describes how to measure Power for benchmarks in the https://github.com/mlcommons/inference[MLPerf Inference] suite.
+It only outlines the additional steps to be considered for Power submissions compared with original Performance submissions.
+Please see the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[MLPerf Inference rules] that cover the submission, review, and publication process for MLPerf Inference benchmarks in detail.
 
 == Overview
-
-This document describes how to measure power for the benchmarks in the MLPerf Inference Suite.
-
-There are separate rules for the submission, review, and publication process for all MLPerf benchmarks in the MLPerf Inference rules referenced above.
 
 The MLPerf name and logo are trademarks. In order to refer to a result using the MLPerf name, the result must conform to the letter and spirit of the rules specified in this document. The MLPerf organization reserves the right to solely determine if a use of its name or logo is acceptable.
 
