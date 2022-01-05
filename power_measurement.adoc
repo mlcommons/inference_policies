@@ -19,6 +19,8 @@ This document describes how to measure Power for benchmarks in the https://githu
 It only outlines the additional steps to be considered for Power submissions compared with original Performance submissions.
 Please see the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[MLPerf Inference rules] that cover the submission, review, and publication process for MLPerf Inference benchmarks in detail.
 
+All submitters must use the software and scripts developed by the MLPerf Power working group ("the MLPerf Power workflow").
+
 == Overview
 
 The MLPerf name and logo are trademarks. In order to refer to a result using the MLPerf name, the result must conform to the letter and spirit of the rules specified in this document. The MLPerf organization reserves the right to solely determine if a use of its name or logo is acceptable.
@@ -125,10 +127,6 @@ determine this exact section, LoadGen has been instrumented to indicate
 the start and stop of the performance phase of the benchmark and all
 power measurements are evaluated within this phase from the power
 logging done as part of the benchmark.
-
-The submission process has to use the software flow and scripts
-developed as part of the MLPerf benchmark Power measurement. The
-infrastructure has been developed by the MLPerf Power working group.
 
 === Audit process and Benchmark Logging
 
