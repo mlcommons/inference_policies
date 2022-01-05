@@ -48,11 +48,11 @@ synchronization between the different systems that are used for power
 collection. It is required that the SUT and the Director are
 synchronized with NTP.
 
-*PTD (Power Thermal Daemon)* is a [utility](https://www.spec.org/power/docs/SPECpower-Device_List.html)
+*PTD (Power Thermal Daemon)* is a https://www.spec.org/power/docs/SPECpower-Device_List.html[utility]
 that is developed by SPEC&reg; for the purposes of power measurements and logging.
 MLCommons have licensed this utility from SPEC. Please ensure to adhere to the
-[End User License Agreement](https://github.com/mlcommons/power/blob/main/MLPerf_Power_EULA_w_signature_blocks_pre-signed_2021.02.11.pdf)
-(EULA) between MLCommons SPEC. PTD by itself cannot be distributed.
+End User License Agreement (EULA) between MLCommons and SPEC (see FAQ below).
+In particular, PTD can be used solely with the MLPerf Power workflow.
 
 == Power Measurement BKM
 
