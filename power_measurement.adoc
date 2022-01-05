@@ -144,6 +144,16 @@ default. This must not be changed. Example: It is not permitted to run
 the same benchmark and scenario 3 times and report the highest
 performance and the lowest power consumption among the 3 runs.
 
+=== Realistic Power Management
+
+The goal of the testing is to mimic real-world usage scenarios as much
+as possible and enable showing the benefits of realistic power
+management. Therefore, we require that:
+
+* Any power management system be qualified for use appropriate for the submission type (e.g., a generally available system must use software/firmware qualified for general availability and shipping with the platform).
+* No benchmark- or benchmarking-specific hacks.
+* Any changes in power management behavior must not have manual intervention or have awareness of the benchmark.
+
 == Power Analyzer Support
 
 For the v1.0, v1.1 and v2.0 rounds, we only support Yokogawa power analyzers (aka meters).
@@ -175,15 +185,6 @@ The file format should be as in the following example:
 | Yokogawa | WT310E | 1.04     | Single channel  | USB       | 1P2W            | 1                       | 1                |
 ```
 
-== Realistic Power Management
-
-The goal of the testing is to mimic real-world usage scenarios as much
-as possible and enable showing the benefits of realistic power
-management. Therefore, we require that:
-
-* Any power management system be qualified for use appropriate for the submission type (e.g., a generally available system must use software/firmware qualified for general availability and shipping with the platform).
-* No benchmark- or benchmarking-specific hacks.
-* Any changes in power management behavior must not have manual intervention or have awareness of the benchmark.
 
 == Power Logs
 
