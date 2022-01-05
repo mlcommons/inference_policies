@@ -137,17 +137,17 @@ MLPerf Power SW infrastructure need to be submitted. These include the
 power meter ranging logs and the power measurement logs that are
 generated during the performance runs.
 
-=== Replicability is mandatory
+=== Replicability is Mandatory
 
 Results that cannot be replicated are not valid results.
 
-=== Power and Performance Reporting and Measurement
+=== Power and Performance Measurement and Reporting
 
 Power and performance measurements should be from the same run for a
-given benchmark and scenario. The current script takes care of this by
-default and it cannot and should not be changed. Example: We cannot run
+given benchmark and scenario. The MLPerf Power workflow takes care of this by
+default. This must not be changed. Example: It is not permitted to run
 the same benchmark and scenario 3 times and report the highest
-performance and lowest power among the 3 runs.
+performance and the lowest power consumption among the 3 runs.
 
 == Power Analyzer Support
 
@@ -156,7 +156,7 @@ For the v1.0, v1.1 and v2.0 rounds, we only support Yokogawa power analyzers (ak
 == Power Analyzer Settings
 
 The power analyzer settings will not be set manually, but through the
-software that is part of the MLPerf Power measurement infrastructure.
+software that is part of the MLPerf Power workflow.
 
 For the v1.0, v1.1 and v2.0 rounds, the software only supports connecting
 a single meter to a single system-under-test (SUT); connecting multiple
