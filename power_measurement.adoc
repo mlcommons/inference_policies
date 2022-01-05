@@ -209,20 +209,20 @@ which power is measured.
 
 == FAQs
 
-=== Q: Is the MLPerf Power workflow accessible to anyone?
+=== Is the MLPerf Power workflow accessible to anyone?
 
-A: The MLPerf Power workflow uses proprietary software (https://www.spec.org/power/docs/SPECpower-PTD-Update_Process.html[SPEC PTDaemon]).
+The MLPerf Power workflow uses proprietary software (https://www.spec.org/power/docs/SPECpower-PTD-Update_Process.html[SPEC PTDaemon]).
 To access this software, your organization must be a member of MLCommons. 
 In addition, an authorized representative of your organization must sign the
 https://drive.google.com/file/d/1u9MdO4v5-uvbaJoElQoAwGb5_suMTZyH/view[MLPerf Power EULA],
 and send it to support@mlcommons.org.
 
-=== Q: Am I required to use the MLPerf Power workflow?
+=== Am I required to use the MLPerf Power workflow?
 
-A: Yes, you must use the MLPerf Power workflow for any results submitted to
+Yes, you must use the MLPerf Power workflow for any results submitted to
 MLPerf.  This workflow integrates a number of checks and balances which ensures
 the highest quality of collected power measurements.
 
-=== Q: How can I obtain the MLPerf Power workflow?
+=== How can I obtain the MLPerf Power workflow?
 
-A: Once your organization signs the EULA, MLCommons staff will give you access to a private GitHub repo containing the tools.
+Once your organization signs the EULA, MLCommons staff will give you access to a private GitHub repo containing the tools.
