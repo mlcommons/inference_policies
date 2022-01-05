@@ -29,12 +29,12 @@ A *system under test (SUT)* consists of a defined set of hardware and
 software resources that will be measured for performance. The hardware
 resources may include processors, accelerators, memories, disks, and
 interconnect. The software resources may include an operating system,
-compilers, libraries, and drivers that significantly influences the
-running time of a benchmark.
+compilers, libraries, and drivers that significantly affect the
+running time or power consumption of a benchmark.
 
 *A Director/Server* system is any system that can act as the host for
 the power measurements, e.g., a standard PC with an interface that
-connects to the power analyzer
+connects to the power analyzer.
 
 A *power analyzer* (aka power meter) is a device that is used for
 measuring the wall power of a system. The SUT is powered using the power
@@ -48,7 +48,11 @@ synchronization between the different systems that are used for power
 collection. It is required that the SUT and the Director are
 synchronized with NTP.
 
-*PTD (Power Thermal Utility)* is a utility that is developed by SPEC® for the purposes of power measurements and logging. MLCommons has licensed the use of this utility from SPEC. Please ensure to adhere to all things related to MLC and SPEC NDA. PTD by itself cannot be distributed.
+*PTD (Power Thermal Daemon)* is a [utility](https://www.spec.org/power/docs/SPECpower-Device_List.html)
+that is developed by SPEC&reg; for the purposes of power measurements and logging.
+MLCommons have licensed this utility from SPEC. Please ensure to adhere to the
+[End User License Agreement](https://github.com/mlcommons/power/blob/main/MLPerf_Power_EULA_w_signature_blocks_pre-signed_2021.02.11.pdf)
+(EULA) between MLCommons SPEC. PTD by itself cannot be distributed.
 
 == Power Measurement BKM
 
@@ -65,28 +69,28 @@ All rules for performance are applicable for power. In addition:
 === System should be consistent with platform descriptions
 
 The system used for power measurements should match the ones described
-in the platform descriptions as part of the submission. Power needs to be 
-measured for the Inference submission system(s) that includes all components 
+in the platform descriptions as part of the submission. Power needs to be
+measured for the Inference submission system(s) that includes all components
 that are sensitized by LoadGen executing including the processor on which LoadGen runs.
 
 === Power Delivery for Measurements
 
-MLPerf Power for Inference measures wall AC power consumed. The expectation is that the power delivery to the unit of computation  (node) 
-must  not have any battery  or alternate power storage in conjunction to the AC power , 
+MLPerf Power for Inference measures wall AC power consumed. The expectation is that the power delivery to the unit of computation (node)
+must not have any battery or alternate power storage in conjunction to the AC power, 
 before the power is provided to the PSUs of the system.
 
 === Platform Description for Power submission
 
-A valid submission has to  have all the fields of the platform description
-deemed mandatory to be filled by the submitter.  Power is  measured at the
+A valid submission has to have all the fields of the platform description
+deemed mandatory to be filled by the submitter. Power is measured at the
 system level, and so a detailed description of the system/platform has to
-be provided as has been agreed.  
+be provided as has been agreed.
 
 For each submission the Power Management settings for the system to achieve
 the measured performance and power for the submissions must be documented.
 This is needed for reproducibility and verifiability
 
-An example file is here :  https://docs.google.com/document/d/1-j7TWCFBlTGi_EIpS2mQpgQLobtV0ITn2BJCakOgAZ4
+An example file is here : https://docs.google.com/document/d/1-j7TWCFBlTGi_EIpS2mQpgQLobtV0ITn2BJCakOgAZ4
 
 
 === SUT and Power Analyzer to remain unchanged from submission to results
