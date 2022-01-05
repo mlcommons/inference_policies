@@ -74,17 +74,12 @@ The power consumption must be measured at the system level, i.e. including all
 components that are sensitized by LoadGen e.g. the host processor on which
 LoadGen runs, accelerators, memory, fans, etc.
 
-=== Power Delivery for Measurements
+=== Power Delivery
 
-MLPerf Power for Inference measures wall AC power consumed. The expectation is that the power delivery to the unit of computation (node)
-must not have any battery or alternate power storage in conjunction to the AC power,
-before the power is provided to the PSUs of the system.
-
-For each submission the Power Management settings for the system to achieve
-the measured performance and power for the submissions must be documented.
-This is needed for reproducibility and verifiability
-
-An example file is here : https://docs.google.com/document/d/1-j7TWCFBlTGi_EIpS2mQpgQLobtV0ITn2BJCakOgAZ4
+The MLPerf Power workflow measures AC power consumed at the wall. The
+expectation is that the power delivery to the SUT must not have any battery or
+alternate power storage in conjunction to the AC power, before the power is
+provided to the PSUs of the system.
 
 === SUT must be consistent with the description
 
@@ -118,7 +113,7 @@ https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc
 specify several phases of a benchmark: accuracy, performance, compliance.
 Power is evaluated only in the performance phase, and not in any other phases.
 
-=== LoadGen
+=== LoadGen and Start/End TimeStamps
 
 The MLPerf Power workflow uses exactly the same LoadGen as used for performance runs.
 LoadGen logs the system timestamp at the start and at the end of a performance run.
@@ -161,10 +156,11 @@ for the ranging and testing phases).
 
 The power analyzer is configured automatically through the software that is
 part of the MLPerf Power workflow. For the v1.0, v1.1 and v2.0 rounds, the
-software only supports connecting a single meter to a single system-under-test
-(SUT); connecting multiple meters to a single SUT is not supported.
+software only supports connecting a single meter to a single SUT: 
+connecting multiple meters to a single SUT is not supported.
 
-A power meter configuration must be reported in a file called `analyzer_table.*` placed as follows:
+A power meter configuration must be reported in a file called
+`analyzer_table.*` placed as follows:
 
 - If the configuration is common to all scenarios, benchmarks and systems: under the `<division>/<submitter>/measurements` directory.
 
@@ -176,7 +172,22 @@ A power meter configuration must be reported in a file called `analyzer_table.*`
 
 The file format must be human readable, for example, Markdown (recommended), TXT, CSV or HTML.
 Examples: https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Qualcomm/measurements/r282_z93_q8-qaic-v1.5.9-aic100/analyzer_table.md[`md`] (single channel),
-https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Dell/power/R750xa_A100-PCIE-40GBx4_analyzer_table.md[`md`] (multi-channel).
+https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Dell/power/R750xa_A100-PCIE-40GBx4_analyzer_table.md[`md`] (multi-channel),
+https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/NVIDIA/results/AGX_Xavier_TRT_MaxQ/AGX_Xavier_TRT_MaxQ.csv[`csv`] (single channel),
+https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/NVIDIA/results/A100-PCIex8_TRT_MaxQ/A100-PCIex8_TRT_MaxQ.csv[`csv`] (multi-channel).
+
+### Power Management Settings
+
+For reproducibility and verifiability of each submission, the Power Management
+Settings used to achieve the measured performance and power for the
+submission must be documented.
+
+The Power Management Settings must be reported in a file called
+`power_settings.*` placed according to the same rules as for the Power Analyzer
+Settings.
+
+Examples: https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Qualcomm/measurements/g292_z43_q16-qaic-v1.5.6-aic100/power_settings.md[`md`], 
+https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Dell/power/XE8545_A100-SXM-80GBx4_power_settings.md[`md`].
 
 
 == Frequently Asked Questions (FAQ)
