@@ -317,7 +317,6 @@ For 3DUNet, the logical destination for the benchmark output is considered to be
 1. The accuracy dataset must be the same as an existing Closed benchmark.
 1. Accuracy constraints are not applicable: instead the submission must report the accuracy obtained.
 1. Latency constraints are not applicable: instead the submission must report the latency constraints under which the reported performance was obtained.
-1. The minimum number of queries should be set using the formula in <<appendix-num_queries>>.
 1. Scenario constraints are not applicable: any combination of scenarios is permitted.
 1. A open submission must be classified as "Available", "Preview", or "Research, Development, or Internal".
 1. The model can be of any origin (trained on any dataset, quantized in any way, and sparsified in anyway).
