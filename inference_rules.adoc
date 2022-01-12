@@ -135,24 +135,15 @@ described in the table below.
 
 |===
 |Scenario |Query Generation |Duration |Samples/query |Latency Constraint |Tail Latency | Performance Metric
-|Single stream |LoadGen sends next query as soon as SUT completes the previous query | 1024 queries and 600 seconds |1 |None |90% | 90%-ile measured latency
-|Server |LoadGen sends new queries to the SUT according to a Poisson distribution |270,336 queries and 600 seconds |1 |Benchmark specific |99% | Maximum Poisson throughput parameter supported
+|Single stream |LoadGen sends next query as soon as SUT completes the previous query | 600 seconds |1 |None |90%* | 90%-ile early-stopping latency estimate
+|Server |LoadGen sends new queries to the SUT according to a Poisson distribution | 600 seconds |1 |Benchmark specific |99%* | Maximum Poisson throughput parameter supported
 |Offline |LoadGen sends all samples to the SUT at start in a single query | 1 query and 600 seconds | At least 24,576 |None |N/A | Measured throughput
-|Multistream | Loadgen sends next query, as soon as SUT completes the previous query | 270,336 queries and 600 seconds | 8 | None | 99% | 99%-ile measured latency|
+|Multistream | Loadgen sends next query, as soon as SUT completes the previous query | 600 seconds | 8 | None | 99%* | 99%-ile early-stopping latency estimate|
 |===
 
-The number of queries is selected to ensure sufficient statistical confidence in
-the reported metric. Specifically, the top line in the following table. Lower
-lines are being evaluated for future versions of MLPerf Inference (e.g., 95%
-tail latency for v0.6 and 99% tail latency for v0.7).
+An early stopping critereon (described in more detail in <<appendix-early_stopping>>) allows for runs with relatively few number of processed queries to be valid, with the penalty that the effective computed percentile will be slightly higher.  This penalty counteracts the increased variance inherent to runs with few queries, where there is a higher probability that a particular run will, by chance, report a lower latency than the system should reliably support.
 
-|===
-|Tail Latency Percentile |Confidence Interval |Margin-of-Error |Inferences |Rounded Inferences
-|90%|99%|0.50%|23,886|3*2^13 = 24,576
-|95%|99%|0.25%|50,425|7*2^13 = 57,344
-|97%|99%|0.15%|85,811|11*2^13 = 90,112
-|99%|99%|0.05%|262,742|33*2^13 = 270,336
-|===
+In the above table, tail latency percentiles with an astrix represent the theretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty.
 
 A submission may comprise any combination of benchmark and scenario results.
 
@@ -349,9 +340,9 @@ submissions. The LoadGen is responsible for:
 Latency is defined as the time from when the LoadGen was scheduled to pass a
 query to the SUT, to the time it receives a reply.
 
-* Single Stream: LoadGen measures 90th percentile latency using a single test run. For
-the test run, LoadGen sends an initial query then continually sends the next
-query as soon as the previous query is processed.
+* Single Stream: LoadGen measures the 90th percentile early-stopping latency estimate
+using a single test run. For the test run, LoadGen sends an initial query then
+continually sends the next query as soon as the previous query is processed.
 
 * Server: LoadGen determines the system throughput using multiple test
 runs. Each test run evaluates a specific throughput value in queries-per-second
@@ -362,9 +353,9 @@ value. If a run fails, it will reduce the value by a small delta then try again.
 * Offline: LoadGen measures throughput using a single test run. For the test
 run, LoadGen sends all samples at once in a single query.
 
-* Multistream: LoadGen measures 99th percentile latency using a single test run. For
-the test run, LoadGen sends an initial query then continually sends the next
-query as soon as the previous query is processed.
+* Multistream: LoadGen measures the 99th percentile early-stopping latency estimate
+using a single test run. For the test run, LoadGen sends an initial query then
+continually sends the next query as soon as the previous query is processed.
 
 The run procedure is as follows:
 
@@ -374,9 +365,9 @@ The run procedure is as follows:
 
 3. LoadGen starts clock and begins generating queries.
 
-4. LoadGen stops generating queries as soon as the benchmark-specific minimum
-number of queries have been generated and the benchmark specific minimum time
-has elapsed.
+4. LoadGen stops generating queries as soon as the benchmark specific minimum time
+has elapsed, and the (optional, submitter-selected) minimum number of queries have
+been generated.
 
 5. LoadGen waits for all queries to complete, and errors if all queries fail to
 complete.
@@ -757,54 +748,99 @@ The auditor may also request source code access to binary elements of the submis
 Q: Is it expected that an audit will be concluded during the review period?
 A: No. We should try to finish the audit before the publication date. 
 
-[[appendix-num_queries]]
+[[appendix-early_stopping]]
 [appendix]
-== Number of Queries
+== Early Stopping Criterion
 
-In order to be statistically valid, a certain number of queries are necessary to
-verify a given latency-bound performance result. How many queries are necessary?
-Every query either meets the latency bound or exceeds the latency bound. The
-math for determining the appropriate sample size for a latency bound throughput
-experiment is exactly the same as determining the appropriate sample size for an
-electoral poll given an infinite electorate. Three variables determine the
-sample size: the tail latency percentage, confidence, and margin. Confidence is
-the probability that a latency bound is within a particular margin of the
-reported result.
+The early stopping criterion allows for systems to process a smaller number of queries during their runs than previously allowed.  In particular, given a desired tail latency p, tolerance d, and confidence c, we determine the required number of queries to process as a function of the number of seen overlatency queries. If we have processed at least this many queries, we are able to stop processing queries early.  See the final section of this appendix for a more detailed description of the algorithm.
 
-A 99% confidence bound was somewhat arbitrarily selected. For systems with noisy
-latencies, it is possible to obtain better MLPerf results by cherry picking the
-best runs. Approximately 1 in 100 runs will be marginally better. Please don’t
-do this. It is very naughty and will make the MLPerf community feel sad.
 
-The margin should be set to a value much less than the difference between the
-tail latency percentage and one. Conceptually, the margin ought to be small
-compared to the distance between the tail latency percentile and 100%. A margin
-of 0.5% was selected. This margin is one twentieth of the difference between the
-tail latency percentage and one. In the future, when the tail latency percentage
-rises, the margin should fall by a proportional amount. The full equation is:
+=== Motivating Example
 
-Margin = (1 - TailLatency) / 20
+Processing more queries allows us to better estimate the percentage of the time a system passes a given latency bound, p. However, if p is particularly high, then with fewer queries we will have a larger margin-of-error, but will still be statistically confident that it is above the required threshold. Because the benchmark threshold is what we really care about (and not closely estimating p), early stopping allows submitters to process fewer queries in such cases. 
 
-NumQueries = NormsInv((1 - Confidence) / 2)^2 * (TailLatency)(TailLatency - 1) /
-Margin^2
+Suppose we have a benchmark that requires that submissions achieve a given latency bound 90% of the time. We have system A which achieves this latency bound 99% of the time, and system B which achieves it 91% of the time. In order to have a 99% confidence interval with a margin-of-error of 0.50%, we must perform 23,886 inferences. 
 
-Concretely:
+This makes sense for system B (whose underlying probability, 91%, is very close to the required benchmark percentile of 90%). However, assuming we see close to 99% of the queries passing the latency requirement for system A, we will be 99% sure that the underlying probability of success for a query on A will be within 99% 土 0.50%. This range is well above the requested latency percentile of 90%. Therefore, by performing fewer queries for such a system, we could widen the margin-of-error slightly, while still being statistically certain of being above the latency benchmark.
 
-NumQueries = NormsInv((1 - 0.99) / 2)^2 * (0.9)(1 - 0.9) / 0.005^2 =
-NormsInv(0.005)^2 * 3600 = (-2.58)^2 * 3,600 = 23,886
+=== Combinatorial analysis
 
-To keep the numbers nice, the sample sizes are rounded up. Here is a table
-showing proposed sample sizes for subsequent rounds of MLPerf:
+Suppose we have a system that meets its latency requirement for each query with probability p. What are the odds that we see at least h underlatency queries and at most t overlatency queries? We can answer this by using the cumulative distribution function for the binomial distribution.
 
-|===
-|Tail Latency Percentile |Confidence Interval |Margin-of-Error |Inferences |Rounded Inferences
-|90%|99%|0.50%|23,886|3*2^13 = 24,576
-|95%|99%|0.25%|50,425|7*2^13 = 57,344
-|99%|99%|0.05%|262,742|33*2^13 = 270,336
-|===
+We can think of processing queries as performing n Bernoulli trials, with probability of success for any given trial (i.e., odds of being underlatency) equal to p. The probability of exactly k successes (underlatency queries) is equal to: 
 
-These are mostly for the Server scenario which has tight bounds for tail
-latency. The other scenario may continue to use lower samples sizes.
+f(k; n, p) = P(k successes) = (n choose k) * p^k * (1-p)^(n-k)
+
+For fixed n and p, f(k; n, p) is called the binomial distribution with parameters n and p. 
+
+In order to determine how unusual our distribution of latency successes and failures is given the underlying probability of passing the latency bound (p), we compute the probability that we had at least h successes, keeping the total number of queries, n, fixed. This, by definition, involves computing the cumulative density function for our binomial distribution, F(h; n, p):
+
+F(h; n, p) = ∑ f(k; n, p),
+ 
+with the summation going from k = h to n.
+
+Note that, holding h and n fixed, this probability increases with p. This is because, as p gets larger, the odds that our n queries produced results at least as good as h successes and t failures increases. In other words, it is easier to achieve a larger number of successes when the underlying probability of an individual success is higher. 
+
+The this cumulative distribution function for the binomial distribution, F(k; n, p), can be written in terms of the regularized incomplete beta function. The (unregularized) incomplete beta function is defined as:
+
+B(x; a, b) = ∫t^(a - 1) * (1-t)^(b-1) dt,
+where the integral goes from 0 to x.  We can regularize this to attain:
+
+I(x; a, b) = B(x; a, b) / B(1; a, b).
+
+Note that this is "regularized" in the sense that I(0; a, b) = 0, and I(1; a, b) = 1. 
+
+We have an alternate expression for F(k; n, p) in terms of this function:
+
+F(k; n, p) = I(1 - p; n - k, k + 1).
+
+Since the regularized incomplete beta function can be estimated via a continued fraction or by evaluating the Gaussian hypergeometric function, this provides a method for efficiently computing the cumulative density function, F(k; n, p).
+
+=== Determining the Early Stopping Criterion
+
+We can use the computation from the previous section to derive an early stopping condition for performing queries to determine whether a system meets a latency bound. Suppose a benchmark requires that our system meets the latency bound p percent of the time. Given that we have seen t queries which are overlatency, at least how many underlatency queries must we see to be sure—within a certain confidence threshold—that we achieve the desired latency bound?
+
+Fix the following variables:
+* p = the percentile for our tail latency (the percentage of the time we would like our system to achieve the set latency bound)
+* c = confidence (1 - (false positive rate for minimally failing system))
+* d = tolerance (amount below target success rate for minimally failing system)
+* t = number of overlatency queries seen thus far.
+
+We need to determine the smallest h (number of underlatency queries) so that the likelihood of seeing at most t overlatency queries less than 1-c. This is given by an expression involving the cumulative distribution function from the previous section:
+
+F(t; h + t, 1 - (p - d)) <= 1-c.
+
+The left hand side is the probability that the minimally failing system (i.e. one with underlatency rate p-d) resulted in t or fewer overlatency queries. Intuitively, we want to know the smallest number of underlatency queries required such that the probability of us seeing this good of a result, assuming a minimally failing system, is very low (at most 1-c). In other words, in order for us to have seen such a good result, we should be quite sure that we meet the latency bound.
+
+We substitute in our previous expression for F in terms of the regularized incomplete beta function to obtain:
+
+I(p - d; h, t + 1) <= 1-c.
+
+In practice we solve this (i.e. find the smallest h satisfying the above expression) via binary search, keeping a cache of previously-computed solutions for other values of t.
+
+=== Early Stopping Criterion
+
+Putting this together, we have the following algorithm for determining early stopping criteria for the server scenario:
+
+1. When the minimum run duration is met, find the total number of queries processed, q, and the total number of overlatency queries, t.
+2. Using the equations above, compute a minimum total query count, n, given t.
+3. If q is greater than or equal to n, the run is successful.
+4. Otherwise, run for an additional n - q queries and proceed from step 2.
+
+How many times we must iterate through steps 2-4 (and thus how many queries we must process) before ending at a step 3 depends on how close the system’s percentile latency is to the target latency.  Systems with lower percentile latency will need to process fewer queries, and those with higher percentile latency will have to process more.  In cases where the system percentile latency is worse than the target, the run will never terminate successfully.
+
+The corresponding early stopping algorithm for single-stream and multi-stream scenarios is:
+
+1. When the minimum run duration is met, find the total number of queries processed, q.
+2. Using the equations above, compute a maximum overlatency count, t, given q.
+3. If t is zero, continue processing queries until t is at least one.
+4. Discard the t - 1 highest latency queries.
+5. Report the maximum latency of the remaining queries.
+
+For our implementation, we use:
+* d = 0
+* c = .99.
+
 
 [[appendix-bw]]
 [appendix]
