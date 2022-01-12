@@ -783,7 +783,9 @@ Note that, holding h and n fixed, this probability increases with p. This is bec
 The this cumulative distribution function for the binomial distribution, F(k; n, p), can be written in terms of the regularized incomplete beta function. The (unregularized) incomplete beta function is defined as:
 
 B(x; a, b) = ∫t^(a - 1) * (1-t)^(b-1) dt,
-where the integral goes from 0 to x.  We can regularize this to attain:
+where the integral goes from 0 to x.  
+
+We can regularize this to attain:
 
 I(x; a, b) = B(x; a, b) / B(1; a, b).
 
@@ -800,6 +802,7 @@ Since the regularized incomplete beta function can be estimated via a continued 
 We can use the computation from the previous section to derive an early stopping condition for performing queries to determine whether a system meets a latency bound. Suppose a benchmark requires that our system meets the latency bound p percent of the time. Given that we have seen t queries which are overlatency, at least how many underlatency queries must we see to be sure—within a certain confidence threshold—that we achieve the desired latency bound?
 
 Fix the following variables:
+
 * p = the percentile for our tail latency (the percentage of the time we would like our system to achieve the set latency bound)
 * c = confidence (1 - (false positive rate for minimally failing system))
 * d = tolerance (amount below target success rate for minimally failing system)
@@ -822,21 +825,22 @@ In practice we solve this (i.e. find the smallest h satisfying the above express
 Putting this together, we have the following algorithm for determining early stopping criteria for the server scenario:
 
 1. When the minimum run duration is met, find the total number of queries processed, q, and the total number of overlatency queries, t.
-2. Using the equations above, compute a minimum total query count, n, given t.
-3. If q is greater than or equal to n, the run is successful.
-4. Otherwise, run for an additional n - q queries and proceed from step 2.
+1. Using the equations above, compute a minimum total query count, n, given t.
+1. If q is greater than or equal to n, the run is successful.
+1. Otherwise, run for an additional n - q queries and proceed from step 2.
 
 How many times we must iterate through steps 2-4 (and thus how many queries we must process) before ending at a step 3 depends on how close the system’s percentile latency is to the target latency.  Systems with lower percentile latency will need to process fewer queries, and those with higher percentile latency will have to process more.  In cases where the system percentile latency is worse than the target, the run will never terminate successfully.
 
 The corresponding early stopping algorithm for single-stream and multi-stream scenarios is:
 
 1. When the minimum run duration is met, find the total number of queries processed, q.
-2. Using the equations above, compute a maximum overlatency count, t, given q.
-3. If t is zero, continue processing queries until t is at least one.
-4. Discard the t - 1 highest latency queries.
-5. Report the maximum latency of the remaining queries.
+1. Using the equations above, compute a maximum overlatency count, t, given q.
+1. If t is zero, continue processing queries until t is at least one.
+1. Discard the t - 1 highest latency queries.
+1. Report the maximum latency of the remaining queries.
 
 For our implementation, we use:
+
 * d = 0
 * c = .99.
 
