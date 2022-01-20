@@ -141,9 +141,17 @@ described in the table below.
 |Multistream | Loadgen sends next query, as soon as SUT completes the previous query | 600 seconds | 8 | None | 99%* | 99%-ile early-stopping latency estimate|
 |===
 
-An early stopping critereon (described in more detail in <<appendix-early_stopping>>) allows for runs with relatively few number of processed queries to be valid, with the penalty that the effective computed percentile will be slightly higher.  This penalty counteracts the increased variance inherent to runs with few queries, where there is a higher probability that a particular run will, by chance, report a lower latency than the system should reliably support.
+An early stopping criterion (described in more detail in <<appendix-early_stopping>>) allows for runs with a relatively small number of processed queries to be valid, with the penalty that the effective computed percentile will be slightly higher.  This penalty counteracts the increased variance inherent to runs with few queries, where there is a higher probability that a particular run will, by chance, report a lower latency than the system should reliably support.
 
-In the above table, tail latency percentiles with an astrix represent the theretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty.
+In the above table, tail latency percentiles with an asterisk represent the theretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty.  See the following table for a suggested starting point for how to set the minimum number of queries.
+
+|===
+|Tail Latency Percentile |Confidence Interval |Margin-of-Error |Inferences |Rounded Inferences
+|90%|99%|0.50%|23,886|3*2^13 = 24,576
+|95%|99%|0.25%|50,425|7*2^13 = 57,344
+|97%|99%|0.15%|85,811|11*2^13 = 90,112
+|99%|99%|0.05%|262,742|33*2^13 = 270,336
+|===
 
 A submission may comprise any combination of benchmark and scenario results.
 
@@ -364,7 +372,7 @@ The run procedure is as follows:
 
 3. LoadGen starts clock and begins generating queries.
 
-4. LoadGen stops generating queries as soon as the benchmark specific minimum time
+4. LoadGen stops generating queries as soon as the benchmark-specific minimum time
 has elapsed, and the (optional, submitter-selected) minimum number of queries have
 been generated.
 
@@ -780,7 +788,7 @@ with the summation going from k = h to n.
 
 Note that, holding h and n fixed, this probability increases with p. This is because, as p gets larger, the odds that our n queries produced results at least as good as h successes and t failures increases. In other words, it is easier to achieve a larger number of successes when the underlying probability of an individual success is higher. 
 
-The this cumulative distribution function for the binomial distribution, F(k; n, p), can be written in terms of the regularized incomplete beta function. The (unregularized) incomplete beta function is defined as:
+This cumulative distribution function for the binomial distribution, F(k; n, p), can be written in terms of the regularized incomplete beta function. The (unregularized) incomplete beta function is defined as:
 
 B(x; a, b) = ∫t^(a - 1) * (1-t)^(b-1) dt,
 where the integral goes from 0 to x.  
