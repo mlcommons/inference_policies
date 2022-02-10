@@ -138,6 +138,7 @@ described in the table below.
 |Single stream |LoadGen sends next query as soon as SUT completes the previous query | 1024 queries and 600 seconds |1 |None |90% | 90%-ile measured latency
 |Server |LoadGen sends new queries to the SUT according to a Poisson distribution |270,336 queries and 600 seconds |1 |Benchmark specific |99% | Maximum Poisson throughput parameter supported
 |Offline |LoadGen sends all samples to the SUT at start in a single query | 1 query and 600 seconds | At least 24,576 |None |N/A | Measured throughput
+|Multistream | Loadgen sends next query, as soon as SUT completes the previous query | 270,336 queries and 600 seconds | 8 | None | 99% | 99%-ile measured latency|
 |===
 
 The number of queries is selected to ensure sufficient statistical confidence in
@@ -153,6 +154,8 @@ The number of runs required for each scenario is defined below:
 * Server: 1
 
 * Offline: 1
+
+* Multistream: 1
 
 Each sample has the following definition:
 
@@ -219,8 +222,17 @@ time.
 
 ==== Constraints for the Closed division
 
-There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM. The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
+There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The minimum requirements for a datacenter system are defined below:
 
+===== Minimum requirements of a datacenter system
+====== ECC
+A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM.
+
+====== Networking
+A datacenter system must be equipped with all the necessary networking required by the system architecture described in the <<LoadGen Operation>> section.  The details of the networking components must be described in the appropriate field of the System JSON (https://github.com/mlcommons/policies/blob/master/submission_rules.adoc).  All necessary networking must be populated if power is measured along with performance. 
+
+
+The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
 The Datacenter suite includes the following benchmarks:
 
 |===
@@ -261,25 +273,33 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 
 |===
 |Area |Task |Required Scenarios
-|Vision |Image classification |Single Stream, Offline
-|Vision |Object detection (large) |Single Stream, Offline
-|Vision |Object detection (small) |Single Stream, Offline
+|Vision |Image classification |Single Stream, Multistream, Offline
+|Vision |Object detection (large) |Single Stream, Multistream, Offline
+|Vision |Object detection (small) |Single Stream, Multistream, Offline
 |Vision |Medical image segmentation |Single Stream, Offline
 |Speech |Speech-to-text |Single Stream, Offline
 |Language |Language processing |Single Stream, Offline
 |===
 
-For Edge submitters' convenience, they are allowed to obtain only a Single Stream result
-and have Offline results inferred according to the following rules:
 
-- The corresponding Offline result is 1000 divided by the Mean latency in
-  milliseconds.  For example, a Single Stream mean latency of 20 milliseconds
-would imply an Offline result of 50 samples per second. The inferred Offline
-accuracy will be the same as the Single Stream accuracy.
+Edge submitters are allowed to infer a multistream result from single stream, and
+an offline result from either a single stream result or a measured multistream result, 
+according to the following rules:
+
+- a multistream result inferred from a single stream result is 8 times the 99th percentile latency
+reported by loadgen. For example, if the single stream 99%th percentile latency is 25ms, the inferred multistream result is 200ms.
+
+- an offline result inferred from a multistream result is 8000 divided by the mean latency in milliseconds. For example,
+if the multistream result is 200ms, the inferred offline result is 40 img/s. 
+
+- an offline result inferred from a single stream result is 1000 divided by the mean latency in milliseconds. For example,
+if the single stream result is 25ms, the inferred offline result is 40 img/s. 
+
+The accuracy of an inferred result will be the same as the result from which it was inferred. When inferring a metric for the power table, the measured power used to calculate the metric is the same as for the base result
 
 To simplify automated processing of inferred results, the submitter should
-create copies of the corresponding Single Stream directories under `results/`
-and `measurements/`, calling them `offline` for the Offline scenario.
+create copies of the directories for the inferred results under `results/`
+and `measurements/`, named according to the inferred result (either `offline` or `multistream`).
 
 Accuracy results must be reported to five significant figures with round to
 even. For example, 98.9995% should be recorded as 99.000%.
@@ -297,7 +317,7 @@ For 3DUNet, the logical destination for the benchmark output is considered to be
 1. The accuracy dataset must be the same as an existing Closed benchmark.
 1. Accuracy constraints are not applicable: instead the submission must report the accuracy obtained.
 1. Latency constraints are not applicable: instead the submission must report the latency constraints under which the reported performance was obtained.
-1. The minimum number of queries should be set using the formula in <<Appendix Number of Queries>>.
+1. The minimum number of queries should be set using the formula in <<appendix-num_queries>>.
 1. Scenario constraints are not applicable: any combination of scenarios is permitted.
 1. A open submission must be classified as "Available", "Preview", or "Research, Development, or Internal".
 1. The model can be of any origin (trained on any dataset, quantized in any way, and sparsified in anyway).
@@ -320,7 +340,7 @@ submissions. The LoadGen is responsible for:
 Latency is defined as the time from when the LoadGen was scheduled to pass a
 query to the SUT, to the time it receives a reply.
 
-* Single-stream: LoadGen measures average latency using a single test run. For
+* Single Stream: LoadGen measures 90th percentile latency using a single test run. For
 the test run, LoadGen sends an initial query then continually sends the next
 query as soon as the previous query is processed.
 
@@ -332,6 +352,10 @@ value. If a run fails, it will reduce the value by a small delta then try again.
 
 * Offline: LoadGen measures throughput using a single test run. For the test
 run, LoadGen sends all samples at once in a single query.
+
+* Multistream: LoadGen measures 99th percentile latency using a single test run. For
+the test run, LoadGen sends an initial query then continually sends the next
+query as soon as the previous query is processed.
 
 The run procedure is as follows:
 
@@ -361,12 +385,14 @@ The execution of LoadGen is restricted as follows:
 * The trace generated by LoadGen must be stored in the DRAM that most faithfully simulates queries arriving 
   from the most logical source, which is usually the network or an I/O device such as a camera. It may be pinned. 
   Similarly, the response provided to Loadgen must be stored in the DRAM that most faithfully simulates transfer 
-  to the most logical destination, which is a CPU process unless otherwise specified for the benchmark.
-
-  Submitters seeking to use anything other than the DRAM attached to the processor on which loadgen is running must 
-  seek prior approval, and must provide with their submission sufficient details system architecture and software to  
-  show how the I/O bandwidth utilized by each benchmark/scenario combination can be transferred between that memory and
-  the network or I/O device.
+  to the most logical destination, which is a CPU process unless otherwise specified for the benchmark. 
+  From 2.1, submitters must provide with their submission sufficient details of the system architecture and software to  
+  show how the I/O bandwidth utilized by each benchmark/scenario combination can be transferred between the memory where the trace is stored and
+  the network or I/O device. Minimum bandwidths for each benchmark can be found in <<appendix-bw>>. All components mentioned in the system architecture must be present in the system during the run. A system architecture description must be provided along with the submission, which must include:
+  
+** Bandwidth of each NIC and total number of NIC(s)
+** Description of the data path from the NIC(s) to the accelerator(s)
+** Specifications or measurements indicating that the path from the NIC to the memory in which loadgen data resides can sustain the required bandwidth
 
 * Caching values derived from the shapes of input tensors is allowed. Caching of any other queries, query parameters, or intermediate results is
   prohibited. In particular, caching values derived from activations is prohibited.
@@ -722,7 +748,9 @@ The auditor may also request source code access to binary elements of the submis
 Q: Is it expected that an audit will be concluded during the review period?
 A: No. We should try to finish the audit before the publication date. 
 
-== Appendix Number of Queries
+[[appendix-num_queries]]
+[appendix]
+== Number of Queries
 
 In order to be statistically valid, a certain number of queries are necessary to
 verify a given latency-bound performance result. How many queries are necessary?
@@ -774,3 +802,37 @@ showing proposed sample sizes for subsequent rounds of MLPerf:
 
 These are mostly for the Server scenario which has tight bounds for tail
 latency. The other scenario may continue to use lower samples sizes.
+
+[[appendix-bw]]
+[appendix]
+== Datacenter Bandwidth Requirements
+
+Datacenter systems must satisfy both the ingress and egress bandwidth requirements for each benchmark. 
+
+=== Ingress Bandwidth
+Datacenter systems must provide at least the following bandwidths from the network or I/O device to the location where the trace is stored (e.g. DRAM). The minimum bandwidth is a function of the throughput achieved by the SUT and the input data types. The formulas below assume that the inputs are not pre-processed in any way (e.g. padded). If the inputs are pre-processed, and pre-processing affects the input size, submitters must adjust the formulas below accordingly.
+
+|===
+|Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
+|Vision |Resnet50-v1.5 |ImageNet (224x224) | __C*H*W*dtype_size__ | __3*224*224*dtype_size__ | __throughput*150528*dtype_size
+__|Vision |SSD-ResNet34 |COCO (1200x1200) | __C*H*W*dtype_size__ | __3*1200*1200*dtype_size__ | __throughput*4320000*dtype_size__
+|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
+|Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | __max_audio_duration*num_samples_per_sec*dtype_size__ | __15*44100*dtype_size__ | __throughput*661500*dtype_size__
+|Language |BERT |SQuAD v1.1 (max_seq_len=384) | __num_inputs*max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
+|Commerce |DLRM | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRM sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
+|===
+
+=== Egress Bandwidth
+
+Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet, the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
+
+|===
+|Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
+|Vision |Resnet50-v1.5 |ImageNet (224x224) | negligible | negligible | __> 0
+__|Vision |SSD-ResNet34 |COCO (1200x1200) | negligible | negligible | __> 0__
+|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
+|Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | negligible | negligible | __> 0__
+|Language |BERT |SQuAD v1.1 (max_seq_len=384) | negligible | negligible | __> 0__
+|Commerce |DLRM | 1TB Click Logs | negligible | negligible | __> 0__
+|===
+
