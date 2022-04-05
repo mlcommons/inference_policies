@@ -18,7 +18,7 @@ This document describes how to implement one or more benchmarks in the MLPerf
 Inference Suite and how to use those implementations to measure the performance
 of an ML system performing inference.
 
-There are seperate rules for the submission, review, and publication process for all MLPerf benchmarks https://github.com/mlperf/policies/blob/master/submission_rules.adoc[here].
+There are separate rules for the submission, review, and publication process for all MLPerf benchmarks https://github.com/mlperf/policies/blob/master/submission_rules.adoc[here].
 
 The MLPerf name and logo are trademarks. In order to refer to a result using the
 MLPerf name, the result must conform to the letter and spirit of the rules
@@ -514,8 +514,8 @@ task. Retraining is allowed.
 CLOSED: MLPerf will provide trained weights and biases in fp32 format for both
 the reference and alternative implementations.
 
-MLPerf will provide a calibration data set for all models except
-GNMT. Submitters may do arbitrary purely mathematical, reproducible quantization
+MLPerf will provide a calibration data set for all models.
+Submitters may do arbitrary purely mathematical, reproducible quantization
 using only the calibration data and weight and bias tensors from the benchmark
 owner provided model to any numerical format
 that achieves the desired quality. The quantization method must be publicly
@@ -591,7 +591,7 @@ Examples of allowed techniques include, but are not limited to:
   set (eg. selecting batch sizes or numerics experimentally)
   
 * Sorting an embedding table based on frequency of access in the training set.
-  (Submtters should include in their submission details of how the ordering was
+  (Submitters should include in their submission details of how the ordering was
   derived.)
 
 The following techniques are disallowed:
