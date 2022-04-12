@@ -52,7 +52,7 @@ synchronized with NTP.
 
 *PTD (Power Thermal Daemon)* is a https://www.spec.org/power/docs/SPECpower-Device_List.html[utility]
 that is developed by SPEC&reg; for the purposes of power measurements and logging.
-MLCommons have licensed this utility from SPEC. Please ensure to adhere to the
+SPEC have provided a license to MLCommons members to use PTD. Please ensure to adhere to the
 End User License Agreement (EULA) between MLCommons and SPEC (see FAQ below).
 In particular, PTD can be used solely with the MLPerf Power workflow.
 
