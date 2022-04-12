@@ -134,8 +134,7 @@ as possible and enable showing the benefits of realistic power
 management. Therefore, we require that:
 
 * Any power management system be qualified for use appropriate for the submission type (e.g., a generally available system must use software/firmware qualified for general availability and shipping with the platform).
-* No benchmark- or benchmarking-specific hacks.
-* Any changes in power management behavior must not have manual intervention or have awareness of the benchmark.
+* Any changes in power management behavior must not have manual intervention.
 
 
 == What needs to be submitted?
