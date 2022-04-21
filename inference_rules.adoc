@@ -414,6 +414,87 @@ even if two or more performance results share the same source code.
 
 Note: The same code must be run for both the accuracy and performance LoadGen modes. This means the same output should be passed in QuerySampleComplete in both modes. 
 
+== MLPerf Over the Network
+
+In the MLPerf Over the Network mode the SUT is connected to the loadgen over a network fabric. The loadgen architecture is extended by introducing a Query Dispatch Library (QDL) component which is the SUT proxy at the client size and it is a submitter implementation component. The QDL should work with the same SUT API of loadgen as defined today. 
+
+The MLperf over the Network shall run in Server mode and Offline mode. All loadgen modes should work as is with insignificant changes. These include running the test in Performance mode, Accuracy mode, Find Peak Performance Search mode and Compliance mode. The same applies for Power Measurements.
+
+=== QDL Constraints
+
+* The QDL is not allowed to do any pre-processing of the query, any processing related to the benchmark should be executed in the SUT. 
+* An exception for the above is if decompression post-processing is applied. Then such function should be done in the QDL because loadgen is checking the results and need a decompressed data. Such function should be timed. No other pre-processing or post-processing is allowed. Currently only the 3DUNET might require such.
+* The QDL is currently not allowed to batch queries. Every processing function implemented there should be on a query-by-query basis.  
+* All functions implemented in the QDL are timed by the loadgen.
+* The Name method should contain a known sub-string indicating Over the Network SUTs to identify it as MLPerf over the network benchmark for the submission checker. The sub-string shall be the string “Over the Network SUT”.
+* The Name method should provide the Name response from the remote SUT and not cached locally by the QDL, with at least one round trip time over the network. This allows to identify also the Over the Network SUT according to the response latency of the Name method.
+
+=== General Constraints
+
+There are no constraints on network fabrics or protocols for SUT and loadgen-side communication, as long as it is a type of network communication, something running over a wire or wireless, that connects between two distinct machines. 
+It is assumed that a datacenter employing inference-specific accelerators is able to accommodate a suitable fabric and client-side software abstraction.
+
+The support for various network types specifically excludes buses (like PCIe/CXL/CCIX, Hypertransport, NVLink, QPI, UPI, ICI (interchip interconnect)). It is not allowed that the network will go from a server back to itself.
+
+To characterize 'fabric' interconnect, as opposed to bus-based interconnect:
+
+* Works as out-of-the-box chassis-to-chassis interconnect
+* Uses wireless, copper or fiber-optics media
+* Connects systems in meters to kilometers distances
+* Uses switch topology
+* Is highly scalable, reliable, and fault-tolerant
+
+
+The choice of fabric and protocol must be reported in the submission metadata, so that users of the benchmarks who are constrained to commodity fabrics and protocols can filter results appropriately.
+
+=== SUT over the Network and Setup Constraints
+
+* SUT parameters and configuration should be specified in detail in the submission results. 
+* Network interface characteristics should be added to the report, both at the SUT side and at the loadgen server side, including networking components or any other hardware in the system that either stands between them or are involved in any way in the test.
+
+
+=== Benchmarks and QSL Preprocessing
+
+Current benchmark scenarios remain the same but tested over the network. As specified below the data formats for inputs and outputs can be adapted and preprocessed for network transmission, providing a tradeoff between compute and network bandwidth. The preprocessing should be selected only from the options at the table below. The selected option can be defined by the submitter according to the specific network link and acceleration implemented. The preparation of the data is done in the QSL in an untimed manner. The details for the allowed preprocessing options for each benchmark are specified in the table below.
+
+The end-to-end latency is measure by the loadgen as it is done today, and it shall include all the network operation and processing latencies. The end-to-end latency shall include any additional processing at the SUT, like the decompression function.
+
+The table below provides the allowed pre-processing and post-processing options for each benchmark.
+|===
+|*Area* | *Task* | *Model* | *QSL side PreProcessing^(1,2,3)^*
+|Vision | Image classification | Resnet50-v1.5 | Allow one of the following compression options for pre-processing:
+
+1) No compression 2) Lossless compression 3) The original compression of the dataset (JPEG)
+|Vision | Object detection (large) | SSD-ResNet34 Going to change to Retinanet-resnext50 | Allow one of the following compression options for pre-processing:
+
+1) No compression 2) Lossless compression 3) The original compression of the dataset (For the Coco dataset JPEG, for Open Images JPEG) 
+|Vision | Medical image segmentation | 3D UNET | Allow one of the following compression options:
+
+1) No compression 2) Lossless compression
+
+This rule applies both for the QSL pre-processing and for post-processing function allowed in QDL for this benchmark results.
+|Speech | Speech-to-text | RNNT | Allow one of the following compression options for pre-processing:
+
+1) No compression 2) Lossless compression 3) The original compression of the dataset (FLAC)
+|Language | Language processing | BERT-large | Text in. No compression allowed.
+|Commerce | Recommendation | DLRM | QDL sends query (Batch of samples).
+
+Allow one of the following compression options for pre-processing:
+
+1) No compression 2) Lossless compression
+
+Allow any reasonable lossless compression.
+In Server mode allow per-Query compression.
+|===
+
+. Compression scheme will need approval. There will be an allowed list of schemes accumulated over time, so that approval process will become rare. Compression scheme should be disclosed in advance (like how quantization is disclosed - 2 weeks of advanced disclosure).
+. It is allowed to use information from the training set (not validation set) to the compression (ex: check index probability).
+. Only per-Sample compression is allowed, except for DLRM Server mode where per-Query compression is allowed.
+
+=== Submissions to Open Division
+Any submission that is outside the scope of the MLPerf Over the Network rules can go into the Open Division submission.
+
+
 == Divisions
 
 There are two divisions of the benchmark suite, the Closed division and the Open
