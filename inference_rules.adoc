@@ -430,9 +430,9 @@ suite result, e.g. “a MLPerf result of 4.5.”
 
 === Network Division
 
-The Network division inherits all requirements from the Closed division and imposes further constraints.
+The Network division inherits all requirements from the Closed division and imposes further constraints and supports only the Datacenter suite.
 
-In the Network division the SUT is connected to the loadgen over a network fabric. The loadgen architecture is extended by introducing a Query Dispatch Library (QDL) component which is the client-side SUT proxy. The QDL is a submitter implementation component. The QDL implements the SUT API. The Network division supports only the Datacenter suite.
+In the Network division the SUT is connected to the loadgen over a network fabric. The Query Dispatch Library (QDL) component which is the client-side SUT proxy which connects the Loadgen to an SUT over a network. The QDL is a submitter implemented component.
 
 ==== QDL Constraints
 
@@ -449,8 +449,8 @@ MLPerf distinguishes between fabric interconnects and bus interconnects. Fabrics
 A fabric interconnect must:
 
 1. Work as out-of-the-box chassis-to-chassis interconnect
-1. Use wireless, copper or fiber-optics media
-1. Connects systems in meters to kilometers distances
+1. Use wireless, copper, or fiber-optics media
+1. Connect systems in meters to kilometers distances
 1. Use switch topology
 1. Be highly scalable, reliable, and fault-tolerant
 
