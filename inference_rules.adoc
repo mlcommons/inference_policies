@@ -107,9 +107,11 @@ Results that cannot be replicated are not valid results.
 
 === Audit Process
 
-In each round, two submissions will be audited: one selected by the review committee, and one at random from all submissions. A "submission" for audit purposes shall denote a combination of a submitter and a platform (equivalent to a line in the results table). Only Available submissions in Closed division are auditable.
+In each round, up to two submissions will be audited: one at random from all submissions, and either zero or one selected by the review committee. A "submission" for audit purposes shall denote a combination of a submitter and a platform (equivalent to a line in the results table). Only Available submissions in Closed division are auditable.
 
-The process of random selection is in two stages: first a submitter is randomly chosen from all submitters with auditable submissions, then one of those submissions is randomly chosen.
+The process of random selection is in two stages: first a submitter is randomly chosen from all submitters with auditable submissions, then one of those submissions is randomly chosen. A submission is not a candidate for the randomly chosen audit if the system is equivalent to a system audited in the previous round. For the purposes of this rule, equivalent systems have the same CPU, NIC, accelerator, and accelerator count, with the same configuration of those components as per the system configuration JSON. The review committee may determine that additional systems are equivalent to those audited in the previous round.
+
+Otherwise, the submission selected by the review committee is chosen by ranked choice voting. One option shall be "No Selected Audit This Round".
 
 An auditor shall be chosen by the review committee who has no conflict of interest with the submitter.
 
