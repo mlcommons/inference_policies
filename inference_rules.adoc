@@ -230,8 +230,8 @@ There are two benchmark suites, one for Datacenter systems and one for Edge (def
 ====== ECC
 A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM.
 
-====== Networking
-A datacenter system must be equipped with all the necessary networking required by the system architecture described in the <<LoadGen Operation>> section.  The details of the networking components must be described in the appropriate field of the System JSON (https://github.com/mlcommons/policies/blob/master/submission_rules.adoc).  All necessary networking must be populated if power is measured along with performance. 
+====== Networking (from the v3.0 round)
+A Datacenter system must be equipped with all the necessary networking required by the system architecture described in the <<LoadGen Operation>> section.  The details of the networking components must be described in the appropriate field of the [System JSON](https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#system_desc_id-json-metadata).  All necessary networking must be populated if power is measured along with performance.
 
 
 The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
