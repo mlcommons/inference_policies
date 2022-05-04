@@ -443,7 +443,7 @@ In the Network division the SUT is connected to the Loadgen system over a networ
 
 ==== General Constraints
 
-MLPerf distinguishes between fabric interconnects and bus interconnects. Fabrics interconnects are required and bus interconnects are forbidden.
+MLPerf distinguishes between fabric interconnects and bus interconnects. Fabric interconnects are required and bus interconnects are forbidden.
 
 A fabric interconnect must:
 
@@ -453,9 +453,11 @@ A fabric interconnect must:
 1. Use switch topology
 1. Be highly scalable, reliable, and fault-tolerant
 
-Examples of allowed fabrics are Ethernet, IEEE802.11, Infiniband, and 3GPP.
+Currently permitted fabric interconnects are Ethernet, IEEE802.11, Infiniband, and 3GPP.
 
 Examples of forbidden bus interconnect include: PCIe/CXL/CCIX, Hypertransport, NVLink, QPI, UPI, and ICI (interchip interconnect).
+
+Additionally, any interconnect not listed in the permitted list is forbidden unless clearance is first obtained from the MLPerf Inference WG.
 
 The SUT and QDL must run on two physically separated and distinct systems.
 
@@ -468,7 +470,7 @@ Fabric and protocol must be reported in the submission metadata. Submission meta
 
 ==== Benchmarks and QSL Preprocessing
 
-Current benchmark scenarios remain the same but tested over the network. Data formats for inputs and outputs are allowed to be compressed for network transmission, providing a tradeoff between compute and network bandwidth. Data transferred between the Loadgen system and the SUT can be compressed using one of the options from the following table for each benchmark. Compression is performed by QSL, and is untimed. The compression scheme needs approval by the Working Group, allowing compression schemes that will be suitable for production, so for example, very asymmetric schemes are not expected to be approved.
+Data formats for inputs and outputs are allowed to be compressed for network transmission, providing a tradeoff between compute and network bandwidth. Data transferred between the Loadgen system and the SUT can be compressed using one of the options from the following table for each benchmark. Compression is performed by QSL, and is untimed. The compression scheme needs approval by the Working Group, allowing compression schemes that will be suitable for production, so for example, very asymmetric schemes are not expected to be approved.
 
 |===
 |*Area* | *Task* | *Model* | *QSL side PreProcessing^(1,2,3)^*
@@ -498,7 +500,7 @@ In Server mode allow per-Query compression.
 |===
 
 . Compression scheme needs pre-approval, at least two weeks before a submission deadline.
-. A compression scheme may use information from the training set, but not the not validation set (ex: check index probability).
+. A compression scheme may use information from the training set, but not the validation set (ex: check index probability).
 . Only per-Sample compression is allowed, except for DLRM Server mode where per-Query compression is allowed.
 
 === Open Division
