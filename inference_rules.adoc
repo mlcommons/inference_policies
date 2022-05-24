@@ -857,13 +857,13 @@ f(k; n, p) = P(k successes) = (n choose k) * p^k * (1-p)^(n-k)
 
 For fixed n and p, f(k; n, p) is called the binomial distribution with parameters n and p. 
 
-In order to determine how unusual our distribution of latency successes and failures is given the underlying probability of passing the latency bound (p), we compute the probability that we had at least h successes, keeping the total number of queries, n, fixed. This, by definition, involves computing the cumulative density function for our binomial distribution, F(h; n, p):
+In order to determine how unusual our distribution of latency successes and failures is given the underlying probability of passing the latency bound (p), we compute the probability that we had at most h successes, keeping the total number of queries, n, fixed. This, by definition, involves computing the cumulative density function for our binomial distribution, F(h; n, p):
 
 F(h; n, p) = ∑ f(k; n, p),
  
 with the summation going from k = h to n.
 
-Note that, holding h and n fixed, this probability increases with p. This is because, as p gets larger, the odds that our n queries produced results at least as good as h successes and t failures increases. In other words, it is easier to achieve a larger number of successes when the underlying probability of an individual success is higher. 
+Note that, holding h and n fixed, this probability decreases as p increases. This is because, as p gets larger, the odds that our n queries produced results at least as poor as h successes and t failures decreases. In other words, it is harder to achieve a larger number of failures when the underlying probability of an individual success is higher. 
 
 This cumulative distribution function for the binomial distribution, F(k; n, p), can be written in terms of the regularized incomplete beta function. The (unregularized) incomplete beta function is defined as:
 
