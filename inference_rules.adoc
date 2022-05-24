@@ -107,9 +107,11 @@ Results that cannot be replicated are not valid results.
 
 === Audit Process
 
-In each round, two submissions will be audited: one selected by the review committee, and one at random from all submissions. A "submission" for audit purposes shall denote a combination of a submitter and a platform (equivalent to a line in the results table). Only Available submissions in Closed division are auditable.
+In each round, up to two submissions will be audited: one at random from all submissions, and either zero or one selected by the review committee. A "submission" for audit purposes shall denote a combination of a submitter and a platform (equivalent to a line in the results table). Only Available submissions in Closed division are auditable.
 
-The process of random selection is in two stages: first a submitter is randomly chosen from all submitters with auditable submissions, then one of those submissions is randomly chosen.
+The process of random selection is in two stages: first a submitter is randomly chosen from all submitters with auditable submissions, then one of those submissions is randomly chosen. A submission is not a candidate for the randomly chosen audit if the system is equivalent to a system audited in the previous round. For the purposes of this rule, equivalent systems have the same CPU, NIC, accelerator, and accelerator count, with the same configuration of those components as per the system configuration JSON. The review committee may determine that additional systems are equivalent to those audited in the previous round.
+
+The review committee will select a submission for audit by ranked choice voting. One option shall be "No Selected Audit This Round".
 
 An auditor shall be chosen by the review committee who has no conflict of interest with the submitter.
 
@@ -236,8 +238,8 @@ There are two benchmark suites, one for Datacenter systems and one for Edge (def
 ====== ECC
 A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM.
 
-====== Networking
-A datacenter system must be equipped with all the necessary networking required by the system architecture described in the <<LoadGen Operation>> section.  The details of the networking components must be described in the appropriate field of the System JSON (https://github.com/mlcommons/policies/blob/master/submission_rules.adoc).  All necessary networking must be populated if power is measured along with performance. 
+====== Networking (from the v3.0 round)
+A Datacenter system must be equipped with all the necessary networking required by the system architecture described in the <<LoadGen Operation>> section.  The details of the networking components must be described in the appropriate field of the [System JSON](https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#system_desc_id-json-metadata).  All necessary networking must be populated if power is measured along with performance.
 
 
 The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
@@ -423,7 +425,7 @@ Note: The same code must be run for both the accuracy and performance LoadGen mo
 
 == Divisions
 
-There are two divisions of the benchmark suite, the Closed division and the Open
+There are three divisions of the benchmark suite, the Closed division, the Network division, and the Open
 division.
 
 === Closed Division
@@ -434,6 +436,81 @@ division allows calibration for quantization and does not allow any retraining.
 
 The unqualified name “MLPerf” must be used when referring to a Closed Division
 suite result, e.g. “a MLPerf result of 4.5.”
+
+=== Network Division
+
+The Network division inherits all requirements from the Closed division and imposes further constraints.
+In the Network division the SUT is connected to the Loadgen system over a network fabric. The Query Dispatch Library (QDL) component is a submitter-implemented SUT proxy that runs on the Loadgen system. The Network division supports only the Datacenter suite.
+
+==== QDL Constraints
+
+* The QDL is not allowed to do any pre-processing.
+* If an SUT compresses its output, the QDL must decompress the output. Decompression is a timed operation. No other post-processing in the QDL is allowed.
+* The QDL is not allowed to batch queries.
+* The Name method's return value must contain the substring "Network SUT".
+* The Name method's implementation must include at least one round trip over the network. The Name method must not return until the round trip is complete.
+
+==== General Constraints
+
+MLPerf distinguishes between fabric interconnects and bus interconnects. Fabric interconnects are required and bus interconnects are forbidden.
+
+A fabric interconnect must:
+
+1. Work as out-of-the-box chassis-to-chassis interconnect
+1. Use wireless, copper, or fiber-optics media
+1. Suitable for connecting systems above 10 meters distance
+1. Use switch topology
+1. Be highly scalable, reliable, and fault-tolerant
+
+Currently permitted fabric interconnects are Ethernet, IEEE802.11, Infiniband, and 3GPP.
+
+Examples of forbidden bus interconnect include: PCIe/CXL/CCIX, Hypertransport, NVLink, QPI, UPI, and ICI (interchip interconnect).
+
+Additionally, any interconnect not listed in the permitted list is forbidden unless clearance is first obtained from the MLPerf Inference WG.
+
+The SUT and QDL must run on two physically separated and distinct systems.
+
+Fabric and protocol must be reported in the submission metadata. Submission metadata must be sufficient to determine OSI layers one through four of the submission's network stack.
+
+==== SUT over the Network and Setup Constraints
+
+* SUT parameters and configuration must be uniquely and specifically named in the submission results. 
+* Network interface characteristics must be added to the report, both at the SUT side and at the Loadgen system side, including networking components, and name any other components through which data passes between Loadgen and the SUT for reproducibility.
+
+==== Benchmarks and QSL Preprocessing
+
+Data formats for inputs and outputs are allowed to be compressed for network transmission, providing a tradeoff between compute and network bandwidth. Data transferred between the Loadgen system and the SUT can be compressed using one of the options from the following table for each benchmark. Compression is performed by QSL, and is untimed. The compression scheme needs approval by the Working Group, allowing compression schemes that will be suitable for production, so for example, very asymmetric schemes are not expected to be approved.
+
+|===
+|*Area* | *Task* | *Model* | *QSL side PreProcessing^(1,2,3)^*
+|Vision | Image classification | Resnet50-v1.5 | Allow one of the following compression options for pre-processing:
+
+1) No compression 2) Lossless compression 3) The original compression of the dataset (JPEG)
+|Vision | Object detection (large) | SSD-ResNet34 Going to change to Retinanet-resnext50 | Allow one of the following compression options for pre-processing:
+
+1) No compression 2) Lossless compression 3) The original compression of the dataset (For the Coco dataset JPEG, for Open Images JPEG) 
+|Vision | Medical image segmentation | 3D UNET | Allow one of the following compression options:
+
+1) No compression 2) Lossless compression
+
+This rule applies both for the QSL pre-processing and for post-processing function allowed in QDL for this benchmark results.
+|Speech | Speech-to-text | RNNT | Allow one of the following compression options for pre-processing:
+
+1) No compression 2) Lossless compression 3) The original compression of the dataset (FLAC)
+|Language | Language processing | BERT-large | Text in. No compression allowed.
+|Commerce | Recommendation | DLRM | QDL sends query (Batch of samples).
+
+Allow one of the following compression options for pre-processing:
+
+1) No compression 2) Lossless compression
+
+Allow any lossless compression that will be suitable for production use.
+In Server mode allow per-Query compression.
+|===
+
+. Compression scheme needs pre-approval, at least two weeks before a submission deadline.
+. A compression scheme may use information from the training set, but not the validation set (ex: check index probability).
+. Only per-Sample compression is allowed, except for DLRM Server mode where per-Query compression is allowed.
 
 === Open Division
 
