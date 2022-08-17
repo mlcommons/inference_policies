@@ -3,37 +3,40 @@
 
 :sectnums:
 
-= MLPerf Inference Power Measurement Rules
+= MLPerf Inference v2.0 - Power Measurement Rules
 
-Version 1.1
-Updated Aug 06, 2021.  
+Updated 5 January 2022.
 
-Points of contact: Sachin Idgunji (sidgunji@mlcommons.org), Arun Tejusve Raghunath Rajan (tejus@mlcommons.org).
+Points of contact:
+
+- Sachin Idgunji (sidgunji@mlcommons.org).
+
+- Arun Tejusve Raghunath Rajan (tejus@mlcommons.org).
 
 == Preamble
 
-The MLPerf Power rules are an extension of the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[MLPerf Inference rules]. This document only outlines the deltas between what are the added steps to be considered for power submission along with the original performance submissions.
+This document describes how to measure Power for benchmarks in the https://github.com/mlcommons/inference[MLPerf Inference] suite.
+It only outlines the additional steps to be considered for Power submissions compared with original Performance submissions.
+Please see the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[MLPerf Inference rules] that cover the submission, review, and publication process for MLPerf Inference benchmarks in detail.
+
+Power is measured at the system level ("at the wall"). All submitters must use the software and scripts developed by the MLPerf Power working group ("the MLPerf Power workflow").
 
 == Overview
-
-This document describes how to measure power for the benchmarks in the MLPerf Inference Suite.
-
-There are separate rules for the submission, review, and publication process for all MLPerf benchmarks in the MLPerf Inference rules referenced above.
 
 The MLPerf name and logo are trademarks. In order to refer to a result using the MLPerf name, the result must conform to the letter and spirit of the rules specified in this document. The MLPerf organization reserves the right to solely determine if a use of its name or logo is acceptable.
 
 === Definitions (read this section carefully)
 
 A *system under test (SUT)* consists of a defined set of hardware and
-software resources that will be measured for performance. The hardware
+software resources that will be measured for performance and power. The hardware
 resources may include processors, accelerators, memories, disks, and
 interconnect. The software resources may include an operating system,
-compilers, libraries, and drivers that significantly influences the
-running time of a benchmark.
+compilers, libraries, and drivers that significantly affect the
+running time or power consumption of a benchmark.
 
 *A Director/Server* system is any system that can act as the host for
 the power measurements, e.g., a standard PC with an interface that
-connects to the power analyzer
+connects to the power analyzer.
 
 A *power analyzer* (aka power meter) is a device that is used for
 measuring the wall power of a system. The SUT is powered using the power
@@ -47,7 +50,11 @@ synchronization between the different systems that are used for power
 collection. It is required that the SUT and the Director are
 synchronized with NTP.
 
-*PTD (Power Thermal Utility)* is a utility that is developed by SPEC® for the purposes of power measurements and logging. MLCommons has licensed the use of this utility from SPEC. Please ensure to adhere to all things related to MLC and SPEC NDA. PTD by itself cannot be distributed.
+*PTD (Power Thermal Daemon)* is a https://www.spec.org/power/docs/SPECpower-Device_List.html[utility]
+that is developed by SPEC&reg; for the purposes of power measurements and logging.
+SPEC have provided a license to MLCommons members to use PTD. Please ensure to adhere to the
+End User License Agreement (EULA) between MLCommons and SPEC (see FAQ below).
+In particular, PTD can be used solely with the MLPerf Power workflow.
 
 == Power Measurement BKM
 
@@ -61,32 +68,23 @@ The power measurement flow detailed below : https://docs.google.com/presentation
 
 All rules for performance are applicable for power. In addition:
 
-=== System should be consistent with platform descriptions
+=== Total SUT power must be measured
 
-The system used for power measurements should match the ones described
-in the platform descriptions as part of the submission. Power needs to be 
-measured for the Inference submission system(s) that includes all components 
-that are sensitized by loadgen executing including the processor on which loadgen runs.
+The power consumption must be measured at the system level, i.e. including all
+components that are sensitized by LoadGen e.g. the host processor on which
+LoadGen runs, accelerators, memory, fans, etc.
 
-=== Power Delivery for Measurements
+=== Power Delivery
 
-MLPerf Power for Inference measures wall AC power consumed. The expectation is that the power delivery to the unit of computation  (node) 
-must  not have any battery  or alternate power storage in conjunction to the AC power , 
-before the power is provided to the PSUs of the system.
+The MLPerf Power workflow measures AC power consumed at the wall. The
+expectation is that the power delivery to the SUT must not have any battery or
+alternate power storage in conjunction to the AC power, before the power is
+provided to the PSUs of the system.
 
-=== Platform Description for Power submission
+=== SUT must be consistent with the description
 
-A valid submission has to  have all the fields of the platform description
-deemed mandatory to be filled by the submitter.  Power is  measured at the
-system level, and so a detailed description of the system/platform has to
-be provided as has been agreed.  
-
-For each submission the Power Management settings for the system to achieve
-the measured performance and power for the submissions must be documented.
-This is needed for reproducibility and verifiability
-
-An example file is here :  https://docs.google.com/document/d/1-j7TWCFBlTGi_EIpS2mQpgQLobtV0ITn2BJCakOgAZ4
-
+The SUT used for performance/power measurements must match the description
+provided as part of the submission.
 
 === SUT and Power Analyzer to remain unchanged from submission to results
 
@@ -95,13 +93,11 @@ from the time of the submission until the results are published. This is to
 ensure that in case there are audits, it is easiest to verify and reproduce the results
 from an existing setup.
 
-=== Changes to Loadgen
+=== Replicability is Mandatory
 
-Added the system timestamp indicator at the start of the performance
-phase and a timestamp where the performance phase ends. This was done in
-v0.5 version of the Inference submissions and remains a valid change for the current submission.
+Results that cannot be replicated are not valid results.
 
-=== System and framework must be available
+=== SUT must be available upon request
 
 If you are measuring the performance of a publicly available and widely-used
 system or framework, you must use publicly available and widely-used versions of
@@ -111,93 +107,109 @@ If you are measuring the performance of an experimental framework or system, you
 must make the system and framework you use available upon demand for
 replication.
 
-=== Power is measured in performance phase of the Benchmark/Scenario
+=== Power is measured in the Performance phase
 
-There are multiple phases to a benchmark as listed in the MLPerf
-Inference Rules document. Power measured is evaluated only on the
-performance phase of the benchmark and not in any other phases. To
-determine this exact section, Loadgen has been instrumented to indicate
-the start and stop of the performance phase of the benchmark and all
-power measurements are evaluated within this phase from the power
-logging done as part of the benchmark.
+https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[The MLPerf Inference rules]
+specify several phases of a benchmark: accuracy, performance, compliance.
+Power is evaluated only in the performance phase, and not in any other phases.
 
-The submission process has to use the software flow and scripts
-developed as part of the MLPerf benchmark Power measurement. The
-infrastructure has been developed by the MLPerf Power working group.
+=== LoadGen and Start/End TimeStamps
 
-=== Audit process and Benchmark Logging
+The MLPerf Power workflow uses exactly the same LoadGen as used for performance runs.
+LoadGen logs the system timestamp at the start and at the end of a performance run.
+The workflow then uses these timestamps to evaluate the power consumption of the run.
 
-As part of the submissions and logging, all the logs generated by the
-MLPerf Power SW infrastructure need to be submitted. These include the
-power meter ranging logs and the power measurement logs that are
-generated during the performance runs.
-
-=== Replicability is mandatory
-
-Results that cannot be replicated are not valid results.
-
-=== Power and Performance Reporting and Measurement
+=== Power and Performance Measurement and Reporting
 
 Power and performance measurements should be from the same run for a
-given benchmark and scenario. The current script takes care of this by
-default and it cannot and should not be changed. Example: We cannot run
+given benchmark and scenario. The MLPerf Power workflow takes care of this by
+default. This must not be changed. Example: It is not permitted to run
 the same benchmark and scenario 3 times and report the highest
-performance and lowest power among the 3 runs.
+performance and the lowest power consumption among the 3 runs.
 
-== Power Analyzer Support
-
-For version 1.0 and version 1.1 , we will only support Yokogawa power analyzers (aka meters).
-
-== Power Analyzer settings
-
-The power analyzer settings will not be set manually, but through the
-software that is part of the MLPerf Power measurement infrastructure.
-
-For v1.0 and v1.1 , the software supports a single meter connected to a node
-through single or multiple channel or configured in 3-phase mode.
-Multiple meter connectivity to a single node (SUT) is not supported in
-this version.
-
-== Power Management
-
+=== Realistic Power Management
 
 The goal of the testing is to mimic real-world usage scenarios as much
 as possible and enable showing the benefits of realistic power
-management, therefore we require:
+management. Therefore, we require that:
 
-* Any power management system be qualified for use appropriate for the submission type (e.g., a generally available system must use software/firmware qualified for general availability and shipping with the platform)
-* No benchmark- or benchmarking-specific hacks
-* Any changes in power management behavior must not have manual intervention or have awareness of the benchmark.
-
-== Power Logs
-
-Power logs will need to be submitted. All logs created as part of Power
-measurement will need to be submitted including the power analyzer
-ranging and the performance measurement.
-
-Power Logs are generated by the software running on the Director.
-
-== Loadgen
-
-The flow for power uses the same Loadgen as used for the performance
-runs. No additions are being made. Power flow uses the start and stop
-timestamp given by the loadgen for synchronizing the performance section
-of the benchmark and uses these markers for anchoring the window in
-which power is measured.
-
-== FAQs
-
-Q: Is MLPerf Power measurement accessible to anyone, or is it for member organizations only?
-
-A: The MLPerf Power measurement tools include some proprietary software that is only available to members. Therefore, your organization must be a member of MLCommons, and additionally your organization must sign a EULA.
+* Any power management system be qualified for use appropriate for the submission type (e.g., a generally available system must use software/firmware qualified for general availability and shipping with the platform).
+* Any changes in power management behavior must not have manual intervention.
 
 
-Q: Am I required to use the MLPerf Power automation tools?
+== What needs to be submitted?
 
-A: Yes, you must use the automation tools for any results submitted to MLPerf. The MLPerf Power automation flow enables in itself a number of checks and balances that ensures the highest quality power measurement possible are being incorporated.
+=== Platform Description
+
+A valid submission must have all the mandatory fields of the SUT description
+to be filled by the submitter.
+
+=== Performance and Power Logs
+
+All logs created by the MLPerf Power workflow must be submitted, including the
+performance measurement logs generated by LoadGen running on the SUT and the
+power measurement logs generated by the software running on the Director (both
+for the ranging and testing phases).
+
+=== Power Analyzer Settings
+
+The power analyzer is configured automatically through the software that is
+part of the MLPerf Power workflow. For the v1.0, v1.1 and v2.0 rounds, the
+software only supports connecting a single meter to a single SUT: 
+connecting multiple meters to a single SUT is not supported.
+
+A power meter configuration must be reported in a file called
+`analyzer_table.*` placed as follows:
+
+- If the configuration is common to all scenarios, benchmarks and systems: under the `<division>/<submitter>/measurements` directory.
+
+- If the configuration is common to all scenarios and benchmarks running on a system: under the `<division>/<submitter>/measurements/<system>` directory.
+
+- If the configuration is common to all scenarios for a benchmark running on a system: under the `<division>/<submitter>/measurements/<system>/<benchmark>` directory.
+
+- If the configuration is specific to a scenario for a benchmark running on a system: under the `<division>/<submitter>/measurements/<system>/<benchmark>/<scenario>` directory.
+
+The file format must be human readable, for example, Markdown (recommended), TXT, CSV or HTML.
+Examples: https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Qualcomm/measurements/r282_z93_q8-qaic-v1.5.9-aic100/analyzer_table.md[`md`] (single channel),
+https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Dell/power/R750xa_A100-PCIE-40GBx4_analyzer_table.md[`md`] (multi-channel),
+https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/NVIDIA/results/AGX_Xavier_TRT_MaxQ/AGX_Xavier_TRT_MaxQ.csv[`csv`] (single channel),
+https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/NVIDIA/results/A100-PCIex8_TRT_MaxQ/A100-PCIex8_TRT_MaxQ.csv[`csv`] (multi-channel).
+
+### Power Management Settings
+
+For reproducibility and verifiability of each submission, the Power Management
+Settings used to achieve the measured performance and power for the
+submission must be documented.
+
+The Power Management Settings must be reported in a file called
+`power_settings.*` placed according to the same rules as for the Power Analyzer
+Settings.
+
+Examples: https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Qualcomm/measurements/g292_z43_q16-qaic-v1.5.6-aic100/power_settings.md[`md`], 
+https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Dell/power/XE8545_A100-SXM-80GBx4_power_settings.md[`md`].
 
 
-Q: How can I obtain the MLPerf Power automation tools?
+== Frequently Asked Questions (FAQ)
 
-A: To access the MLPerf Power automation tools, your company's representative must sign thehttps://drive.google.com/file/d/1u9MdO4v5-uvbaJoElQoAwGb5_suMTZyH/view[MLPerf Power EULA], and send it to support@mlcommons.org. The MLCommons staff will give you access to a GitHub repo containing the automation tools.
+=== Is the MLPerf Power workflow accessible to anyone?
 
+The MLPerf Power workflow uses proprietary software (https://www.spec.org/power/docs/SPECpower-PTD-Update_Process.html[SPEC PTDaemon]).
+To access this software, your organization must be a member of MLCommons.
+In addition, an authorized representative of your organization must sign the
+https://drive.google.com/file/d/1u9MdO4v5-uvbaJoElQoAwGb5_suMTZyH/view[MLPerf Power EULA],
+and send it to support@mlcommons.org.
+
+=== Am I required to use the MLPerf Power workflow?
+
+Yes, you must use the MLPerf Power workflow for any results submitted to
+MLPerf.  This workflow integrates a number of checks and balances which ensures
+the highest quality of collected power measurements.
+
+=== How can I obtain the MLPerf Power workflow?
+
+Once your organization signs the EULA, MLCommons staff will give you access to a private GitHub repo containing the tools.
+
+=== Which power analyzers (aka meters) are supported?
+
+For the v1.0, v1.1 and v2.0 rounds, we only support Yokogawa power analyzers.
+In the future, we can support https://www.spec.org/power/docs/SPECpower-Device_List.html[any power analyzers supported by PTDaemon].
