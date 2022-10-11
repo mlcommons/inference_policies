@@ -1,0 +1,152 @@
+:toc:
+:toclevels: 4
+
+:sectnums:
+
+Updated Oct 9, 2022 
+
+Author: Zhihan Jiang (zhihanj@nvidia.com)
+
+= MLPerf-Inference Audit Guidelines 
+
+
+This document describes the guidelines for the MLPerf-Inference audit process. It is a complement to Section 2.8 of the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[MLPerf Inference Rules] and the overall https://github.com/mlcommons/policies/blob/master/submission_rules.adoc[MLCommon policies], and is meant to provide both submitters and auditors a general guideline for the audit process. The steps described here and the auditee's responses to them shall be documented in the audit report.
+
+== Audit Preparation
+
+=== NDA
+
+A non-disclosure agreement (NDA) should be signed between the auditee and the auditor (refer to Section 2.8 of the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc[MLPerf Inference Rules] for detailed timeline).
+
+=== System Connection
+
+The auditee should grant the auditor access to the audited system remotely, preferably through SSH. If the system cannot be reached directly through SSH, the auditee can screen-share the console that is connected to the audited system, and execute commands as directed by the auditor during the audit process.
+
+=== Audit Sessions
+
+The audit session is expected to take at least 4 hours, and can take up to several days depending on the throughput of the selected benchmarks on the audited system. The audit can be split into multiple sessions at both parties convenience.
+
+== Audit Process
+
+=== System Under Test
+
+In this section, the auditor should check whether the audited system is identical to the one used by the auditee to submit the inference results. For systems which are not publicly available, the auditor should also verify that the hardware/software satisfies the availability rules (see subsection Availability below).
+
+==== Hardware
+
+The auditor should check, including but not limited to the following parts:
+
+* Host processor
+* Host memory
+* Host storage
+* Accelerator
+* Network interface card (NIC)
+
+For each, the auditee should provide documentation and guidance to the auditor to access the related information, including but not limited to the following:
+
+* Host processor model name or SKU
+* Host processor core specification (core count, processors per node, etc.)
+* Host memory capacity and configuration
+* Host storage capacity and type
+* Accelerator model name or SKU
+* Accelerator specification (memory configuration, accelerators per node, etc.)
+* NIC model name or SKU
+* NIC configuration and bandwidth (to satisfy requirements for start_from_device etc.)
+
+The auditor should check if the information collected from the system is the same as documented in the system json file (e.g. https://github.com/mlcommons/inference_results_v2.0/blob/master/closed/NVIDIA/systems/DGX-A100_A100-SXM-80GBx8_TRT.json[DGX-A100_A100-SXM-80GBx8_TRT.json]) submitted by the auditee. If there is any discrepancy between the two, the auditee must provide a written explanation to the auditor and the MLCommon committee for further review.
+
+==== Software
+
+The auditee must use the same code that is used for submission (e.g. https://github.com/mlcommons/inference_results_v2.0[MLPerf-Inference v2.0]) for audit purposes, and the auditor should ask the auditee to download a copy of the repo for reproducing the results.
+
+The auditor should check that the inference software used on the audited system is identical to the one specified in the system json file (e.g. https://github.com/mlcommons/inference_results_v2.0/blob/master/closed/NVIDIA/systems/DGX-A100_A100-SXM-80GBx8_TRT.json[DGX-A100_A100-SXM-80GBx8_TRT.json]), including but not limited to:
+
+* Host operating system and architecture
+* Inference accelerator driver version
+* Inference software version
+* NIC (or other peripherals essential to the submission) driver version
+
+The auditor may further check if all the software is used as-is. If the code used by the auditee is different from the one in the submission repo, the auditor may ask for explanations for all the changes applied. Non-trivial changes to essential components must be recorded, including but not limited to:
+
+* code that pre-processes or post-processes the samples;
+* code that changes the model architecture, input, output, or weight;
+* code that interacts with the underlying inference software;
+* code that might affect the accuracy of the models (e.g. quantization)
+* code that changes the behavior of the system under test.
+
+If there is any discrepancy between the software used and reported, or if the software is used with an unreported non-trivial patch, the auditee must provide a written explanation to the auditor and the MLCommon committee for further review. 
+
+==== Availability
+
+In accordance with the inference rule (https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc#28-audit-process[section 2.8]), the audited system must fall under available category. The auditor should ask the auditee to show reasonable evidence that the system meets the following criteria (see https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#731-available-systems[section 7.3.1 of MLCommon policy] for full reference):
+
+. have available pricing (either publicly advertised or available by request),
+. have been shipped to at least one third party,
+. have public evidence of availability (web page saying product is available, statement by company, etc), and
+. be reasonably available for purchase by additional third parties by the submission date. In addition, submissions for on-premise systems must describe the system and its components in sufficient details to enable third parties to build a similar system.
+
+Under the available system category, all software used for submission must also be available. The auditor may ask the auditee to show reasonable evidence that all the software meet the following criteria (see https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#731-available-systems[section 7.3.1 of MLCommon policy] for full reference):
+
+. for open source software, the software may be based on any commit in an "official" repo plus optionally any PRs to support a particular architecture; 
+. for binaries, the binary must be made available as a release, or as a "beta" release with the requirement that optimizations will be included in a future "official" release. The beta must be made available to customers as a clear part of the release sequence. The software must be available at the time of submission.
+
+=== Reproduce Results
+
+In this section, the auditee should help the auditor reproduce the results on the system under test, such that they are reasonably close to the submitted ones. 
+
+==== Benchmark and Scenario Selection
+
+The auditor may choose any (or all) benchmark/scenario combination(s) at will, or use random sampling to pick. The available benchmarks are listed under the submission branch of the MLPerf inference github repo (e.g. https://github.com/mlcommons/inference/tree/r2.1[r2.1 branch]), and the available scenarios can be found in the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc#3-scenarios[inference rules]. Please note that not all of the combinations are submitted by the submitters, and the auditor should verify with the auditee on whether the chosen combinations are valid.
+
+==== Run Inference
+
+The auditee should provide any documentation and guidance to the auditor to run the inference software stack. The auditor may request a copy of the console output of the inference software for further inspection.
+
+==== Compare results
+
+The auditor should verify the results recorded are within reasonable tolerance of the original submitted results (by convention, MLPerf uses 2% as the threshold for "materially different" performance). For each scenario, the following criteria should be used (refer to submission checker for implementation details, e.g. https://github.com/mlcommons/inference/blob/r2.1/tools/submission/submission-checker.py[r2.1]):
+
+* Performance-only Offline: result_samples_per_second
+* Performance-only Server: result_scheduled_samples_per_sec
+* Performance-only SingleStream: result_90.00_percentile_latency_ns
+* Performance-only MultiStream: result_99.00_percentile_per_query_latency_ns
+* Performance-Power Offline/Server: qps_per_watt (calculated by dividing measured samples by average power consumption)
+* Performance-Power SingleStream/MultiStream: joules_per_stream (calculated by multiplying mean query latency by average power consumption of the measured queries)
+** The auditor should check that the time window recorded in the power_log roughly matches the workload run window, i.e.
+*** The power log end_time - start_time ~= reported run_time;
+*** The start_time is aligned to the workload log start_time.
+
+The auditor should also check that Loadgen returns VALID for the tests, and the accuracy of the runs meets the MLPerf-Inference target (as documented in the submission checker, e.g. https://github.com/mlcommons/inference/blob/r2.1/tools/submission/submission-checker.py#L40[r2.1]). 
+
+==== Run Compliance Tests
+
+The auditor may request compliance tests to be run for a subset of the benchmark/scenario combinations. The auditee must run all compliance tests required for the specified benchmarks, and pass with reasonable consistency. Note that a subset of the audit tests may be waived for benchmarks. Please refer to the compliance test directory (e.g. https://github.com/mlcommons/inference/tree/r2.1/compliance/nvidia[r2.1]) for more information.
+
+=== Code Inspection
+
+While running the benchmarks in the previous section, the auditor may check if all the software/code used by the auditee abides by the https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc#2-general-rules[inference rules] (section 2).
+
+==== Inference Methodology
+
+The auditee should explain the end-to-end process of the inference. The auditor may ask, including but not limited to, the following questions:
+
+* How is the sample pre-processed and post-processed?
+* What modifications are done to the model architecture?
+* What precision is the inference executed in?
+** If running in low-precision, how is the quantization done?
+* How is the model optimized, and are all the optimizations considered allowed techniques (refer to section 8.2 of https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc#82-model-equivalence[inference rules])?
+* For performance-power submission, how is the clock set and does it keep consistency throughout the inference?
+* For performance-power submission, what is the cooling method (e.g. fan policy)?
+
+==== Rule Violation
+
+The auditor should check whether there is any suspicious behavior of the software and hardware stack. Below are two examples:
+
+. To verify that no result caching is used within the inference software, the auditor may ask the auditee to slightly change the original model (e.g. remove a relu layer, or add an arbitrary skip connection). The auditee should demonstrate that the inference results have bad accuracy, but similar performance after running the modified model.
+. To verify that the audited inference software is not doing input-based, or model-based optimizations, the auditee must show reasonable effort to explain how the software can  optimize another generalized model (other than the MLPerf workloads), or the same model with different layer parameters. For example, the auditee may choose to demonstrate:
+* developer blogs showing generalized application to other models;
+* how layers are optimized indiscriminately through dumped logs for different models;
+* the results of running the same model with different parameters (e.g. BERT with different vocab size, attention heads or hidden layers)
+
+The auditor should use their own discretion to determine whether the proof is reasonable and sufficient.
+
