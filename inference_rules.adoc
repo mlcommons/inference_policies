@@ -941,9 +941,9 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 
 |===
 |Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
-|Vision |Resnet50-v1.5 |ImageNet (224x224) | __C*H*W*dtype_size__ | __3*224*224*dtype_size__ | __throughput*150528*dtype_size
-__|Vision |Retinanet |OpenImages (800x800) | __C*H*W*dtype_size__ | __3*800*800*dtype_size__ | __throughput*1920000*dtype_size__
-|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
+|Vision |Resnet50-v1.5 |ImageNet (224x224) | __C*H*W*dtype_size__ | __3*224*224*dtype_size__ | __throughput*150528*dtype_size__
+|Vision |Retinanet |OpenImages (800x800) | __C*H*W*dtype_size__ | __3*800*800*dtype_size__ | __throughput*1920000*dtype_size__
+|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | __max_audio_duration*num_samples_per_sec*(bits_per_sample/8)__ | __15*16000*(16/8)__ | __throughput*480000__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | __num_inputs*max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
 |Commerce |DLRM | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRM sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
@@ -955,8 +955,9 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 
 |===
 |Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
-|Vision |Resnet50-v1.5 |ImageNet (224x224) | negligible | negligible | __> 0
-__|Vision |Retinanet |OpenImages (800x800) | negligible | negligible | __> 0__
+|Vision |Resnet50-v1.5 |ImageNet (224x224) | negligible | negligible | __> 0__
+|Vision |Retinanet |OpenImages (800x800) | negligible | negligible | __> 0__
+|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | negligible | negligible | __> 0__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | negligible | negligible | __> 0__
