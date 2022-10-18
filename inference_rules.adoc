@@ -431,7 +431,7 @@ division.
 
 The Closed division requires using pre-processing, post-processing, and model
 that is equivalent to the reference or alternative implementation.  The closed
-division allows calibration for quantization or pruning, and does not allow any retraining.
+division allows calibration for quantization or pruning to adjust weights.
 
 The unqualified name “MLPerf” must be used when referring to a Closed Division
 suite result, e.g. “a MLPerf result of 4.5.”
@@ -534,9 +534,8 @@ For each benchmark, MLPerf will provide pointers to:
 
 For each benchmark, MLPerf will provide pointers to:
 
-* A calibration data set, to be used for quantization (see quantization
-  section) or pruning (see pruning section), that is a small subset 
-  of the training data set used to generate the weights
+* A calibration data set, to be used for quantization or pruning (see calibration
+  section), that is a small subset of the training data set used to generate the weights.
 
 Each reference implementation shall include a script to verify the datasets
 using a checksum. The dataset must be unchanged at the start of each run.
@@ -586,16 +585,16 @@ equivalent, as defined in these rules, to the model used in the reference implem
 OPEN: The benchmark implementation may use a different model to perform the same
 task. Retraining is allowed.
 
-=== Weight Definition, Quantization, and Pruning
+=== Weight Definition and Calibration
 
 CLOSED: MLPerf will provide trained weights and biases in fp32 format for both
 the reference and alternative implementations.
 
 MLPerf will provide a calibration data set for all models.
-Submitters may do arbitrary purely mathematical, reproducible quantization
-using only the calibration data and weight and bias tensors from the benchmark
-owner provided model to any numerical format
-that achieves the desired quality. The quantization method must be publicly
+Submitters may do arbitrary purely mathematical, reproducible quantization or
+pruning (setting values to zero) using only the calibration data, weight, and bias 
+tensors from the benchmark owner provided model to any numerical format
+that achieves the desired quality. The calibration method must be publicly
 described at a level where it could be reproduced.
 
 To be considered principled, the description of the quantization method must be
@@ -675,10 +674,11 @@ Examples of allowed techniques include, but are not limited to:
 
 The following techniques are disallowed:
 
-* Wholesale weight replacement or supplements
+* Wholesale weight supplements
 
-* Discarding non-zero weight elements, including structured pruning such as
-  channel slimming, attention head removal, and layer dropping
+* Discarding non-zero weight elements in a structural way such that entire rows 
+  or columns are removed, such as channel slimming, attention head removal, and 
+  layer dropping
 
 * Caching queries or responses
 
