@@ -674,6 +674,9 @@ Examples of allowed techniques include, but are not limited to:
 
 The following techniques are disallowed:
 
+* Retraining weights based on gradient-based techniques using the calibration
+  data (or any additional data)
+
 * Wholesale weight supplements
 
 * Discarding non-zero weight elements in a structural way such that entire rows 
