@@ -431,7 +431,7 @@ division.
 
 The Closed division requires using pre-processing, post-processing, and model
 that is equivalent to the reference or alternative implementation.  The closed
-division allows calibration for quantization and does not allow any retraining.
+division allows calibration for quantization or pruning, and does not allow any retraining.
 
 The unqualified name “MLPerf” must be used when referring to a Closed Division
 suite result, e.g. “a MLPerf result of 4.5.”
@@ -535,8 +535,8 @@ For each benchmark, MLPerf will provide pointers to:
 For each benchmark, MLPerf will provide pointers to:
 
 * A calibration data set, to be used for quantization (see quantization
-  section), that is a small subset of the training data set used to generate the
-  weights
+  section) or pruning (see pruning section), that is a small subset 
+  of the training data set used to generate the weights
 
 Each reference implementation shall include a script to verify the datasets
 using a checksum. The dataset must be unchanged at the start of each run.
@@ -586,7 +586,7 @@ equivalent, as defined in these rules, to the model used in the reference implem
 OPEN: The benchmark implementation may use a different model to perform the same
 task. Retraining is allowed.
 
-=== Weight Definition and Quantization
+=== Weight Definition, Quantization, and Pruning
 
 CLOSED: MLPerf will provide trained weights and biases in fp32 format for both
 the reference and alternative implementations.
@@ -664,6 +664,8 @@ Examples of allowed techniques include, but are not limited to:
 * Incorporating explicit statistical information about the calibration set
   (eg. min, max, mean, distribution)
 
+* Masking or updating the values of weights based on calibration set
+
 * Empirical performance and accuracy tuning based on the performance and accuracy
   set (eg. selecting batch sizes or numerics experimentally)
   
@@ -675,7 +677,8 @@ The following techniques are disallowed:
 
 * Wholesale weight replacement or supplements
 
-* Discarding non-zero weight elements, including pruning
+* Discarding non-zero weight elements, including structured pruning such as
+  channel slimming, attention head removal, and layer dropping
 
 * Caching queries or responses
 
