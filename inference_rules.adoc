@@ -449,6 +449,8 @@ In the Network division the SUT is connected to the Loadgen system over a networ
 * The Name method's return value must contain the substring "Network SUT".
 * The Name method's implementation must include at least one round trip over the network. The Name method must not return until the round trip is complete.
 
+The submission must include source code for the QDL implementation above the level of the OSI session layer (RPC or equivalent), and sufficient documentation of the session layer API that a reader of that code can understand what data is being marshalled and sent over the network for each query.
+
 ==== General Constraints
 
 MLPerf distinguishes between fabric interconnects and bus interconnects. Fabric interconnects are required and bus interconnects are forbidden.
