@@ -5,13 +5,6 @@
 
 = MLPerf Inference Rules
 
-Version 0.7
-Updated July 17, 2019
-This version has been updated, but is not yet final.
-
-Points of contact: David Kanter (david@mlcommons.org), Vijay Janapa Reddi
-(vjreddi@g.harvard.edu)
-
 == Overview
 
 This document describes how to implement one or more benchmarks in the MLPerf
@@ -126,6 +119,7 @@ The submitter will provide the auditor an NDA within seven days of the auditor's
 The auditor will submit their report to the submitter no more than thirty days after executing all relevant NDAs. The submitter will make any necessary redactions due to NDAs and forward the finalized report to the review committee within seven days. The auditor will confirm the accuracy of the forwarded report.
 
 Submissions that fail the audit at a material level will be moved to open or removed, by review committee decision.
+If a submission failed an audit that was delayed past publication, then any published material concerning the invalidated result is subject to the MLCommons [rules for Violation Determination, Remedies and Penalties](https://github.com/mlcommons/policies/blob/master/MLPerf_Results_Messaging_Guidelines.adoc#12-violation-determination-remedies-and-penalties) for remedial action. 
 
 MLCommons shall retain a library of past audit reports and send copies to MLCommons members, auditors, and potential auditors by request. Audit reports will not be further distributed without permission from the audited submitter.
 
@@ -145,7 +139,7 @@ described in the table below.
 
 An early stopping criterion (described in more detail in <<appendix-early_stopping>>) allows for runs with a relatively small number of processed queries to be valid, with the penalty that the effective computed percentile will be slightly higher.  This penalty counteracts the increased variance inherent to runs with few queries, where there is a higher probability that a particular run will, by chance, report a lower latency than the system should reliably support.
 
-In the above table, tail latency percentiles with an asterisk represent the theretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty.  See the following table for a suggested starting point for how to set the minimum number of queries.
+In the above table, tail latency percentiles with an asterisk represent the theoretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty.  See the following table for a suggested starting point for how to set the minimum number of queries.
 
 |===
 |Tail Latency Percentile |Confidence Interval |Margin-of-Error |Inferences |Rounded Inferences
