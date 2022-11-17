@@ -485,7 +485,7 @@ Fabric and protocol must be reported in the submission metadata. Submission meta
 * SUT can do the required pre-processing of the data, e.g. Batching, Padding, processing of the requests (precision, data layout), compression, decompression. SUT can do the required post processing functions e.g. gather, reduction or ArgMax. 
 * Network interface characteristics must be added to the report, both at the SUT side and at the LoadGen system side, including networking components, and name any other components through which data passes between LoadGen and the SUT for reproducibility.
 * It is required to add a system diagram that shows how the components between the LoadGen node and the SUT node are connected and to add text that explains the diagram.
-* For reproducibility, it is required to specify software version of all components, Hardware configurations, software stacks, dockers, and settings of all components and stacks.
+* For "Available" submissions, for reproducibility, it is required to specify software version of all components, hardware configurations, software stacks, dockers, and settings of all components and stacks.
 
 ==== Benchmarks and QSL Preprocessing
 
