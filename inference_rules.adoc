@@ -503,7 +503,7 @@ This rule applies both for the QSL pre-processing and for post-processing functi
 |Speech | Speech-to-text | RNNT | Allow one of the following compression options for pre-processing:
 
 1) No compression 2) Lossless compression 3) The original compression of the dataset (FLAC)
-|Language | Language processing | BERT-large | Tokenized text in. No compression allowed.
+|Language | Language processing | BERT-large | Token IDs, Input Masks and Segment IDs input. No compression allowed.
 |Commerce | Recommendation | DLRM | QDL sends query (Batch of samples).
 
 Allow one of the following compression options for pre-processing:
