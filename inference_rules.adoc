@@ -448,7 +448,7 @@ Non-conforming network submission should be submitted to Open category, under th
 * The QDL should reflect a single SUT to the LoadGen. LoadGen operates with a single SUT. 
 * The Name method's return value must contain the substring "Network SUT".
 * The Name method's implementation must include at least one round trip over the network. The Name method must not return until the round trip is complete.
-* The QDL should serially get the names from all the Nodes of the SUT and aggregate the responses in the Name Method after getting response from all Nodes. Each Node must have a unique Name.   
+* The QDL must query each SUT Node for its name and aggregate the responses in the Name Method. Each SUT Node must have a unique name.   
 
 The submission must include source code for the QDL implementation above the level of the OSI session layer (RPC or equivalent), and sufficient documentation of the session layer API that a reader of that code can understand what data is being marshalled and sent over the network for each query.
 
@@ -470,18 +470,18 @@ Examples of forbidden bus interconnect include: PCIe/CXL/CCIX, Hypertransport, N
 
 Additionally, any interconnect not listed in the permitted list is forbidden unless clearance is first obtained from the MLPerf Inference WG.
 
-The SUT and QDL must run on two physically separated and distinct systems. The SUT can contain multiple Nodes.
+The SUT and QDL must run on physically separate and distinct systems. The SUT can contain multiple Nodes.
 
 Fabric and protocol must be reported in the submission metadata. Submission metadata must be sufficient to determine OSI layers one through four of the submission's network stack.
 
 ==== SUT over the Network and Setup Constraints
 
 * SUT parameters and configuration must be uniquely and specifically named in the submission results.
-* Everything outside the LoadGen node should be considered as part of the SUT, for instance for counting power and latency. As an example, components outside the nodes like a switch or load balancer should be considered part of the SUT. The SUT can contain multiple Nodes.
+* Everything outside the LoadGen node should be considered as part of the SUT, for instance for counting power and latency. As an example, components outside the nodes like a switch or load balancer should be considered part of the SUT.
 * All queries must be transferred over the network, carrying the inference data, for inference execution at the SUT. All responses must be transferred back over the network, carrying the inference responses. 
 * Caching/Storing of the queries and inference data or responses for further use at the SUT is disallowed. It is allowed to cache/store other data like Neural Network weights or Neural Network executable.
 * SUT can do the required pre-processing of the data, e.g. Batching, Padding, processing of the requests (precision, data layout), compression, decompression. SUT can do the required post processing functions e.g. gather, reduction or ArgMax. 
-* Network interface characteristics must be added to the report, both at the SUT side for every Node, and at the LoadGen system side, including networking components.  Every other component through which data passes between LoadGen and the SUT must also be described for reproducibility purposes.
+* The report must contain network interface characteristics for both the Loadgen and SUT systems, and every other component through which data passes between Loadgen and SUT. The information must be sufficient for reproducibility.
 * A system diagram must be included in the submission that shows how the components between the LoadGen node and the SUT nodes are connected, accompanied by any text necessary for another submitter to understand the diagram.
 * For "Available" submissions, for reproducibility, it is required to specify software version of all components, hardware configurations, software stacks, dockers, and settings of all components and stacks.
 
