@@ -106,7 +106,7 @@ The process of random selection is in two stages: first a submitter is randomly 
 
 The review committee will select a submission for audit by ranked choice voting. One option shall be "No Selected Audit This Round".
 
-An auditor shall be chosen by the review committee who has no conflict of interest with the submitter. The process of auditor selection can take no longer than 4 weeks from selection of the submitter.
+An auditor shall be chosen by the review committee who has no conflict of interest with the submitter. The process of auditor selection can take no longer than 28 days from selection of the submitter.
 
 The burden is on the submitter to provide sufficient materials to demonstrate that the submission is compliant with the rules. Any such materials, including software, documentation, testing results and machine access will be provided to the auditor under NDA.
 
