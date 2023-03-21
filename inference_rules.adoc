@@ -123,7 +123,8 @@ If a submission failed an audit that was delayed past publication, then any publ
 
 MLCommons shall retain a library of past audit reports and send copies to MLCommons members, auditors, and potential auditors by request. Audit reports will not be further distributed without permission from the audited submitter.
 
-An audit is expected to be completed within a 90 day period. Audits failing to meet this timeline will be nullified by request of the auditee.
+An audit is expected to be completed within a 90 day period. Audits failing to meet this timeline can be requested to be invalidated by the auditee. The final decision to accept such a request will be determined by the Working Group.
+
 == Scenarios
 
 In order to enable representative testing of a wide variety of inference
