@@ -106,7 +106,7 @@ The process of random selection is in two stages: first a submitter is randomly 
 
 The review committee will select a submission for audit by ranked choice voting. One option shall be "No Selected Audit This Round".
 
-An auditor shall be chosen by the review committee who has no conflict of interest with the submitter.
+An auditor shall be chosen by the review committee who has no conflict of interest with the submitter. The process of auditor selection will take no more than 28 days from selection of the submitter.
 
 The burden is on the submitter to provide sufficient materials to demonstrate that the submission is compliant with the rules. Any such materials, including software, documentation, testing results and machine access will be provided to the auditor under NDA.
 
@@ -122,6 +122,8 @@ Submissions that fail the audit at a material level will be moved to open or rem
 If a submission failed an audit that was delayed past publication, then any published material concerning the invalidated result is subject to the MLCommons [rules for Violation Determination, Remedies and Penalties](https://github.com/mlcommons/policies/blob/master/MLPerf_Results_Messaging_Guidelines.adoc#12-violation-determination-remedies-and-penalties) for remedial action. 
 
 MLCommons shall retain a library of past audit reports and send copies to MLCommons members, auditors, and potential auditors by request. Audit reports will not be further distributed without permission from the audited submitter.
+
+An audit is expected to be completed within a 90 day period. Audits failing to meet this timeline can be requested to be invalidated by the auditee. The final decision to accept such a request will be taken by the Working Group.
 
 == Scenarios
 
