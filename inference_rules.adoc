@@ -172,7 +172,7 @@ Each sample has the following definition:
 |3D UNET	        |one image
 |RNNT	            |one raw speech sample up to 15 seconds
 |BERT	            |one sequence
-|DLRM	            |up to 700 user-item pairs (more details in FAQ)
+|DLRMv2	            |up to 700 user-item pairs (more details in FAQ)
 |===
 
 == Benchmarks
@@ -247,7 +247,7 @@ The Datacenter suite includes the following benchmarks:
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score) | N/A
 |Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds) | 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | 1000 ms
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 and 99.9% of FP32 (f1_score=90.874%) | 130 ms
-|Commerce |Recommendation |DLRM |1TB Click Logs | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.25%) | 30 ms
+|Commerce |Recommendation |DLRMv2 |Synthetic Multihot Criteo Dataset | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.31%) | 60 ms
 |===
 
 Each Datacenter benchmark *requires* the following scenarios:
@@ -510,7 +510,7 @@ This rule applies both for the QSL pre-processing and for post-processing functi
 |Language | Language processing | BERT-large | Input is either Token IDs, Input Masks and Segment IDs or just the Token IDs (generating the other tensors at the SUT in a timed operation). 
 
 No compression allowed.
-|Commerce | Recommendation | DLRM | QDL sends query (Batch of samples).
+|Commerce | Recommendation | DLRMv2 | QDL sends query (Batch of samples).
 
 Allow one of the following compression options for pre-processing:
 
@@ -522,7 +522,7 @@ In Server mode allow per-Query compression.
 
 . Compression scheme needs pre-approval, at least two weeks before a submission deadline.
 . A compression scheme may use information from the training set, but not the validation set (ex: check index probability).
-. Only per-Sample compression is allowed, except for DLRM Server mode where per-Query compression is allowed.
+. Only per-Sample compression is allowed, except for DLRMv2 Server mode where per-Query compression is allowed.
 
 === Open Division
 
@@ -563,7 +563,7 @@ As input, before preprocessing:
 
 * RNN-T takes a waveform
 
-* DLRM takes a variable sized set of items, each a sequence of embedding indices
+* DLRMv2 takes a variable sized set of items, each a sequence of embedding indices
 
 Sample-independent pre-processing that matches the reference model is
 untimed. However, it must be pre-approved and added to the following list:
@@ -793,8 +793,8 @@ Q: In classification and segmentation models (ResNet50, 3DUNet) the final softma
 
 A: Yes.
 
-=== DLRM
-Q: For DLRM, what's the distribution of user-item pairs per sample for all scenarios?
+=== DLRMv2
+Q: For DLRMv2, what's the distribution of user-item pairs per sample for all scenarios?
 
 A: For all scenarios, the distribution of user-item pairs per sample is specified by https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt]. To verify that your sample aggregation trace matches the reference, please follow the steps in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_trace_verification.txt[dist_trace_verification.txt]. Or simply download the reference https://zenodo.org/record/3941795/files/dlrm_trace_of_aggregated_samples.txt?download=1[dlrm_trace_of_aggregated_samples.txt] from Zenodo (MD5:3db90209564316f2506c99cc994ad0b2).
 
@@ -804,7 +804,7 @@ The benchmark provides a pre-defined quantile distribution in `./tools/dist_quan
 
 Q: What is the rational for the distribution of user-item pairs?
 
-In the case of DLRM we have agreed that we should use multiple samples drawn from a distribution, similar to the one shown on Fig. 5: "Queries for personalized recommendation models" in the https://arxiv.org/abs/2001.02772[DeepRecSys] paper.	
+In the case of DLRMv2 we have agreed that we should use multiple samples drawn from a distribution, similar to the one shown on Fig. 5: "Queries for personalized recommendation models" in the https://arxiv.org/abs/2001.02772[DeepRecSys] paper.	
 
 Q: Generating dlrm_trace_of_aggregated_samples.txt uses a pseudo-random number generator. How can submitters verify their system pseudo-random number generator is compatible?
 
@@ -815,7 +815,7 @@ Submitters can verify their compatibility by using the default `--numpy-rand-see
 
 Q: I understand that `--samples-to-aggregate-quantile-file=./tools/dist_quantile.txt` is the only compliant setting for MLPerf, but what are the alternative settings and what do they do?
 
-The DLRM MLPerf inference code has an option to aggregate multiple consecutive samples together into a single aggregated sample. The number of samples to be aggregated can be selected using either of the following options	
+The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive samples together into a single aggregated sample. The number of samples to be aggregated can be selected using either of the following options	
 
 1. fixed [`--samples-to-aggregate-fix`]	
 2. drawn uniformly from interval [`--samples-to-aggregate-min`, `--samples-to-aggregate-max`]	
@@ -958,7 +958,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | __max_audio_duration*num_samples_per_sec*(bits_per_sample/8)__ | __15*16000*(16/8)__ | __throughput*480000__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | __num_inputs*max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
-|Commerce |DLRM | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRM sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
+|Commerce |DLRMv2 | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRMv2 sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
 |===
 
 === Egress Bandwidth
@@ -973,6 +973,6 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | negligible | negligible | __> 0__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | negligible | negligible | __> 0__
-|Commerce |DLRM | 1TB Click Logs | negligible | negligible | __> 0__
+|Commerce |DLRMv2 |Synthetic Multihot Criteo Dataset | negligible | negligible | __> 0__
 |===
 
