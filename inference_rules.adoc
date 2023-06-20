@@ -227,7 +227,7 @@ time.
 
 ==== Constraints for the Closed division
 
-There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. The minimum requirements for a datacenter system are defined below:
+There are two benchmark suites, one for Datacenter systems and one for Edge (defined herein as non-datacenter) systems. Each suite has a carrying capacity of 10 benchmarks i.e at any point in time, the number of benchmarks will not exceed 10. The minimum requirements for a datacenter system are defined below:
 
 ===== Minimum requirements of a datacenter system
 ====== ECC
