@@ -173,6 +173,7 @@ Each sample has the following definition:
 |RNNT	            |one raw speech sample up to 15 seconds
 |BERT	            |one sequence
 |DLRMv2	            |up to 700 user-item pairs (more details in FAQ)
+|GPT-J	            |one sequence
 |===
 
 == Benchmarks
@@ -247,6 +248,7 @@ The Datacenter suite includes the following benchmarks:
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score) | N/A
 |Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds) | 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | 1000 ms
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 and 99.9% of FP32 (f1_score=90.874%) | 130 ms
+|Language |Summarization |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the generation length should be more than 90% of the reference (gen_len=4016878)| 20 s
 |Commerce |Recommendation |DLRMv2 |Synthetic Multihot Criteo Dataset | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.31%) | 60 ms
 |===
 
@@ -271,6 +273,7 @@ The Edge suite includes the following benchmarks:
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score)
 |Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds)| 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%)
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 (f1_score=90.874%)
+|Language |Summarization |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the generation length should be more than 90% of the reference (gen_len=4016878)| 20 s
 |===
 
 Each Edge benchmark *requires* the following scenarios, and sometimes permit an optional scenario:
@@ -325,6 +328,18 @@ the submitter must also provide at least one result with the corresponding Close
 1. Scenario constraints are not applicable: any combination of scenarios is permitted.
 1. A open submission must be classified as "Available", "Preview", or "Research, Development, or Internal".
 1. The model can be of any origin (trained on any dataset, quantized in any way, and sparsified in anyway).
+
+==== Additional inference parameters
+
+For each of the following benchmarks it is necessary to use the following inference parameters in the closed division
+
+|===
+|Benchmark |Parameter |Value | Explanation
+|Summarization (GPT-J) |num_beams |4 | Number of beams to use in the beam search algorithm
+|Summarization (GPT-J) |min_new_tokens |30 | Minimun number of new tokens to generate
+|Summarization (GPT-J) |max_new_tokens |128 | Maximum number of new tokens to generate
+|Summarization (GPT-J) |early_stopping |True | Use the EOS token to stop generating tokens
+|===
 
 == Load Generator
 
@@ -508,6 +523,9 @@ This rule applies both for the QSL pre-processing and for post-processing functi
 
 1) No compression 2) Lossless compression 3) The original compression of the dataset (FLAC)
 |Language | Language processing | BERT-large | Input is either Token IDs, Input Masks and Segment IDs or just the Token IDs (generating the other tensors at the SUT in a timed operation). 
+
+1) No compression 2) Lossless compression
+|Language | Language processing | GPT-J | Input is either Token IDs, Input Masks and Segment IDs or just the Token IDs (generating the other tensors at the SUT in a timed operation). 
 
 No compression allowed.
 |Commerce | Recommendation | DLRMv2 | QDL sends query (Batch of samples).
@@ -958,6 +976,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | __max_audio_duration*num_samples_per_sec*(bits_per_sample/8)__ | __15*16000*(16/8)__ | __throughput*480000__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | __num_inputs*max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
+|Language |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | __num_inputs*max_seq_len*dtype_size__ | __3*2048*dtype_size__ | __throughput*6144*dtype_size__
 |Commerce |DLRMv2 | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRMv2 sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
 |===
 
@@ -973,6 +992,7 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | negligible | negligible | __> 0__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | negligible | negligible | __> 0__
+|Language |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048)  | negligible | negligible | __> 0__
 |Commerce |DLRMv2 |Synthetic Multihot Criteo Dataset | negligible | negligible | __> 0__
 |===
 
