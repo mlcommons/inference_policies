@@ -390,7 +390,7 @@ The execution of LoadGen is restricted as follows:
   from the most logical source, which is usually the network or an I/O device such as a camera. It may be pinned. 
   Similarly, the response provided to Loadgen must be stored in the DRAM that most faithfully simulates transfer 
   to the most logical destination, which is a CPU process unless otherwise specified for the benchmark. 
-  From 2.1, submitters must provide with their submission sufficient details of the system architecture and software to  
+  From 4.0, submitters must provide with their submission sufficient details of the system architecture and software to  
   show how the I/O bandwidth utilized by each benchmark/scenario combination can be transferred between the memory where the trace is stored and
   the network or I/O device. Minimum bandwidths for each benchmark can be found in <<appendix-bw>>. All components mentioned in the system architecture must be present in the system during the run. A system architecture description must be provided along with the submission, which must include:
   
