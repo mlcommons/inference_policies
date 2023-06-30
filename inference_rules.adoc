@@ -821,6 +821,30 @@ The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive
 2. drawn uniformly from interval [`--samples-to-aggregate-min`, `--samples-to-aggregate-max`]	
 3. drawn from a custom distribution, with its quantile (inverse of CDP) specified in `--samples-to-aggregate-quantile-file=./tools/dist_quantile.txt`.
 
+=== LLM Benchmarks
+
+
+LLM benchmarks contain an auto-regressive generation loop. This loop’s execution is controlled by a decoding algorithm. The following rules discuss the decoding algorithm in the light of MLPerf Inference rules for the Closed submissions:
+
+* Decoding algorithm should follow the implementation available on huggingface: https://huggingface.co/blog/how-to-generate#beam-search 
+  ** We are using beam=4 for this algorithm’s setting.
+  ** The output length determines the runtime of the generation. So, the algorithm in a submission should follow the same settings as the reference model and the algorithm should not change the output length.
+* Summary of the allowed decoding algorithm:
+  ** For the LLM benchmarks, each query contains a prompt. Upon receiving the query, the SUT runs this query in two stages: 
+    1. Run the forward pass of the model. As part of this, populate the KV-cache corresponding to this request.
+    2. Start the decoding loop using the beam search algorithm, using 4 beams.
+    3. Loop ends when the max tokens for the benchmark is reached or EOS token is detected as part of beam search.
+  ** MLPerf inference rules only allow batching as a change of the execution of the model. Following this, the two-stage processing of the query above can execute for a batch of requests in the SUT.
+* Caching details
+  ** As explained earlier about caching, MLPerf Inference rules explicitly disallow caching of queries. KV-cache is a common technique used in caching the state of iterations of a single query in auto-regressive decoding. So, using a KV-cache, which doesn’t apply across queries, is allowed.
+  ** Entries of the KV-cache should be treated similar to activations of a forward pass. They can be quantized with respect to the quantization rules, and following the rules they can’t be pruned.
+  ** A KV-cache row is a tensor that deals with the execution of a single inference query. 
+  ** The entries corresponding to the query need to be reset and cannot retain state across new invocations.
+  ** Similar to changing the size of batches, KV-cache can be sized at different granularities. Similar to the rule for allowing caching of sizes and shapes, the shape of KV-cache can be cached across invocations.
+  ** Other than batching and quantization rules that apply to activations, wholesale replacement of the reference KV-cache execution (e.g., https://vllm.ai/) is disallowed.
+
+
+
 === Audit
 
 Q: What characteristics of my submission will make it more likely to be audited?
