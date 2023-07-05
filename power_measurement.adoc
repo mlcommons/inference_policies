@@ -188,6 +188,10 @@ Settings.
 Examples: https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Qualcomm/measurements/g292_z43_q16-qaic-v1.5.6-aic100/power_settings.md[`md`], 
 https://github.com/mlcommons/inference_results_v1.1/blob/main/closed/Dell/power/XE8545_A100-SXM-80GBx4_power_settings.md[`md`].
 
+### Reproduction of Power Runs during Review Period and Resolving differences
+
+During the review period, some reviewers try to reproduce runs on systems from submitters. To reproduce Power results faithfully requires an exact replica of the setup including the AC Power supply source and the configuration using break out boxes. There is also an aspect of part-to-part variability.  If during reviews there are any differences in the power run reproduction, it is advisable for the submitter to offer their system to audit to ensure that the submission is done following all the rules and can be tested out by the auditor.
+
 
 == Frequently Asked Questions (FAQ)
 
