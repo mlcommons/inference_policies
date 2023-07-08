@@ -825,15 +825,23 @@ The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
-A: The benchmark uses the beam search algorithm described at a high level here: https://huggingface.co/blog/how-to-generate#beam-search. Specifically, we use a beam width of 4 and enable early termination. TODO(thomas,bhadri): Add more details here of the beam search in GPT-J.
+A: The benchmark uses the beam search algorithm described at a high level here: https://huggingface.co/blog/how-to-generate#beam-search. Specifically, we use a beam width of 4 and enable early termination: TODO: Add more details here of the beam search in GPT-J.
 
 Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
 
-A: Using a KV-cache is allowed in the same way as included in the reference model where it does not apply across queries. A KV-cache row is a tensor that must deal with the execution of a single inference query. Every input query must be computed in its entirety. Entries of the KV-cache must be treated similar to activations of a forward pass. They can be quantized with respect to the quantization rules. Similarly, they cannot be pruned (or sparsified).
+A: Using a KV-cache is allowed in the same way as it is included in the reference model, where it does not apply across queries. A KV-cache row is a tensor that must handle the execution of a single inference query. When a KV-cache is used, every input query must be computed in its entirety.
 
-Q: What are the rules related to KV-cache and query batching?
+Q: Is it allowed to not use a KV-cache or use it partially?
 
-A: The size of the KV-cache depends on the batch size. Following the rule for allowing caching of sizes and shapes, the KV-cache size can also be cached across queries. Other than batching and quantization rules (that apply to activations), alternative attention mechanisms (such as paged, multi-query, sparse, group query attention, etc) or wholesale replacement of the reference KV-cache execution are disallowed.
+A: Yes, KV-cache is an optional optimization. It is not required to use a KV-cache, but if you do, your implementation must adhere to the reference implementation. If you do not use a KV-cache, the corresponding values must be rematerialized during the decoding process. 
+
+Q: How does quantization and pruning apply to the KV-cache?
+
+A: The entries of the KV-cache should be handled in the same way as the activations of a forward pass. They can be quantized according to the quantization rules. However, according to the model equivalence rules, they cannot be pruned (or sparsified). It should be noted that pruning is different from not using a KV-cache (or caching only some entries while rematerializing others); pruning alters the computation and the model's predictions.
+
+Q: How does query batching affect the KV-cache usage?
+
+A: The size of the KV-cache is determined by the batch size. The KV-cache size can also be cached across queries, in accordance with the rule of allowing caching of sizes and shapes. Other than batching and quantization rules (that apply to activations), alternative attention mechanisms (such as paged, multi-query, sparse, group query attention, etc.) or wholesale replacement of the reference KV-cache execution are not permitted.
 
 === Audit
 
