@@ -825,7 +825,7 @@ The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
-A: The benchmark uses the beam search algorithm described at a high level here: https://huggingface.co/blog/how-to-generate#beam-search. Specifically, we use a beam width of 4 and enable early termination: TODO: Add more details here of the beam search in GPT-J.
+A: The benchmark uses the beam search algorithm described at a high level here: https://huggingface.co/blog/how-to-generate#beam-search. Specifically, we use a beam width of 4 and enable early termination.
 
 Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
 
