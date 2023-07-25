@@ -839,6 +839,28 @@ The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive
 2. drawn uniformly from interval [`--samples-to-aggregate-min`, `--samples-to-aggregate-max`]	
 3. drawn from a custom distribution, with its quantile (inverse of CDP) specified in `--samples-to-aggregate-quantile-file=./tools/dist_quantile.txt`.
 
+=== LLM Benchmarks
+
+Q: What algorithm is used for the auto-regressive decoding loop?
+
+A: The benchmark uses the beam search algorithm described at a high level here: https://huggingface.co/blog/how-to-generate#beam-search. Specifically, we use a beam width of 4 and enable early termination.
+
+Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
+
+A: Using a KV-cache is allowed in the same way as it is included in the reference model, where it does not apply across queries. A KV-cache row is a tensor that must handle the execution of a single inference query. When a KV-cache is used, every input query must be computed in its entirety.
+
+Q: Is it allowed to not use a KV-cache or use it partially?
+
+A: Yes, KV-cache is an optional optimization. It is not required to use a KV-cache, but if you do, your implementation must adhere to the reference implementation. If you do not use a KV-cache, the corresponding values must be rematerialized during the decoding process. 
+
+Q: How does quantization and pruning apply to the KV-cache?
+
+A: The entries of the KV-cache should be handled in the same way as the activations of a forward pass. They can be quantized according to the quantization rules. However, according to the model equivalence rules, they cannot be pruned (or sparsified). It should be noted that pruning is different from not using a KV-cache (or caching only some entries while rematerializing others); pruning alters the computation and the model's predictions.
+
+Q: How does query batching affect the KV-cache usage?
+
+A: The size of the KV-cache is determined by the batch size. The KV-cache size can also be cached across queries, in accordance with the rule of allowing caching of sizes and shapes. Other than batching and quantization rules (that apply to activations), alternative attention mechanisms (such as paged, multi-query, sparse, group query attention, etc.) or wholesale replacement of the reference KV-cache execution are not permitted.
+
 === Audit
 
 Q: What characteristics of my submission will make it more likely to be audited?
