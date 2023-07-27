@@ -487,7 +487,7 @@ Examples of forbidden bus interconnect include: PCIe/CXL/CCIX, Hypertransport, N
 
 Additionally, any interconnect not listed in the permitted list is forbidden unless clearance is first obtained from the MLPerf Inference WG.
 
-The SUT and QDL must run on physically separate and distinct systems. The SUT can contain multiple Nodes.
+System Topology: The SUT and QDL must run on physically separate and distinct systems. The SUT can contain multiple Nodes. The systems can be connected point to point or through network elements like switches.
 
 Fabric and protocol must be reported in the submission metadata. Submission metadata must be sufficient to determine OSI layers one through four of the submission's network stack.
 
