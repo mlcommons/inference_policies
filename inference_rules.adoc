@@ -1011,7 +1011,6 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Vision |Resnet50-v1.5 |ImageNet (224x224) | negligible | negligible | __> 0__
 |Vision |Retinanet |OpenImages (800x800) | negligible | negligible | __> 0__
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
-|Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32381026*dtype_size__ | __throughput*32381026*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | negligible | negligible | __> 0__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | negligible | negligible | __> 0__
 |Language |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048)  | negligible | negligible | __> 0__
