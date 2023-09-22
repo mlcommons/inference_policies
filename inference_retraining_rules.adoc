@@ -12,7 +12,7 @@ Points of contact: David Kanter (david@mlcommons.org), Cormac Brick (cormac.bric
 
 == Overview
 
-This document describes an experimental set of rules that govern how to retrain one or more benchmarks in the MLPerf Inference Suite and how to use those implementations to measure the performance of an ML system performing inference.
+This document describes the rules that govern how to retrain one or more benchmarks in the MLPerf Inference Suite and how to use those implementations to measure the performance of an ML system performing inference.
 
 Implementations that comply with these rules may be submitted within the Open division of MLPerf Inference and tagged as valid Retraining submission. The intent of these rules is to provide a set of contraints for retraining that is more restrictive than the broader Open division rules and enables comparison of retrained implementations. Accordingly, these rules govern both the process of retraining and the resulting retrained inference implementation.
 
