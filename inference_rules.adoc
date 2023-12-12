@@ -137,9 +137,11 @@ described in the table below.
 |Scenario |Query Generation |Duration |Samples/query |Latency Constraint |Tail Latency | Performance Metric
 |Single stream |LoadGen sends next query as soon as SUT completes the previous query | 600 seconds |1 |None |90%* | 90%-ile early-stopping latency estimate
 |Server |LoadGen sends new queries to the SUT according to a Poisson distribution | 600 seconds |1 |Benchmark specific |99%* | Maximum Poisson throughput parameter supported
-|Offline |LoadGen sends all samples to the SUT at start in a single query | 1 query and 600 seconds | At least 24,576 |None |N/A | Measured throughput
+|Offline |LoadGen sends all samples to the SUT at start in a single query | 1 query and 600 seconds | At least 24576** |None |N/A | Measured throughput
 |Multistream | Loadgen sends next query, as soon as SUT completes the previous query | 600 seconds | 8 | None | 99%* | 99%-ile early-stopping latency estimate|
 |===
+
+ ** - If the dataset used for the accuracy run of the benchmark task is of size less than 24576 say `N`, then the Offline scenario query only needs to have at least `N` samples.
 
 An early stopping criterion (described in more detail in <<appendix-early_stopping>>) allows for runs with a relatively small number of processed queries to be valid, with the penalty that the effective computed percentile will be slightly higher.  This penalty counteracts the increased variance inherent to runs with few queries, where there is a higher probability that a particular run will, by chance, report a lower latency than the system should reliably support.
 
