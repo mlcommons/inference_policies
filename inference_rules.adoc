@@ -252,7 +252,7 @@ The Datacenter suite includes the following benchmarks:
 |Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds) | 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | 1000 ms
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 and 99.9% of FP32 (f1_score=90.874%) | 130 ms
 |Language |Summarization |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the generation length should be more than 90% of the reference (gen_len=4016878)| 20 s
-|Language |Question Answering |Llama2 |OpenOrca (GPT-4 split, max_seq_len=1024) | 24576 | 99% of FP32 and 99.9% of FP32 (rouge1=43.88, rouge2=21.7108, rougeL=28.2502). Additionally, for both cases the generation length should be more than 90% of the reference (gen_len=4016878)| TTFT/TPOTfootnote:[For Llama2, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms for conversationalfootnote:llamalatency[For Llama2, there are 2 latency contraints: conversational and near real-time. The user can choose either (or both) of the contraints, and report the achieved performance number.]; 500 ms/50 ms for near real-timefootnote:llamalatency[]
+|Language |Question Answering |Llama2 |OpenOrca (GPT-4 split, max_seq_len=1024) | 24576 | 99% of FP32 and 99.9% of FP32 (rouge1=43.88, rouge2=21.7108, rougeL=28.2502). Additionally, for both cases the generation length should be more than 90% of the reference (gen_len=28124112)| TTFT/TPOTfootnote:[For Llama2, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms for conversationalfootnote:llamalatency[For Llama2, there are 2 latency contraints: conversational and near real-time. The user can choose either (or both) of the contraints, and report the achieved performance number.]; 500 ms/50 ms for near real-timefootnote:llamalatency[]
 |Commerce |Recommendation |DLRMv2 |Synthetic Multihot Criteo Dataset | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.31%) | 60 ms
 |===
 
@@ -869,7 +869,7 @@ A: Yes, KV-cache is an optional optimization. It is not required to use a KV-cac
 
 Q: Is it allowed to store continuous keys and values in non-contiguous memory space for the KV-cache, i.e. PagedAttention?
 
-A: Yes, it is allowed as long as the KV-cache block is reused only within the batch of queries. PagedAttention is expliained at a high level here: https://blog.vllm.ai/2023/06/20/vllm.html.
+A: Yes, it is allowed as long as the KV-cache block is reused only within the batch of queries. A high level explanation of PagedAttention can be found here: https://blog.vllm.ai/2023/06/20/vllm.html.
 
 Q: How does quantization and pruning apply to the KV-cache?
 
