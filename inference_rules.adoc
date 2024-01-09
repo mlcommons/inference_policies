@@ -291,6 +291,7 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 |Vision |Medical image segmentation |Single Stream, Offline
 |Speech |Speech-to-text |Single Stream, Offline
 |Language |Language processing |Single Stream, Offline
+|Generative |Text to image |Single Stream, Offline
 |===
 
 
