@@ -542,9 +542,8 @@ Allow one of the following compression options for pre-processing:
 
 Allow any lossless compression that will be suitable for production use.
 In Server mode allow per-Query compression.
-|Generative | Text to image | SDXL | Allow one of the following compression options:
+|Generative | Text to image | SDXL | No compression allowed.
 
-1) No compression 2) Lossless compression
 |===
 
 . Compression scheme needs pre-approval, at least two weeks before a submission deadline.
