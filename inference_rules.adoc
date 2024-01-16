@@ -176,6 +176,7 @@ Each sample has the following definition:
 |BERT	            |one sequence
 |DLRMv2	            |up to 700 user-item pairs (more details in FAQ)
 |GPT-J	            |one sequence
+|Llama2	            |one sequence
 |===
 
 == Benchmarks
@@ -250,7 +251,8 @@ The Datacenter suite includes the following benchmarks:
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score) | N/A
 |Speech |Speech-to-text |RNNT |Librispeech dev-clean (samples < 15 seconds) | 2513 | 99% of FP32 (1 - WER, where WER=7.452253714852645%) | 1000 ms
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 and 99.9% of FP32 (f1_score=90.874%) | 130 ms
-|Language |Summarization |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the generation length should be more than 90% of the reference (gen_len=4016878)| 20 s
+|Language |Summarization |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the total generation length of the texts should be more than 90% of the reference (gen_len=4016878)| 20 s
+|Language |Question Answering |Llama2 |OpenOrca (GPT-4 split, max_seq_len=1024) | 24576 | 99% of FP32 and 99.9% of FP32 (rouge1=43.88, rouge2=21.7108, rougeL=28.2502). Additionally, for both cases the generation length of the tokens per sample should be more than 90% of the reference (tokens_per_sample=293.3)| TTFT/TPOTfootnote:[For Llama2, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms
 |Commerce |Recommendation |DLRMv2 |Synthetic Multihot Criteo Dataset | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.31%) | 60 ms
 |===
 
@@ -263,6 +265,8 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Vision |Medical image segmentation |Offline
 |Speech |Speech-to-text |Server, Offline
 |Language |Language processing |Server, Offline
+|Language |Summarization |Server, Offline
+|Language |Question Answering |Server, Offline
 |Commerce |Recommendation |Server, Offline
 |===
 
@@ -287,6 +291,7 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 |Vision |Medical image segmentation |Single Stream, Offline
 |Speech |Speech-to-text |Single Stream, Offline
 |Language |Language processing |Single Stream, Offline
+|Language |Summarization |Single Stream, Offline
 |===
 
 
@@ -340,6 +345,7 @@ For each of the following benchmarks it is necessary to use the following infere
 |Summarization (GPT-J) |min_new_tokens |30 | Minimun number of new tokens to generate
 |Summarization (GPT-J) |max_new_tokens |128 | Maximum number of new tokens to generate
 |Summarization (GPT-J) |early_stopping |True | Use the EOS token to stop generating tokens
+|Summarization (Llama2) |max_new_tokens |1024 | Maximum number of new tokens to generate
 |===
 
 == Load Generator
@@ -526,7 +532,10 @@ This rule applies both for the QSL pre-processing and for post-processing functi
 |Language | Language processing | BERT-large | Input is either Token IDs, Input Masks and Segment IDs or just the Token IDs (generating the other tensors at the SUT in a timed operation). 
 
 1) No compression 2) Lossless compression
-|Language | Language processing | GPT-J | Input is either Token IDs, Input Masks and Segment IDs or just the Token IDs (generating the other tensors at the SUT in a timed operation). 
+|Language | Summarization | GPT-J | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation). 
+
+No compression allowed.
+|Language | Question Answering | Llama2 | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation). 
 
 No compression allowed.
 |Commerce | Recommendation | DLRMv2 | QDL sends query (Batch of samples).
@@ -578,7 +587,7 @@ As input, before preprocessing:
 
 * all imaging benchmarks take uncropped uncompressed bitmap
 
-* BERT takes text
+* BERT, GPT-J, Llama2 take texts
 
 * RNN-T takes a waveform
 
@@ -600,6 +609,8 @@ untimed. However, it must be pre-approved and added to the following list:
 
 * May convert data among numerical formats
 
+* May convert to token ids from texts using the reference tokenizer
+
 Any other pre- and post-processing time is included in the wall-clock time for a
 run result.
 
@@ -619,7 +630,7 @@ task. Retraining is allowed.
 
 === Weight Definition and Quantization
 
-CLOSED: MLPerf will provide trained weights and biases in fp32 format for both
+CLOSED: MLPerf will provide trained weights and biases in fp16/fp32 format for both
 the reference and alternative implementations.
 
 MLPerf will provide a calibration data set for all models.
@@ -740,6 +751,8 @@ The following techniques are disallowed:
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD.
 
+* Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model).
+
 == FAQ
 
 Q: Do I have to use the reference implementation framework?
@@ -844,7 +857,7 @@ The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
-A: The benchmark uses the beam search algorithm described at a high level here: https://huggingface.co/blog/how-to-generate#beam-search. Specifically, we use a beam width of 4 and enable early termination.
+A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, GPT-J uses a beam width of 4 and enable early termination, while Llama2 uses greedy search.
 
 Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
 
@@ -854,13 +867,21 @@ Q: Is it allowed to not use a KV-cache or use it partially?
 
 A: Yes, KV-cache is an optional optimization. It is not required to use a KV-cache, but if you do, your implementation must adhere to the reference implementation. If you do not use a KV-cache, the corresponding values must be rematerialized during the decoding process. 
 
+Q: Is it allowed to store continuous keys and values in non-contiguous memory space for the KV-cache, i.e. PagedAttention?
+
+A: Yes, it is allowed as long as the KV-cache block is reused only within the batch of queries. A high level explanation of PagedAttention can be found here: https://blog.vllm.ai/2023/06/20/vllm.html.
+
 Q: How does quantization and pruning apply to the KV-cache?
 
 A: The entries of the KV-cache should be handled in the same way as the activations of a forward pass. They can be quantized according to the quantization rules. However, according to the model equivalence rules, they cannot be pruned (or sparsified). It should be noted that pruning is different from not using a KV-cache (or caching only some entries while rematerializing others); pruning alters the computation and the model's predictions.
 
 Q: How does query batching affect the KV-cache usage?
 
-A: The size of the KV-cache is determined by the batch size. The KV-cache size can also be cached across queries, in accordance with the rule of allowing caching of sizes and shapes. Other than batching and quantization rules (that apply to activations), alternative attention mechanisms (such as paged, multi-query, sparse, group query attention, etc.) or wholesale replacement of the reference KV-cache execution are not permitted.
+A: The size of the KV-cache is determined by the batch size. The KV-cache size can also be cached across queries, in accordance with the rule of allowing caching of sizes and shapes.
+
+Q: Is it allowed to apply continuous batching (or dynamic batching) for auto-generative benchmarks?
+
+A: Yes. Continuous batching is explained at a high level here: https://www.anyscale.com/blog/continuous-batching-llm-inference.
 
 === Audit
 
@@ -999,7 +1020,8 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
 |Speech |RNNT |Librispeech dev-clean (samples < 15 seconds) | __max_audio_duration*num_samples_per_sec*(bits_per_sample/8)__ | __15*16000*(16/8)__ | __throughput*480000__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | __num_inputs*max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
-|Language |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | __num_inputs*max_seq_len*dtype_size__ | __3*2048*dtype_size__ | __throughput*6144*dtype_size__
+|Language |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | __num_inputs*max_seq_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
+|Language |Llama2 |OpenOrca (GPT-4 split, max_seq_len=1024) | __num_inputs*max_seq_len*dtype_size__ | __1024*dtype_size__ | __throughput*1024*dtype_size__
 |Commerce |DLRMv2 | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRMv2 sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
 |===
 
