@@ -141,6 +141,8 @@ In addition to general MLCommons review rules outlined https://github.com/mlperf
 
 * Submitters are encouraged to review other submissions beyond their assigned review.
 
+During the Peer Review Process, a reviewer can ask for access to a submission system to reproduce the submission. If the request is granted and the reviewer is satisfied with the results, this can be used to waive the reviewed system from the audit, subject to the approval of the review group.
+
 
 == Scenarios
 
