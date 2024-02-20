@@ -131,17 +131,13 @@ An audit is expected to be completed within a 90 day period. Audits failing to m
 
 In addition to general MLCommons review rules outlined https://github.com/mlperf/policies/blob/master/submission_rules.adoc[here], Inference workgroup uses Assigned Peer Review to improve scrutiny of the results. The goal is to ensure that each submission is reviewed. The process, executed by Results Chair, is as follows:
 
-* All submitters are compiled into an ordered list. Alphabetical, or any other way order is fine
-
-* A list randomizer is used to generate a re-ordered list live during a review meeting. List Randomizer from random.org can be used.
-
-* Peer Reviews are assigned based on the new order with the last submitter in the new order assigned to review the first one. For example, with companies Company1, Company2, and Company3 participating, the list can be reordered to Company2, Company1, Company3. The Assigned Reviews will be: Company2 will review Company1, Company1 will review Company3, Company3 will review Company2. 
+* Each submitter will be assigned another submitter to review.
 
 * Chair will open a github issue against each company that has review assignment. Issues will be closed once reviewers indicate that they had finished their tasks. 
 
 * During the review, reviewers are asked to pay special attention to: (1) results validity, (2) methodology, (3) instructions for reproducibility, and (4) content of json files in systems directory.  
 
-* Any issues discovered should be filed as github issues and resolved as usual. The issues should be filed promptly before the issue filing deadline.
+* Any issues discovered are to be filed as github issues and resolved as usual. The issues should be filed before the deadline to raise objections.
 
 * Submitters are encouraged to review other submissions beyond their assigned review.
 
