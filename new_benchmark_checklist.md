@@ -23,45 +23,48 @@ Identify the compliance tests required for each applicable category and scenario
 
 ## 4. Latency Threshold for Server Scenarios
 If the **Server** scenario is applicable:
-- Document the latency threshold. For example, **99% of the samples must be processed within the specified latency threshold**.
+- Document the latency threshold. **(99% of the samples must be processed within the specified latency threshold)**.
 
 ## 5. Validation Dataset: Unique Samples
-Specify the number of **unique samples** in the validation dataset. Note that:
-- These samples will be repeated as necessary to meet the minimum required duration for the inference run.
+Specify the number of **unique samples** in the validation dataset and the **QSL size**. Note that:
+- The unique samples will be repeated as necessary to meet the minimum required duration for the inference run.
+- QSL size determines the number of inputs which are loaded to the memory at a time - typically large enough to overflow the system cache. 
 
 ## 6. Equal Issue Mode Applicability
 Document whether **Equal Issue Mode** is applicable:
 - This is relevant if the time required to process a sample is not consistent across all inputs.
 
-## 7. Expected `accuracy.txt` Contents
-Detail the expected contents of the `accuracy.txt` file after running the reference accuracy script. This file should reflect the accuracy performance based on the validation dataset and reference model.
+## 7. Expected accuracy and `accuracy.txt` Contents
+Detail the expected contents of the `accuracy.txt` file after running the reference accuracy script. This file should reflect the accuracy performance based on the validation dataset and reference model. 
 
-## 8. Reference Implementation Dataset Coverage
-Ensure the reference implementation:
-- Processes the entire validation dataset during **performance**, **accuracy**, and applicable **compliance** runs.
+## 8. Reference Model details
+Number of Parameters of the model, FLOPs and the data type used for determining the reference accuracy. **For example, Number of Parameters: 25.6 million, FLOPs: 3.8 billion, Datatype: fp16**
 
-## 9. Test Runs with Smaller Input Sets
+## 9. Reference Implementation Dataset Coverage
+Ensure the reference implementation can successfully processes the entire validation dataset during **performance**, **accuracy**, and applicable **compliance** runs and generate valid log files.
+
+## 10. Test Runs with Smaller Input Sets
 Verify that the reference implementation can perform test runs with a smaller subset of inputs for **performance** and **accuracy** runs.
 
-## 10. Dataset and Reference Model Instructions
+## 11. Dataset and Reference Model Instructions
 Provide clear instructions on:
 - **Downloading** the dataset and reference model.
 - **Using** the dataset and model for the benchmark.
 
-## 11. CPU-Only and Minimum GPU Requirements
+## 12. CPU-Only and Minimum GPU Requirements
 Document:
 - Whether the reference implementation can run on **CPUs only**.
 - The **minimum number** of GPUs and **required memory** if GPU usage is necessary.
 
-## 12. System Memory and Storage Requirements
+## 13. System Memory and Storage Requirements
 Specify the minimum system requirements to run the reference implementation:
 - **System RAM**: Units of 256 GB RAM.
 - **Storage**: Units of 500 GB storage.
 
-## 13. Submission Checker Modifications
+## 14. Submission Checker Modifications
 Ensure all necessary changes are made to the **submission checker** to validate the benchmark correctly.
 
-## 14. Sample Log Files
+## 15. Sample Log Files
 Include sample logs for all applicable scenario runs:
 - `mlperf_log_summary.txt`
 - `mlperf_log_detail.txt`
