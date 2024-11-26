@@ -350,7 +350,7 @@ For each of the following benchmarks it is necessary to use the following infere
 |Summarization (GPT-J) |max_new_tokens |128 | Maximum number of new tokens to generate
 |Summarization (GPT-J) |early_stopping |True | Use the EOS token to stop generating tokens
 |Summarization (Llama2) |max_new_tokens |1024 | Maximum number of new tokens to generate
-|Text Generation (Mixtral-8x7B) |max_new_tokens |2048 | Maximum number of new tokens to generate
+|Text Generation (Mixtral-8x7B) |max_new_tokens |1024 | Maximum number of new tokens to generate
 |===
 
 == Load Generator
