@@ -759,6 +759,8 @@ The following techniques are disallowed:
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD.
 
+* Techniques that reduce the number of unique samples in a query. For example, sorting samples in Graph Neural Networks' RGAT.
+
 * Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model).
 
 == FAQ
