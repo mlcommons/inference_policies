@@ -757,7 +757,7 @@ The following techniques are disallowed:
   downsampling inputs and kernels for the first convolution.
 
 * Techniques that only improve performance when there are identical
-  samples in a query. For example, sorting samples in SSD.
+  samples in a query. For example, sorting samples in SSD and R-GAT.
 
 * Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model).
 
