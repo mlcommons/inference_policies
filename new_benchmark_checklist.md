@@ -51,13 +51,13 @@ Provide clear instructions on:
 - **Downloading** the dataset and reference model.
 - **Using** the dataset and model for the benchmark.
 
-## 12. CPU-Only and Minimum GPU Requirements
+## 12. CPU-Only and Recommended GPU Requirements
 Document:
 - Whether the reference implementation can run on **CPUs only**.
 - The **minimum number** of GPUs and **required memory** if GPU usage is necessary.
 
 ## 13. System Memory and Storage Requirements
-Specify the minimum system requirements to run the reference implementation:
+Specify the recommended system requirements to run the reference implementation:
 - **System RAM**: Units of 256 GB RAM.
 - **Storage**: Units of 500 GB storage.
 
