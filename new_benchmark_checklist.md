@@ -41,7 +41,7 @@ Detail the expected contents of the `accuracy.txt` file after running the refere
 Document the details of the reference model like number of parameters, FLOPs and the data type in the [docs page](https://github.com/mlcommons/inference/blob/docs/docs/index.md). **For example, Number of Parameters: 25.6 million, FLOPs: 3.8 billion, Datatype: fp16**
 
 ## 9. Reference Implementation Dataset Coverage
-Ensure the reference implementation can successfully processes the entire validation dataset during **performance**, **accuracy**, and applicable **compliance** runs and generate valid log files.
+Ensure the reference implementation can successfully processes the entire validation dataset during **performance**, **accuracy**, and applicable **compliance** runs and generate valid log files passing the submission checker.
 
 ## 10. Test Runs with Smaller Input Sets
 Verify that the reference implementation can perform test runs with a smaller subset of inputs for **performance** and **accuracy** runs.
