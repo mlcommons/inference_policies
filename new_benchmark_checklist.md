@@ -26,19 +26,19 @@ If the **Server** scenario is applicable:
 - Document the latency threshold. **(99% of the samples must be processed within the specified latency threshold)**.
 
 ## 5. Validation Dataset: Unique Samples
-Specify the number of **unique samples** in the validation dataset and the **QSL size**. Note that:
+Specify the number of **unique samples** in the validation dataset and the **QSL size** in the [inference policies benchmark section](https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc#41-benchmarks) and also in the [mlperf.conf](https://github.com/mlcommons/inference/blob/master/loadgen/mlperf.conf). Note that:
 - The unique samples will be repeated as necessary to meet the minimum required duration for the inference run.
 - QSL size determines the number of inputs which are loaded to the memory at a time - typically large enough to overflow the system cache. 
 
 ## 6. Equal Issue Mode Applicability
-Document whether **Equal Issue Mode** is applicable:
+- Documented whether **Equal Issue Mode** is applicable in the [mlperf.conf](https://github.com/mlcommons/inference/blob/master/loadgen/mlperf.conf#L42)
 - This is relevant if the time required to process a sample is not consistent across all inputs.
 
 ## 7. Expected accuracy and `accuracy.txt` Contents
 Detail the expected contents of the `accuracy.txt` file after running the reference accuracy script. This file should reflect the accuracy performance based on the validation dataset and reference model. 
 
 ## 8. Reference Model details
-Number of Parameters of the model, FLOPs and the data type used for determining the reference accuracy. **For example, Number of Parameters: 25.6 million, FLOPs: 3.8 billion, Datatype: fp16**
+Document the details of the reference model like number of parameters, FLOPs and the data type in the [docs page](https://github.com/mlcommons/inference/blob/docs/docs/index.md). **For example, Number of Parameters: 25.6 million, FLOPs: 3.8 billion, Datatype: fp16**
 
 ## 9. Reference Implementation Dataset Coverage
 Ensure the reference implementation can successfully processes the entire validation dataset during **performance**, **accuracy**, and applicable **compliance** runs and generate valid log files.
