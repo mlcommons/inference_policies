@@ -54,7 +54,7 @@ Provide clear instructions on:
 ## 12. Recommended System Requirements to run the reference implementation
 Document:
 - Whether the reference implementation can run on **CPUs only**.
-- The **minimum number** of GPUs and **required memory** if GPU usage is necessary.
+- The **required GPU memory** if GPU usage is necessary.
 - **System RAM**: System memory required to run the reference implementation.
 - **Storage**: Secondary storage required to run the reference implementation.
 
