@@ -58,8 +58,8 @@ Document:
 
 ## 13. System Memory and Storage Requirements
 Specify the recommended system requirements to run the reference implementation:
-- **System RAM**: Units of 256 GB RAM.
-- **Storage**: Units of 500 GB storage.
+- **System RAM**: System RAM required to run the reference implementation.
+- **Storage**: Secondary storage required to run the reference implementation.
 
 ## 14. Submission Checker Modifications
 Ensure all necessary changes are made to the **submission checker** to validate the benchmark correctly.
