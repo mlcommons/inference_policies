@@ -51,20 +51,17 @@ Provide clear instructions on:
 - **Downloading** the dataset and reference model.
 - **Using** the dataset and model for the benchmark.
 
-## 12. CPU-Only and Recommended GPU Requirements
+## 12. Recommended System Requirements to run the reference implementation
 Document:
 - Whether the reference implementation can run on **CPUs only**.
 - The **minimum number** of GPUs and **required memory** if GPU usage is necessary.
-
-## 13. System Memory and Storage Requirements
-Specify the recommended system requirements to run the reference implementation:
-- **System RAM**: System RAM required to run the reference implementation.
+- **System RAM**: System memory required to run the reference implementation.
 - **Storage**: Secondary storage required to run the reference implementation.
 
-## 14. Submission Checker Modifications
+## 13. Submission Checker Modifications
 Ensure all necessary changes are made to the **submission checker** to validate the benchmark correctly.
 
-## 15. Sample Log Files
+## 14. Sample Log Files
 Include sample logs for all applicable scenario runs:
 - `mlperf_log_summary.txt`
 - `mlperf_log_detail.txt`
