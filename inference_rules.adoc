@@ -182,6 +182,7 @@ Each sample has the following definition:
 |SDXL	            |A pair of postive and negative prompts
 |Llama2	            |one sequence
 |Mixtral-8x7B            |one sequence
+|RGAT	            |one node id
 |Llama3.1-405B	            |one sequence
 |===
 
@@ -261,6 +262,7 @@ The Datacenter suite includes the following benchmarks:
 |Language |Text Generation (Question Answering, Math and Code Generation) |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | 15000 | 99% of FP16 ((OpenOrca)rouge1=45.5989, (OpenOrca)rouge2=23.3526, (OpenOrca)rougeL=30.4608, (gsm8k)Accuracy=73.66, (mbxp)Accuracy=60.16). Additionally, for both cases the tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=144.84)| TTFT/TPOTfootnote:[For Mixtral-8x7B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms
 |Commerce |Recommendation |DLRMv2 |Synthetic Multihot Criteo Dataset | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.31%) | 60 ms
 |Generative |Text to image |SDXL |Subset of coco-2014 val | 5000 |FID range: [23.01085758, 23.95007626] and CLIP range: [31.68631873, 31.81331801] | 20 s
+|Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
 |===
 
 Each Datacenter benchmark *requires* the following scenarios:
@@ -274,6 +276,7 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Language |Question Answering |Server, Offline
 |Commerce |Recommendation |Server, Offline
 |Generative |Text to image |Server, Offline
+|Graph |Node classification |Offline
 |===
 
 The Edge suite includes the following benchmarks:
@@ -562,6 +565,8 @@ Allow one of the following compression options for pre-processing:
 Allow any lossless compression that will be suitable for production use.
 In Server mode allow per-Query compression.
 |Generative | Text to image | SDXL | No compression allowed.
+
+|Graph | Node Classification | RGAT | No compression allowed.
 
 |===
 
@@ -900,6 +905,12 @@ Q: Is it allowed to apply continuous batching (or dynamic batching) for auto-gen
 
 A: Yes. Continuous batching is explained at a high level here: https://www.anyscale.com/blog/continuous-batching-llm-inference.
 
+=== RGAT
+
+Q: Is loading the node neighbors a timed operation?
+
+A: Yes, this is the main operation of this benchmark
+
 === Audit
 
 Q: What characteristics of my submission will make it more likely to be audited?
@@ -1042,6 +1053,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Language |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __num_inputs*max_seq_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Commerce |DLRMv2 | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRMv2 sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
 |Generative |SDXL |Subset of coco-2014 val captions (max_prompt_len=77) | __num_inputs*max_prompt_len*dtype_size__ | __77*dtype_size__ |  __throughput*77*dtype_size__
+|Graph |RGAT |IGBH | negligible | negligible | __> 0__
 |===
 === Egress Bandwidth
 
@@ -1059,4 +1071,5 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Language |Mixtral-8x7B  |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __max_output_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Commerce |DLRMv2 |Synthetic Multihot Criteo Dataset | negligible | negligible | __> 0__
 |Generative |SDXL |Subset of coco-2014 val captions (max_prompt_len=77) | __3,145,728*dtype_size__ | __throughput*3,145,728*dtype_size__ | __> 0__
+|Graph |RGAT |IGBH | negligible | negligible | __> 0__
 |===
