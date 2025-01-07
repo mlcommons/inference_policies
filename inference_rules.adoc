@@ -81,7 +81,7 @@ The only forms of acceptable non-determinism are:
 
 All random numbers must be based on fixed random seeds and a deterministic random
 number generator. The deterministic random number generator is the Mersenne Twister
-19937 generator ([std::mt19937](http://www.cplusplus.com/reference/random/mt19937/)).
+19937 generator (http://www.cplusplus.com/reference/random/mt19937/[std::mt19937]).
 The random seeds will be announced four weeks before the benchmark submission deadline.
 
 === Benchmark detection is not allowed
@@ -123,7 +123,7 @@ The submitter will provide the auditor an NDA within seven days of the auditor's
 The auditor will submit their report to the submitter no more than thirty days after executing all relevant NDAs. The submitter will make any necessary redactions due to NDAs and forward the finalized report to the review committee within seven days. The auditor will confirm the accuracy of the forwarded report.
 
 Submissions that fail the audit at a material level will be moved to open or removed, by review committee decision.
-If a submission failed an audit that was delayed past publication, then any published material concerning the invalidated result is subject to the MLCommons [rules for Violation Determination, Remedies and Penalties](https://github.com/mlcommons/policies/blob/master/MLPerf_Results_Messaging_Guidelines.adoc#12-violation-determination-remedies-and-penalties) for remedial action.
+If a submission failed an audit that was delayed past publication, then any published material concerning the invalidated result is subject to the MLCommons https://github.com/mlcommons/policies/blob/master/MLPerf_Results_Messaging_Guidelines.adoc#12-violation-determination-remedies-and-penalties[rules for Violation Determination, Remedies and Penalties] for remedial action.
 
 MLCommons shall retain a library of past audit reports and send copies to MLCommons members, auditors, and potential auditors by request. Audit reports will not be further distributed without permission from the audited submitter.
 
@@ -245,7 +245,7 @@ The inference benchmark suite has two sub categories -- Datacenter and Edge (def
 A Datacenter submission must use ECC in their DRAM and HBM memories, and ECC must be enabled for all performance and accuracy runs. No requirements are imposed on SRAM.
 
 ====== Networking (from the v3.0 round)
-A Datacenter system must be equipped with all the necessary networking required by the system architecture described in the <<LoadGen Operation>> section.  The details of the networking components must be described in the appropriate field of the [System JSON](https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#system_desc_id-json-metadata).  All necessary networking must be populated if power is measured along with performance.
+A Datacenter system must be equipped with all the necessary networking required by the system architecture described in the <<LoadGen Operation>> section.  The details of the networking components must be described in the appropriate field of the https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#system_desc_id-json-metadata[System JSON].  All necessary networking must be populated if power is measured along with performance.
 
 
 The suites share multiple benchmarks, but characterize them with different requirements. Read the specifications carefully.
