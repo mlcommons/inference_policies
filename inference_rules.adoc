@@ -180,7 +180,7 @@ Each sample has the following definition:
 |DLRMv2	            |up to 700 user-item pairs (more details in FAQ)
 |GPT-J	            |one sequence
 |SDXL	            |A pair of postive and negative prompts
-|Llama2	            |one sequence
+|Llama2-70b	            |one sequence
 |Mixtral-8x7B            |one sequence
 |RGAT	            |one node id
 |Llama3.1-405B	            |one sequence
@@ -257,7 +257,7 @@ The Datacenter suite includes the following benchmarks:
 |Vision |Object detection |Retinanet |OpenImages (800x800) | 64 | 99% of FP32 (0.3755 mAP) | 100 ms
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score) | N/A
 |Language |Summarization |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the total generation length of the texts should be more than 90% of the reference (gen_len=4016878)| 20 s
-|Language |Question Answering |Llama2 |OpenOrca (max_seq_len=1024) | 24576 | 99% of FP32 and 99.9% of FP32 (rouge1=44.4312, rouge2=22.0352, rougeL=28.6162). Additionally, for both cases the generation length of the tokens per sample should be more than 90% of the reference (tokens_per_sample=294.45)| TTFT/TPOTfootnote:[For Llama2, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms
+|Language |Question Answering |Llama2-70b |OpenOrca (max_seq_len=1024) | 24576 | 99% of FP32 and 99.9% of FP32 (rouge1=44.4312, rouge2=22.0352, rougeL=28.6162). Additionally, for both cases the generation length of the tokens per sample should be more than 90% of the reference (tokens_per_sample=294.45)| Conversational category: TTFT/TPOT: 2000 ms/200 ms. Interactive category: TTFT/TPOT: 450 ms/40 ms. footnote:[For Llama2-70b, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]
 |Language |Text Generation |Llama3.1-405B |Subset of LongBench, LongDataCollections, Ruler, GovReport | 8313 | 99% of FP16 ((GovReport + LongDataCollections + 65 Sample from LongBench)rougeL=21.6666, (Remaining samples of the dataset)exact_match=90.1335). Additionally, for both cases tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=684.68)| TTFT/TPOTfootnote:[For Llama3.1-405B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 6000 ms/175 ms
 |Language |Text Generation (Question Answering, Math and Code Generation) |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | 15000 | 99% of FP16 ((OpenOrca)rouge1=45.5989, (OpenOrca)rouge2=23.3526, (OpenOrca)rougeL=30.4608, (gsm8k)Accuracy=73.66, (mbxp)Accuracy=60.16). Additionally, for both cases the tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=144.84)| TTFT/TPOTfootnote:[For Mixtral-8x7B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms
 |Commerce |Recommendation |DLRMv2 |Synthetic Multihot Criteo Dataset | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.31%) | 60 ms
@@ -354,7 +354,7 @@ For each of the following benchmarks it is necessary to use the following infere
 |Summarization (GPT-J) |min_new_tokens |30 | Minimun number of new tokens to generate
 |Summarization (GPT-J) |max_new_tokens |128 | Maximum number of new tokens to generate
 |Summarization (GPT-J) |early_stopping |True | Use the EOS token to stop generating tokens
-|Summarization (Llama2) |max_new_tokens |1024 | Maximum number of new tokens to generate
+|Summarization (Llama2-70b) |max_new_tokens |1024 | Maximum number of new tokens to generate
 |Text Generation (Llama3.1-405B) |min_new_tokens |2 | Minimun number of new tokens to generate
 |Text Generation (Llama3.1-405B) |max_new_tokens |20000 | Maximum number of new tokens to generate
 |Summarization (Mixtral-8x7B) |min_new_tokens |2 | Minimun number of new tokens to generate
@@ -547,7 +547,7 @@ This rule applies both for the QSL pre-processing and for post-processing functi
 |Language | Summarization | GPT-J | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation).
 
 No compression allowed.
-|Language | Question Answering | Llama2 | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation).
+|Language | Question Answering | Llama2-70b | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation).
 
 No compression allowed.
 |Language | Question Answering | Llama3.1-405B | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation).
@@ -609,7 +609,7 @@ As input, before preprocessing:
 
 * all imaging benchmarks take uncropped uncompressed bitmap
 
-* BERT, GPT-J, Llama2, Llama3.1-405B and Mixtral-8x7B take texts
+* BERT, GPT-J, Llama2-70b, Llama3.1-405B and Mixtral-8x7B take texts
 
 * RNN-T takes a waveform
 
@@ -879,7 +879,7 @@ The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
-A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, GPT-J uses a beam width of 4 and enable early termination, while Llama2, Llama3.1-405B and Mixtral-8x7B uses greedy search.
+A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, GPT-J uses a beam width of 4 and enable early termination, while Llama2-70b, Llama3.1-405B and Mixtral-8x7B uses greedy search.
 
 Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
 
@@ -1048,7 +1048,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | __num_inputs*max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
 |Language |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048) | __num_inputs*max_seq_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
-|Language |Llama2 |OpenOrca (max_seq_len=1024) | __num_inputs*max_seq_len*dtype_size__ | __1024*dtype_size__ | __throughput*1024*dtype_size__
+|Language |Llama2-70b |OpenOrca (max_seq_len=1024) | __num_inputs*max_seq_len*dtype_size__ | __1024*dtype_size__ | __throughput*1024*dtype_size__
 |Language |Llama3.1-405B | Subset of LongBench, LongDataCollections, Ruler, GovReport | __num_inputs*max_seq_len*dtype_size__ | __20000*dtype_size__ | __throughput*20000*dtype_size__
 |Language |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __num_inputs*max_seq_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Commerce |DLRMv2 | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRMv2 sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
@@ -1066,7 +1066,7 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
 |Language |BERT |SQuAD v1.1 (max_seq_len=384) | negligible | negligible | __> 0__
 |Language |GPT-J |CNN Dailymail (v3.0.0, max_seq_len=2048)  | negligible | negligible | __> 0__
-|Language |Llama2 |OpenOrca (max_seq_len=1024) | __max_output_len*dtype_size__ | __1024*dtype_size__ | __throughput*1024*dtype_size__
+|Language |Llama2-70b |OpenOrca (max_seq_len=1024) | __max_output_len*dtype_size__ | __1024*dtype_size__ | __throughput*1024*dtype_size__
 |Language |Llama3.1-405B |Subset of LongBench, LongDataCollections, Ruler, GovReport | __max_output_len*dtype_size__ | __20000*dtype_size__ | __throughput*20000*dtype_size__
 |Language |Mixtral-8x7B  |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __max_output_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Commerce |DLRMv2 |Synthetic Multihot Criteo Dataset | negligible | negligible | __> 0__
