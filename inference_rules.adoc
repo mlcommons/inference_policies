@@ -147,7 +147,10 @@ described in the table below.
 
 An early stopping criterion (described in more detail in <<appendix-early_stopping>>) allows for runs with a relatively small number of processed queries to be valid, with the penalty that the effective computed percentile will be slightly higher.  This penalty counteracts the increased variance inherent to runs with few queries, where there is a higher probability that a particular run will, by chance, report a lower latency than the system should reliably support.
 
-In the above table, tail latency percentiles with an asterisk represent the theoretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty. If submitters opt to run for a longer "duration" or exceed the minium number of "samples/query" in the Offline scenario, such that it requires multiple copies of the test dataset, submitters are `NOT` allowed to sort samples beyond the boundary of a dataset. 
+In the above table, tail latency percentiles with an asterisk represent the theoretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty. 
+
+If the selected "duration" or "samples/query" requires loading multiple copies of the test dataset, submitters are `NOT` allowed to sort samples beyond the boundary of a dataset, including if "duration" or "samples/query" meets the minimum requirement. 
+
 See the following table for a suggested starting point for how to set the minimum number of queries.
 
 |===
@@ -777,7 +780,7 @@ The following techniques are disallowed:
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD and R-GAT.
 
-* Techniques that only improve performance by artificially creating batches of identical samples. For example, sorting samples beyond the boundary of a dataset when exceeding the minimum number of queries or minimum time duration in a valid test run in GPT-J, Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, and Mixtral-8x7B. 
+* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - GPT-J, Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, and Mixtral-8x7B. 
 
 * Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model).
 
@@ -812,7 +815,7 @@ routine/scripts.
 
 Q: Is it permissible to exceed both the minimum number of queries and minimum time duration in a valid test run?
 
-A: Yes.However, if exceeding the minimum number of queries or minimum time duration requires loading multiple copies of the dataset, submitters are not allowed to sort samples beyond the boundary of a dataset.
+A: Yes. However, if the selected duration and number of queries requires loading multiple copies of the dataset, submitters are not allowed to sort samples beyond the boundary of a dataset, including if the duration and number of queries is set to the the minimum requirement. 
 
 Q: Can we give the driver a hint to preload the image data to somewhere closer to the accelerator?
 
