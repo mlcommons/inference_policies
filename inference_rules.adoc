@@ -149,7 +149,7 @@ An early stopping criterion (described in more detail in <<appendix-early_stoppi
 
 In the above table, tail latency percentiles with an asterisk represent the theoretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty. 
 
-If the selected "duration" or "samples/query" requires loading multiple copies of the test dataset, submitters are `NOT` allowed to sort samples beyond the boundary of a dataset, including if "duration" or "samples/query" meets the minimum requirement, for all LLM workloads. 
+For all large language models (LLMs), submitters are `NOT` allowed to sort samples beyond the boundary of a dataset, regardless of the selected "duration" or "samples/query".
 
 See the following table for a suggested starting point for how to set the minimum number of queries.
 
@@ -815,7 +815,7 @@ routine/scripts.
 
 Q: Is it permissible to exceed both the minimum number of queries and minimum time duration in a valid test run?
 
-A: Yes. However, if the selected duration or number of queries requires loading multiple copies of the dataset, submitters are not allowed to sort samples beyond the boundary of a dataset, including if the duration and number of queries is set to the the minimum requirement, for all LLM workloads. 
+A: Yes. However, for all large language models (LLMs), submitters are `NOT` allowed to sort samples beyond the boundary of a dataset, regardless of the selected "duration" or "samples/query".
 
 Q: Can we give the driver a hint to preload the image data to somewhere closer to the accelerator?
 
