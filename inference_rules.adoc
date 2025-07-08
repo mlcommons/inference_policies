@@ -353,6 +353,7 @@ For 3DUNet, the logical destination for the benchmark output is considered to be
 1. An Open benchmark must perform a task matching an existing Closed benchmark, and be substitutable in LoadGen for that benchmark.
 1. The validation dataset must be the same as used in an existing Closed benchmark, or must be pre-approved and added to the following list: ImageNet 2012 validation dataset for Image Classification; COCO 2017 validation dataset for Object Detection.
 When seeking such pre-approval, it is recommended that a potential submitter convincingly demonstrates the accuracy of the corresponding Closed model on the same validation dataset, which may involve retraining or finetuning the Closed model if required.
+1. An Open benchmark must use all the available samples in the dataset, such that it must be the same as those used in an existing Closed benchmark.
 1. Accuracy constraints are not applicable: instead the submission must report the accuracy obtained.
 1. Latency constraints are not applicable: instead the submission must report the latency constraints under which the reported performance was obtained.
 1. Scenario constraints are not applicable: any combination of scenarios is permitted.
