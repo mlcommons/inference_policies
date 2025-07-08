@@ -133,11 +133,15 @@ An audit is expected to be completed within a 90 day period. Audits failing to m
 
 To ensure fairness to all submitters and the integrity of the process, MLPerf Inference will strictly adhere to the https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#late-submissions[MLCommons general submission rules]. The 60 minute grace period will be strictly enforced, and any late submissions will not be considered as valid submissions. Exceptions will be made only in extraordinary circumstances as listed in the https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#post-submission-extension-for-extraordinary-circumstances-submission-deadline-72-hours[mlcommons guidelines].
 
-Once the submission deadline has passed, the submission round is considered to be under review. Submitters may not submit new accuracy, performance, or power logs during the review process. Exceptions may only be made at the discretion of the Review Committee to ensure compliance with the rules. For example, if logs are corrupted during the submission process or if the submission checker fails to identify missing logs, the Review Committee may choose to allow the logs to be reuploaded. 
+Once the submission deadline has passed, the submission round enters the review phase. During this period, submitters are **not permitted to upload new accuracy, performance, or power logs**. 
 
-Under no circumstance will submitters be allowed to upload new logs that alter the accuracy, performance, or power results, irrespective of the magnitude of change. 
+**Exceptions** to this rule may be granted solely at the discretion of the Review Committee, and only to ensure compliance with the established rules. For instance, if logs are corrupted during the submission process or if the submission checker fails to detect missing logs, the Review Committee may authorize a re-upload of the affected logs.
 
-Submitters will be allowed to correct or add missing missing documentation, configs, system jsons, and other descriptors to ensure compliance and correctness, as identified during the review process. 
+**No modifications** to hyperparameters, batch size, loadgen configurations and flags, dataset sorting, or any other performance-sensitive parameters are allowed after the submission deadline. This restriction applies even if such changes are necessary to comply with the rules.
+
+Under no circumstances will submitters be allowed to upload new logs that alter the accuracy, performance, or power results, regardless of the extent of the change.
+
+Submitters may, however, correct or provide missing documentation, configuration files, system JSONs, and other descriptive materials as needed to ensure compliance and accuracy, as identified during the review process.
 
 
 == Scenarios
