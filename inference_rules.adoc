@@ -280,9 +280,9 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Vision |Image classification |Server, Offline
 |Vision |Object detection |Server, Offline
 |Vision |Medical image segmentation |Offline
-|Language |Summarization |Server, Offline
-|Language |Question Answering |Server, Offline
-|Language |Text Generation|Server, Offline
+|Language |Summarization |(Server\| Interactive), Offline
+|Language |Question Answering |(Server\| Interactive), Offline
+|Language |Text Generation|(Server\| Interactive), Offline
 |Language |Reasoning |Server, Offline
 |Commerce |Recommendation |Server, Offline
 |Generative |Text to image |Server, Offline
