@@ -796,7 +796,7 @@ The following techniques are disallowed:
 
 * Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model).
 
-* Modifying the sample duration processed by a fixed input-length audio model (ex. an audio sample shorter than the fixed input-length should be padded for model loading).
+* Modifying the sample duration loaded by a fixed input-length audio model (ex. a shorter audio sample should be padded to match the fixed input-length).
 
 == FAQ
 
@@ -936,9 +936,9 @@ A: Yes, this is the main operation of this benchmark
 
 === Whisper
 
-Q: Whisper's native input duration is fixed at 30 seconds. Is it permitted to modify the loaded duration to match the sample's specific duration?
+Q: Whisper's native audio input duration is fixed at 30 seconds. Is it permitted to modify the loaded duration to match the sample's specific duration?
 
-A: No, it is not permitted to modify the loaded duration even if continuing to meet the specified accuracy threshold. Sample must be zero-padded to ensure consistent computation and accuracy criteria.
+A: No, it is not permitted to modify the loaded duration even if continuing to meet the model's accuracy threshold. Samples must be zero-padded to ensure consistent computation and accuracy criteria.
 
 === Audit
 
