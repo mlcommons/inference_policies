@@ -796,6 +796,8 @@ The following techniques are disallowed:
 
 * Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model).
 
+* Modifying the sample duration processed by a fixed input-length audio model (ex. an audio sample shorter than the fixed input-length should be padded for model loading).
+
 == FAQ
 
 Q: Do I have to use the reference implementation framework?
@@ -931,6 +933,12 @@ A: Yes. Continuous batching is explained at a high level here: https://www.anysc
 Q: Is loading the node neighbors a timed operation?
 
 A: Yes, this is the main operation of this benchmark
+
+=== Whisper
+
+Q: Whisper's native input duration is fixed at 30 seconds. Is it permitted to modify the loaded duration to match the sample's specific duration?
+
+A: No, it is not permitted to modify the loaded duration even if continuing to meet the specified accuracy threshold. Sample must be zero-padded to ensure consistent computation and accuracy criteria.
 
 === Audit
 
