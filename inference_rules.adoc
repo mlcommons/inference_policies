@@ -719,6 +719,8 @@ Submitters who utilize quantization techniques are required to document their ap
 OPEN: Weights and biases must be initialized to the same values for each run,
 any quantization scheme is allowed that achieves the desired quality.
 
+Open submissions are not required to disclose their quantization methodology, but submitters must state whether the model has been altered in any way. 
+
 === Model Equivalence
 
 All implementations are allowed as long as the latency and accuracy bounds are
