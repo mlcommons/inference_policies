@@ -132,6 +132,7 @@ An audit is expected to be completed within a 90 day period. Audits failing to m
 === Late Submissions and Late Upload of Logs
 
 To ensure fairness to all submitters and the integrity of the process, MLPerf Inference will strictly adhere to the https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#late-submissions[MLCommons general submission rules]. The 60 minute grace period will be strictly enforced, and any late submissions will not be considered as valid submissions. Exceptions will be made only in extraordinary circumstances as listed in the https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#post-submission-extension-for-extraordinary-circumstances-submission-deadline-72-hours[mlcommons guidelines].
+The Review Committee may offer additional leniency to first-time submitters who encounter challenges or delays due to inexperience with the submission process. However, this grace period will not be extended once the Review Chairs have shared their initial results with the submitters.
 
 Once the submission deadline has passed, the submission round enters the review phase. During this period, submitters are **not permitted to upload new accuracy, performance, or power logs**. 
 
