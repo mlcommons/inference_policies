@@ -691,6 +691,31 @@ input activations are scaled per tensor, and must preserve the same shape modulo
 padding. Convolution layers are allowed to be in either NCHW or NHWC format.  No
 other retraining is allowed.
 
+==== Quantization Documentation Requirements 
+Submitters who utilize quantization techniques are required to document their approach in `documentation/calibration.md`. The documentation must be comprehensive and detailed enough to allow full reproducibility. The following requirements apply:
+
+1. Quantization Methodology
+
+* Submitters **must clearly describe** the quantization method used.
+** If using existing or standard methods (e.g., **PTQ**, **GPTQ**), submitters may reference relevant papers or documentation.
+** If **different algorithms** are used for **weight** and **activation** quantization, these must be described independently.
+* The documentation **must include**:
+** Histogram binning strategy
+** Range determination (e.g., min/max, percentile clipping)
+** Rounding method
+** Any other mathematical or heuristic operations involved in the process
+* The quantization approach must comply with the **Model Equivalence** rules (outlined below).
+* **Note:** Preview submissions are **exempt** from full reproducibility requirements and are **not required** to document their quantization methodology.
+
+2. Precision Specification
+* Submitters **must specify** the bit precision (number of bits) used for **weights** and **activations** in each quantized layer or layer type for **all submitted benchmarks**.
+** **Preview submissions** must still report bit precision for weights and activations, even though full documentation is not required.
+
+3. Reproducibility Support
+* To facilitate reproduction of the quantization methodology, submitters may provide either the quantized model itself or the code and instructions required to perform the quantization. 
+* Simply providing open-source or closed-source code **without adequate documentation or instructions** is **not sufficient** to meet the requirements for a well-documented and reproducible quantization method.
+
+
 OPEN: Weights and biases must be initialized to the same values for each run,
 any quantization scheme is allowed that achieves the desired quality.
 
