@@ -897,6 +897,9 @@ The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive
 
 === LLM Benchmarks
 
+Q: Are submitters allowed to change the maximum output token length to be less than the benchmark reference?
+No, submitter implementations must adhere to the specificied maximum output token length as in the benchmark reference. Truncating output tokens to boost performance or meet accuracy is not permitted. 
+
 Q: What algorithm is used for the auto-regressive decoding loop?
 
 A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1 and Llama3.1-8B use greedy search.
