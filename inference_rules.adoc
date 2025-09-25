@@ -129,6 +129,21 @@ MLCommons shall retain a library of past audit reports and send copies to MLComm
 
 An audit is expected to be completed within a 90 day period. Audits failing to meet this timeline can be requested to be invalidated by the auditee. The final decision to accept such a request will be taken by the Working Group.
 
+=== Assigned Peer Review Process
+
+In addition to general MLCommons review rules outlined https://github.com/mlperf/policies/blob/master/submission_rules.adoc[here], Inference workgroup uses Assigned Peer Review to improve scrutiny of the results. The goal is to ensure that each submission is reviewed. The process, executed by Results Chair, is as follows:
+
+* Each submitter will be assigned another submitter to review.
+
+* Chair will open a github issue against each company that has review assignment. Issues will be closed once reviewers indicate that they had finished their tasks. 
+
+* During the review, reviewers are asked to pay special attention to: (1) results validity, (2) methodology, (3) instructions for reproducibility, and (4) content of json files in systems directory.  
+
+* Any issues discovered are to be filed as github issues and resolved as usual. The issues should be filed before the deadline to raise objections.
+
+* Submitters are encouraged to review other submissions beyond their assigned review.
+
+
 == Scenarios
 
 In order to enable representative testing of a wide variety of inference
