@@ -754,7 +754,7 @@ Examples of allowed techniques include, but are not limited to:
   (Submitters should include in their submission details of how the ordering was
   derived.)
 
-* Speculative decoding is allowed subject to constraints in <<appendix-speculative-decoding>>, only for certain LLM workloads including - DeepSeek-R1-Interactive.
+* Speculative decoding is allowed subject to constraints in <<appendix-speculative-decoding>>, only for certain LLM workloads including - DeepSeek-r1-Interactive.
 
 The following techniques are disallowed:
 
