@@ -796,6 +796,8 @@ The following techniques are disallowed:
 
 * Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, Llama3.1-8B and Mixtral-8x7B.
 
+* Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model), with the exception of certain LLM workloads including - DeepSeek-r1-Interactive, as prescribed in <<appendix-speculative-decoding>>
+
 * Modifying the sample duration loaded by a fixed input-length audio model (ex. a shorter audio sample should be padded to match the fixed input-length).
 
 == FAQ
