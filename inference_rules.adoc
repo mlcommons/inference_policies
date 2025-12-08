@@ -1118,11 +1118,11 @@ All Implementations must use the reference MTP (Multi-Token Prediction) Head at 
 Implementations that artificially manipulate acceptance rates are disallowed, eg: using a different MTP head or continued pre-training of reference MTP head, quantization of the reference MTP head weights, post-training techniques on reference MTP head (like fine-tuning, RLHF etc.)
 
 |===
-|Benchmark |Scenario |Speculative Decoding Algorithm |Configuration
+|Benchmark |Scenario |Speculative Decoding Algorithm |Configuration |MTP Head
 
 |DeepSeek-r1
 |Interactive
 |EAGLE-style decoding with deepseek-ai/deepseek-r1 MTP head
 |`speculative-num-steps=3`, `speculative-eagle-topk=1.0`
+|https://huggingface.co/deepseek-ai/DeepSeek-R1
 |===
-
