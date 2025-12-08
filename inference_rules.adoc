@@ -1122,7 +1122,7 @@ Implementations that artificially manipulate acceptance rates are disallowed, eg
 
 |DeepSeek-r1
 |Interactive
-|EAGLE-style decoding with DeepSeek-r1 MTP head
+|EAGLE-style decoding with deepseek-ai/deepseek-r1 MTP head
 |`speculative-num-steps=3`, `speculative-eagle-topk=1.0`
 |===
 
