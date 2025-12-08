@@ -796,8 +796,6 @@ The following techniques are disallowed:
 
 * Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, Llama3.1-8B and Mixtral-8x7B.
 
-* Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model), with the exception of certain LLM workloads including - DeepSeek-r1-Interactive, as prescribed in <<appendix-speculative-decoding>>
-
 * Modifying the sample duration loaded by a fixed input-length audio model (ex. a shorter audio sample should be padded to match the fixed input-length).
 
 == FAQ
@@ -1115,9 +1113,9 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 == Speculative Decoding
 
 Speculative decoding is allowed for specific benchmark/scenario combinations as listed below.
-All Implementations must use the reference MTP (Multi-Token Prediction) Head with the reference speculative-decoding algorithm and configuration.
+All Implementations must use the reference MTP (Multi-Token Prediction) Head at the same precision as provided, with the reference speculative-decoding algorithm and configuration.
 
-Implementations that artificially manipulate acceptance rates are disallowed, eg: quantization of the MTP head weights.
+Implementations that artificially manipulate acceptance rates are disallowed, eg: using a different MTP head or continued pre-training of reference MTP head, quantization of the reference MTP head weights, post-training techniques on reference MTP head (like fine-tuning, RLHF etc.)
 
 |===
 |Benchmark |Scenario |Speculative Decoding Algorithm |Configuration
