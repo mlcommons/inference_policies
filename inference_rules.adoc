@@ -1120,9 +1120,5 @@ Implementations that artificially manipulate acceptance rates are disallowed, eg
 |===
 |Benchmark |Scenario |Speculative Decoding Algorithm |Configuration |MTP Head
 
-|DeepSeek-r1
-|Interactive
-|EAGLE-style decoding with deepseek-ai/deepseek-r1 MTP head
-|`speculative-num-steps=3`, `speculative-eagle-topk=1.0`
-|https://huggingface.co/deepseek-ai/DeepSeek-R1
+|DeepSeek-r1 |Interactive |EAGLE-style decoding with deepseek-ai/deepseek-r1 MTP head |`speculative-num-steps=3`, `speculative-eagle-topk=1.0` |https://huggingface.co/deepseek-ai/DeepSeek-R1
 |===
