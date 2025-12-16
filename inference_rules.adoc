@@ -147,7 +147,7 @@ described in the table below.
 
 An early stopping criterion (described in more detail in <<appendix-early_stopping>>) allows for runs with a relatively small number of processed queries to be valid, with the penalty that the effective computed percentile will be slightly higher.  This penalty counteracts the increased variance inherent to runs with few queries, where there is a higher probability that a particular run will, by chance, report a lower latency than the system should reliably support.
 
-In the above table, tail latency percentiles with an asterisk represent the theoretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty. 
+In the above table, tail latency percentiles with an asterisk represent the theoretical lower limit of measured percentile for runs processing a very large number of queries.  Submitters may opt to run for longer than the time listed in the "Duration" column, in order to decrease the effect of the early stopping penalty.
 
 For all large language models (LLMs), submitters are `NOT` allowed to sort samples beyond the boundary of a dataset, regardless of the selected "duration" or "samples/query".
 
@@ -754,6 +754,8 @@ Examples of allowed techniques include, but are not limited to:
   (Submitters should include in their submission details of how the ordering was
   derived.)
 
+* Speculative decoding is allowed subject to constraints in <<appendix-speculative-decoding>>, only for certain LLM workloads including - DeepSeek-r1-Interactive.
+
 The following techniques are disallowed:
 
 * Wholesale weight replacement or supplements
@@ -792,9 +794,7 @@ The following techniques are disallowed:
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD and R-GAT.
 
-* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, Llama3.1-8B and Mixtral-8x7B. 
-
-* Speculative decoding for auto-generative language models (i.e. using a smaller model to predict the next token for the reference model).
+* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, Llama3.1-8B and Mixtral-8x7B.
 
 * Modifying the sample duration loaded by a fixed input-length audio model (ex. a shorter audio sample should be padded to match the fixed input-length).
 
@@ -901,7 +901,7 @@ The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive
 === LLM Benchmarks
 
 Q: Are submitters allowed to change the maximum output token length to be less than the benchmark reference?
-No, submitter implementations must adhere to the specificied maximum output token length as in the benchmark reference. Truncating output tokens to boost performance or meet accuracy is not permitted. 
+No, submitter implementations must adhere to the specificied maximum output token length as in the benchmark reference. Truncating output tokens to boost performance or meet accuracy is not permitted.
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
@@ -1106,4 +1106,19 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Commerce |DLRMv2 |Synthetic Multihot Criteo Dataset | negligible | negligible | __> 0__
 |Generative |SDXL |Subset of coco-2014 val captions (max_prompt_len=77) | __3,145,728*dtype_size__ | __throughput*3,145,728*dtype_size__ | __> 0__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
+|===
+
+[[appendix-speculative-decoding]]
+[appendix]
+== Speculative Decoding
+
+Speculative decoding is allowed for specific benchmark/scenario combinations as listed below.
+All Implementations must use the reference MTP (Multi-Token Prediction) Head at the same precision as provided, with the reference speculative-decoding algorithm and configuration.
+
+Implementations that artificially manipulate acceptance rates are disallowed, eg: using a different MTP head or continued pre-training of reference MTP head, quantization of the reference MTP head weights, post-training techniques on reference MTP head (like fine-tuning, RLHF etc.)
+
+|===
+|Benchmark |Scenario |Speculative Decoding Algorithm |Configuration |MTP Head
+
+|DeepSeek-r1 |Interactive |EAGLE-style decoding with deepseek-ai/deepseek-r1 MTP head |`speculative-num-steps=3`, `speculative-eagle-topk=1.0` |https://huggingface.co/deepseek-ai/DeepSeek-R1
 |===
