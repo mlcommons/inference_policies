@@ -245,7 +245,7 @@ time.
 
 ==== Constraints for the Closed division
 
-The inference benchmark suite has two categories -- Datacenter and Edge (defined herein as non-datacenter) systems. The suite has a carrying capacity of 10 benchmarks i.e at any point in time, the number of benchmarks will not exceed 10 in each category. The minimum requirements for a datacenter system are defined below:
+The inference benchmark suite has two categories -- Datacenter and Edge (defined herein as non-datacenter) systems. The suite has a carrying capacity of 11 benchmarks i.e at any point in time, the number of benchmarks will not exceed 10 in each category. The minimum requirements for a datacenter system are defined below:
 
 ===== Minimum requirements of a datacenter system
 ====== ECC
