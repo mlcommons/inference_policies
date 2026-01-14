@@ -5,7 +5,7 @@
 
 = MLPerf Inference v2.0 - Power Measurement Rules
 
-Updated 5 January 2022.
+Updated 13 January 2026.
 
 Points of contact:
 
@@ -223,3 +223,130 @@ Once your organization signs the EULA, MLCommons staff will give you access to a
 
 For the v1.0, v1.1 and v2.0 rounds, we only support Yokogawa power analyzers.
 In the future, we can support https://www.spec.org/power/docs/SPECpower-Device_List.html[any power analyzers supported by PTDaemon].
+
+
+== Appendix A - Nameplate / Design Power
+
+=== Overview
+
+Proposal : Inclusion of nameplate / design Power in MLPerf Submissions
+
+Authors: Arun Tejusve Raghunath Rajan, on behalf of the Power Working Group
+
+The MLCommons Power Working Group proposes that each on-prem MLPerf submission include the nameplate / design power of the submitted System Under Test (SUT).
+
+This information will complement existing measured-power methodologies and provide a uniform baseline reference across systems and vendors. The intent is not to replace measured power but to give additional visibility into the designed power capacity of submitted systems.
+
+By including design power, MLPerf can help stakeholders—submitters, reviewers, and end users—better contextualize energy efficiency results, improve reproducibility, and align with related MLCommons initiatives such as Storage and Training benchmarks that already collect rated power information.
+
+We propose to include the following:
+
+Option 1 (Preferred): Submit the aggregate nameplate / design power for the SUT, listing all major components (accelerators, CPUs, storage, networking, etc.).
+
+Option 2: Provide per-component TDP/TGP data and a summarized total for the SUT.
+
+=== Reporting YAML Format
+
+The reported design power (total of all needed PSU capacities in watts) will appear alongside the measured-power and non-power views, clearly labeled as “Design Power.”
+This data is reported through a yaml file. The structure of the YAML file is a hierarchy of components, with the power capacity based on the DMTF RedFish PowerSupply schema.
+For example, a simple single-device system can have a single level:
+
+```
+---
+My Device:
+- Description: 'Optional Description'
+  Min PSUs Needed: 1
+  PSUs:
+  - Name: PSU 1
+    PowerCapacityWatts: 1200
+  - Name: PSU 2
+    PowerCapacityWatts: 1200
+```
+
+A more complex system can have two (or more) levels:
+
+```
+---
+My System:
+- My Rack 1:
+  - My Server 1:
+    - Description: 'Optional Description'
+      Min PSUs Needed: 1
+      PSUs:
+      - Name: PSU 1
+        PowerCapacityWatts: 1200
+      - Name: PSU 2
+        PowerCapacityWatts: 1200
+  - My Switch 1:
+    - Description: 'Optional Description'
+      Min PSUs needed: 1
+      PSUs:
+      - Name: PSU 1
+        PowerCapacityWatts: 1200
+      - Name: PSU 2
+        PowerCapacityWatts: 1200
+```
+
+The labels “My System”, “My Rack 1”, “My Server 1”, etc. are submitter-defined labels corresponding to their system topology.
+
+Rack-level systems are also supported:
+
+```
+---
+My System:
+- My Rack 1:
+  - Description: 'Optional Description'
+    Min PSUs Needed: 1
+    PSUs:
+    - Name: PSU 1
+      PowerCapacityWatts: 12000
+    - Name: PSU 2
+      PowerCapacityWatts: 12000
+```
+
+=== Display Results
+
+This is how the results would be displayed. We add a column called 'Design Power (W)' before the actual measured submission data (performance and/or power) starts. There will be only 1 design power per submission (ie: this does not vary based on the workload).
+
+This is mockup of the results page:
+
+< Insert picture here >
+
+Note:
+
+Nameplate/Design power and MLPerf performance numbers SHOULD NOT be used by anyone including third parties to generate power-perf efficiency metrics. This does not reflect reality.
+
+=== FAQs / Summary of Discussions
+
+Q: Will nameplate/design power replace measured power?
+
+No. Measured power remains the official metric for efficiency scoring and visualization. Nameplate / design power will serve as an additional reference field.
+
+
+Q: What if a submitter tunes or limits component power (e.g., Max-Q settings)?
+
+This is acceptable. If the system operates at a reduced power limit with or without performance degradation, it will be reported as such. The goal is to represent the actual system configuration used for the submission.
+
+
+Q: Why not require per-component data?
+
+Simplicity and consistency. Most submitters prefer providing the overall system nameplate / design power while optionally disclosing component breakdowns.
+
+
+Q: How does this align with Storage WG and other MLPerf areas?
+
+The Storage WG already requires rated power submission as part of its YAML configuration. Adopting a similar practice in Power WG ensures consistency across MLCommons benchmarks. Here are the Rules doc for Storage WG and here is an example submission.
+
+Q: Concerns about confusion with measured results?
+
+The Power WG agreed to maintain distinct “measured power” and “rated power” sections to prevent misinterpretation. Measured power continues to occupy its own visualization page.
+
+
+Q: Benefits for submitters?
+
+Including nameplate / design power data highlights system design efficiency, simplifies audits, and may incentivize power submissions by providing more context even when measured power is unavailable.
+
+
+Q: Why limit this to on-prem providers?
+
+During discussions with the Inference group, a concern was raised that requiring power rating information might discourage certain submitters, especially cloud providers with proprietary hardware and confidential specifications, from participating.
