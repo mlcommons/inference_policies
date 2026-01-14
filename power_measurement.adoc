@@ -27,6 +27,12 @@ The MLPerf name and logo are trademarks. In order to refer to a result using the
 
 === Definitions (read this section carefully)
 
+*Design power* is defined to be the minimum measurement of electrical power that must be capable of being supplied to a single or collection of power supply units (PSUs) in order to avoid violating regulatory and safety requirements. For individual PSUs, the design power equals the nameplate rated power. For groups of redundant PSUs, the design power is equal to the sum of the nameplate rated power of the minimum number of PSUs required to be simultaneously operational.
+
+*Nameplate rated power* is defined as the maximum power capacity that can be provided by a power supply unit (PSU), as declared to a certification authority. The nameplate rated power can typically be obtained from the PSU datasheet.
+
+A *Power Supply Unit* (PSU) is a component which converts an AC or DC voltage input to one or more DC voltage outputs for the purpose of powering a system or subsystem. Power supply units may be redundant and hot swappable.
+
 A *system under test (SUT)* consists of a defined set of hardware and
 software resources that will be measured for performance and power. The hardware
 resources may include processors, accelerators, memories, disks, and
@@ -34,7 +40,7 @@ interconnect. The software resources may include an operating system,
 compilers, libraries, and drivers that significantly affect the
 running time or power consumption of a benchmark.
 
-*A Director/Server* system is any system that can act as the host for
+A *Director/Server* system is any system that can act as the host for
 the power measurements, e.g., a standard PC with an interface that
 connects to the power analyzer.
 
