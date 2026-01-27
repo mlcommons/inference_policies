@@ -178,10 +178,11 @@ Each sample has the following definition:
 |===
 |Model| definition of one sample
 |Resnet50-v1.5	    |one image
-|Retinanet	    |one image
+|YOLO v11	    |one image
 |3D UNET	        |one image
 |BERT	            |one sequence
-|DLRMv2	            |up to 700 user-item pairs (more details in FAQ)
+|DLRMv3	            |up to 700 user-item pairs (more details in FAQ)
+|Wan2.2-T2V-A14B-Diffusers            |A pair of postive and negative prompts
 |SDXL	            |A pair of postive and negative prompts
 |Llama2-70b	            |one sequence
 |Mixtral-8x7B            |one sequence
@@ -191,6 +192,8 @@ Each sample has the following definition:
 |Llama3.1-8B	            |one sequence
 |DeepSeek-r1            |one sequence
 |Whisper	            |one audio
+|GPT-OSS            |one sequence
+|VLM            |one image
 |===
 
 == Benchmarks
@@ -267,10 +270,13 @@ The Datacenter suite includes the following benchmarks:
 |Language |Text Generation |Llama3.1-405B |Subset of LongBench, LongDataCollections, Ruler, GovReport | 8313 | 99% of FP16 ((GovReport + LongDataCollections + 65 Sample from LongBench)rougeL=21.6666, (Remaining samples of the dataset)exact_match=90.1335). Additionally, for both cases tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=684.68)| TTFT/TPOT: 6000 ms/175 ms Interactive category: TTFT/TPOT: 4500 ms/80 ms. footnote:[For Llama3.1-405B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 6000 ms/175 ms
 |Language |Text Generation (Question Answering, Math and Code Generation) |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | 15000 | 99% of FP16 ((OpenOrca)rouge1=45.5989, (OpenOrca)rouge2=23.3526, (OpenOrca)rougeL=30.4608, (gsm8k)Accuracy=73.66, (mbxp)Accuracy=60.16). Additionally, for both cases the tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=144.84)| TTFT/TPOTfootnote:[For Mixtral-8x7B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms
 |Language |Reasoning |DeepSeek-r1 |mlperf_deepseek_r1 | 4388 | 99% of FP16 (exact match 81.9132%).| TTFT/TPOTfootnote:[For DeepSeek-r1, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/80 ms
-|Commerce |Recommendation |DLRMv2 |Synthetic Multihot Criteo Dataset | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.31%) | 60 ms
+|Language |Reasoning |GPT-OSS |mlperf_gpt_oss_performance mlperf_gpt_oss_accuracy | perf: 6396, acc: 4395 | 99% of mxfp4 reference (83.13 * 0.99) on mlperf_gpt_oss_accuracy dataset | TTFT/TPOTfootnote:[For GPT-OSS, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 3000ms/ 80ms 
+|Commerce |Recommendation |DLRMv3 |Synthetic Dataset | 34996 |99.9% of the original three BF16 metrics: NE (86.69%), Accuracy (69.65%), and AUC (78.66%) | 80 ms
+|Generative |Text to video |Wan2.2-T2V-A14B-Diffusers |VBench | 248 |99% of Reference (70.48%) | N/A
 |Generative |Text to image |SDXL |Subset of coco-2014 val | 5000 |FID range: [23.01085758, 23.95007626] and CLIP range: [31.68631873, 31.81331801] | 20 s
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
+|Multimodal |Image to text |VLM |Shopify-product-catalogue | 48289 |99% of reference F1 0.7903 | 12 s
 |===
 
 Each Datacenter benchmark *requires* the following scenarios:
@@ -285,9 +291,10 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Language |Text Generation|(Server\| Interactive), Offline
 |Language |Reasoning |Server, Offline
 |Commerce |Recommendation |Server, Offline
-|Generative |Text to image |Server, Offline
+|Generative |Text to video |SingleStream, Offline
 |Graph |Node classification |Offline
 |Audio |Speech to Text | Offline
+|Multimodal |Image to text | Server, Offline
 |===
 
 The Edge suite includes the following benchmarks:
@@ -295,7 +302,7 @@ The Edge suite includes the following benchmarks:
 |===
 |Area |Task |Model |Dataset |QSL Size |Quality
 |Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%)
-|Vision |Object detection |Retinanet |OpenImages (800x800) | 64 | 99% of FP32 (0.3755 mAP)
+|Vision |Object detection |Yolo |COCO safe subset | 1525 | 99% of FP32 (0.52866 mAP)
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score)
 |Language |Summarization |Llama3.1-8B |CNN Dailymail (v3.0.0, max_seq_len=2048) | 5000 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the total generation length of the texts should be more than 90% of the reference (gen_len=8167644)
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 and 99.9% of FP32(f1_score=90.874%)
@@ -575,7 +582,10 @@ No compression allowed.
 |Language | Reasoning | DeepSeek-r1 | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation).
 
 No compression allowed.
-|Commerce | Recommendation | DLRMv2 | QDL sends query (Batch of samples).
+|Language | Reasoning | GPT-OSS | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation).
+
+No compression allowed.
+|Commerce | Recommendation | DLRMv3 | QDL sends query (Batch of samples).
 
 Allow one of the following compression options for pre-processing:
 
@@ -584,6 +594,8 @@ Allow one of the following compression options for pre-processing:
 Allow any lossless compression that will be suitable for production use.
 In Server mode allow per-Query compression.
 |Generative | Text to image | SDXL | No compression allowed.
+|Generative | Text to video | Wan2.2-T2V-A14B-Diffusers | Allow any lossless compression that will be suitable for production use
+|Multimodal | Image to text | VLM | No compression allowed.
 
 |Graph | Node Classification | RGAT | No compression allowed.
 
@@ -628,11 +640,11 @@ As input, before preprocessing:
 
 * all imaging benchmarks take uncropped uncompressed bitmap
 
-* BERT, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, Llama3.1-8B and DeepSeek-r1 take texts
+* BERT, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, Llama3.1-8B, GPT-OSS and DeepSeek-r1 take texts
 
 * RNN-T and Whisper takes a waveform
 
-* DLRMv2 takes a variable sized set of items, each a sequence of embedding indices
+* DLRMv3 takes a variable sized set of items, each a sequence of embedding indices
 
 Sample-independent pre-processing that matches the reference model is
 untimed. However, it must be pre-approved and added to the following list:
@@ -794,7 +806,7 @@ The following techniques are disallowed:
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD and R-GAT.
 
-* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, Llama3.1-8B and Mixtral-8x7B.
+* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, Llama3.1-8B, Mixtral-8x7B and GPT-OSS.
 
 * Modifying the sample duration loaded by a fixed input-length audio model (ex. a shorter audio sample should be padded to match the fixed input-length).
 
@@ -905,7 +917,7 @@ No, submitter implementations must adhere to the specificied maximum output toke
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
-A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1 and Llama3.1-8B use greedy search.
+A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, Llama3.1-8B and GPT-OSS use greedy search.
 
 Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
 
@@ -1090,7 +1102,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |===
 === Egress Bandwidth
 
-Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet and SDXL, the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
+Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet, SDXL and Wan2.2-T2V-A14B-Diffusers, the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
 
 |===
 |Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
