@@ -878,17 +878,9 @@ Q: In classification and segmentation models (ResNet50, 3DUNet) the final softma
 A: Yes.
 
 === DLRMv3
-Q: What is the input format for DLRMv3?
+Q: Why must DLRMv3 queries be issued in time series order rather than randomized?
 
-A: DLRMv3 uses a synthetic streaming dataset with sequential recommendation characteristics. Each request contains one user and up to 100 candidates. The dataset includes 5 million users interacting with a billion items over 100 timestamps, with 1% of the dataset used for inference benchmarking.
-
-Q: What are the accuracy metrics for DLRMv3?
-
-A: DLRMv3 uses three metrics: Normalized Entropy (NE), Accuracy, and AUC. For accepted submissions, all three metrics must be within 99.9% of the reference implementation values: NE=86.687%, Accuracy=69.651%, AUC=78.663%.
-
-Q: How do I download the DLRMv3 dataset?
-
-A: The sampled DLRMv3 dataset and trained checkpoint are available at https://inference.mlcommons-storage.org/. You can also use MLCFlow automation: `mlcr get-dataset-mlperf-inference-dlrmv3-synthetic-streaming,_mlc,_r2-downloader --outdirname=<path_to_download> -j`
+A: DLRMv3 is designed to capture sequential recommendation characteristics where users make incremental visits over time. The dataset is organized as a time series of user interactions across 100 timestamps, and queries must be issued in this temporal order to accurately represent real-world streaming recommendation scenarios. This time series ordering also enables potential future implementations of KV-cache optimizations, where user history embeddings can be cached and incrementally updated as new interactions arrive, similar to how KV-cache is used in LLM inference.
 
 === LLM Benchmarks
 
