@@ -181,8 +181,8 @@ Each sample has the following definition:
 |Retinanet	    |one image
 |3D UNET	        |one image
 |BERT	            |one sequence
-|DLRMv2	            |up to 700 user-item pairs (more details in FAQ)
-|SDXL	            |A pair of postive and negative prompts
+|DLRMv3	            |one request (containing one user and up to 100 candidates)
+|WAN-2.2-T2V-A14B	            |one text prompt
 |Llama2-70b	            |one sequence
 |Mixtral-8x7B            |one sequence
 |RGAT	            |one node id
@@ -190,6 +190,8 @@ Each sample has the following definition:
 |PointPainting             | five images and one lidar point cloud
 |Llama3.1-8B	            |one sequence
 |DeepSeek-r1            |one sequence
+|GPT-OSS-120B            |one sequence
+|QWen3-VL-235B-A22B            |one image and text prompt
 |Whisper	            |one audio
 |===
 
@@ -267,8 +269,10 @@ The Datacenter suite includes the following benchmarks:
 |Language |Text Generation |Llama3.1-405B |Subset of LongBench, LongDataCollections, Ruler, GovReport | 8313 | 99% of FP16 ((GovReport + LongDataCollections + 65 Sample from LongBench)rougeL=21.6666, (Remaining samples of the dataset)exact_match=90.1335). Additionally, for both cases tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=684.68)| TTFT/TPOT: 6000 ms/175 ms Interactive category: TTFT/TPOT: 4500 ms/80 ms. footnote:[For Llama3.1-405B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 6000 ms/175 ms
 |Language |Text Generation (Question Answering, Math and Code Generation) |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | 15000 | 99% of FP16 ((OpenOrca)rouge1=45.5989, (OpenOrca)rouge2=23.3526, (OpenOrca)rougeL=30.4608, (gsm8k)Accuracy=73.66, (mbxp)Accuracy=60.16). Additionally, for both cases the tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=144.84)| TTFT/TPOTfootnote:[For Mixtral-8x7B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms
 |Language |Reasoning |DeepSeek-r1 |mlperf_deepseek_r1 | 4388 | 99% of FP16 (exact match 81.9132%).| TTFT/TPOTfootnote:[For DeepSeek-r1, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/80 ms
-|Commerce |Recommendation |DLRMv2 |Synthetic Multihot Criteo Dataset | 204800 |99% of FP32 and 99.9% of FP32 (AUC=80.31%) | 60 ms
-|Generative |Text to image |SDXL |Subset of coco-2014 val | 5000 |FID range: [23.01085758, 23.95007626] and CLIP range: [31.68631873, 31.81331801] | 20 s
+|Language |Text Generation (Question Answering, Math and Code Generation) |GPT-OSS-120B |AIME25, GPQA Diamond, LiveCodeBench v6 | 6396 | TBD (Final score based on weighted dataset accuracy)footnote:[GPT-OSS-120B evaluation uses three datasets with different repeat counts: AIME25 (8 repeats), GPQA Diamond (5 repeats), LiveCodeBench v6 (3 repeats). Final score = sum(dataset_correct / dataset_repeats).]| TTFT/TPOTfootnote:[For GPT-OSS-120B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 3000 ms/80 ms
+|Vision |Visual Language Model |QWen3-VL-235B-A22B |Shopify product-catalogue | 48289 | 99% of BF16 (Category Hierarchical F1 Score >= 0.7824)| 12 s (99th percentile)
+|Commerce |Recommendation |DLRMv3 |Synthetic Streaming 100B Dataset | 34996 |99.9% of FP32 (NE=86.687%, Accuracy=69.651%, AUC=78.663%) | 80 ms
+|Generative |Text to video |WAN-2.2-T2V-A14B |VBench prompts | 248 |99% of BF16 (VBench score >= 69.7752) | N/A
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
 |===
@@ -285,7 +289,8 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Language |Text Generation|(Server\| Interactive), Offline
 |Language |Reasoning |Server, Offline
 |Commerce |Recommendation |Server, Offline
-|Generative |Text to image |Server, Offline
+|Generative |Text to video |Offline
+|Vision |Visual Language Model |Server, Offline
 |Graph |Node classification |Offline
 |Audio |Speech to Text | Offline
 |===
@@ -299,7 +304,6 @@ The Edge suite includes the following benchmarks:
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score)
 |Language |Summarization |Llama3.1-8B |CNN Dailymail (v3.0.0, max_seq_len=2048) | 5000 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the total generation length of the texts should be more than 90% of the reference (gen_len=8167644)
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 and 99.9% of FP32(f1_score=90.874%)
-|Generative |Text to image |SDXL |Subset of coco-2014 val | 5000 |FID range: [23.01085758, 23.95007626] and CLIP range: [31.68631873, 31.81331801]
 |Automotive | 3D Object Detection | PointPainting | Waymo Open Dataset | 1024 | 99.9% of FP32 (0.5425 mAP)
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
 |===
@@ -312,7 +316,6 @@ Each Edge benchmark *requires* the following scenarios, and sometimes permit an 
 |Vision |Object detection |Single Stream, Multistream, Offline
 |Vision |Medical image segmentation |Single Stream, Offline
 |Language |Language processing |Single Stream, Offline
-|Generative |Text to image |Single Stream, Offline
 |Language |Summarization |Single Stream, Offline
 |Automotive | 3D object detection | Single Stream with 99.9% tail latency
 |Audio |Speech to Text | Offline
@@ -374,7 +377,10 @@ For each of the following benchmarks it is necessary to use the following infere
 |Summarization (Mixtral-8x7B) |min_new_tokens |2 | Minimun number of new tokens to generate
 |Text Generation (Mixtral-8x7B) |max_new_tokens |1024 | Maximum number of new tokens to generate
 |Reasoning (DeepSeek) |min_new_tokens |1 | Minimun number of new tokens to generate
-|Reasoning (DeepSeek) |max_new_tokens |32768 | Maximum number of new tokens to generate
+|Reasoning (DeepSeek) |max_new_tokens |20000 | Maximum number of new tokens to generate
+|Text Generation (GPT-OSS-120B) |min_new_tokens |1 | Minimun number of new tokens to generate
+|Text Generation (GPT-OSS-120B) |max_new_tokens (accuracy) |32768 | Maximum number of new tokens to generate in accuracy mode
+|Text Generation (GPT-OSS-120B) |max_new_tokens (performance) |10000 | Maximum number of new tokens to generate in performance mode
 |===
 
 == Load Generator
@@ -575,7 +581,7 @@ No compression allowed.
 |Language | Reasoning | DeepSeek-r1 | Input is either Token IDs, Input Masks and Input Lengths or just the Token IDs (the other tensors are generated at the SUT in a timed operation).
 
 No compression allowed.
-|Commerce | Recommendation | DLRMv2 | QDL sends query (Batch of samples).
+|Commerce | Recommendation | DLRMv3 | QDL sends query (Batch of samples).
 
 Allow one of the following compression options for pre-processing:
 
@@ -583,7 +589,8 @@ Allow one of the following compression options for pre-processing:
 
 Allow any lossless compression that will be suitable for production use.
 In Server mode allow per-Query compression.
-|Generative | Text to image | SDXL | No compression allowed.
+|Generative | Text to video | WAN-2.2-T2V-A14B | No compression allowed.
+|Vision | Visual Language Model | QWen3-VL-235B-A22B | No compression allowed.
 
 |Graph | Node Classification | RGAT | No compression allowed.
 
@@ -591,7 +598,7 @@ In Server mode allow per-Query compression.
 
 . Compression scheme needs pre-approval, at least two weeks before a submission deadline.
 . A compression scheme may use information from the training set, but not the validation set (ex: check index probability).
-. Only per-Sample compression is allowed, except for DLRMv2 Server mode where per-Query compression is allowed.
+. Only per-Sample compression is allowed, except for DLRMv3 Server mode where per-Query compression is allowed.
 
 === Open Division
 
@@ -632,7 +639,7 @@ As input, before preprocessing:
 
 * RNN-T and Whisper takes a waveform
 
-* DLRMv2 takes a variable sized set of items, each a sequence of embedding indices
+* DLRMv3 takes a request containing one user and up to 100 candidates
 
 Sample-independent pre-processing that matches the reference model is
 untimed. However, it must be pre-approved and added to the following list:
@@ -794,7 +801,7 @@ The following techniques are disallowed:
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD and R-GAT.
 
-* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, Llama3.1-8B and Mixtral-8x7B.
+* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, GPT-OSS-120B, Llama3.1-8B and Mixtral-8x7B.
 
 * Modifying the sample duration loaded by a fixed input-length audio model (ex. a shorter audio sample should be padded to match the fixed input-length).
 
@@ -870,33 +877,18 @@ Q: In classification and segmentation models (ResNet50, 3DUNet) the final softma
 
 A: Yes.
 
-=== DLRMv2
-Q: For DLRMv2, what's the distribution of user-item pairs per sample for all scenarios?
+=== DLRMv3
+Q: What is the input format for DLRMv3?
 
-A: For all scenarios, the distribution of user-item pairs per sample is specified by https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt]. To verify that your sample aggregation trace matches the reference, please follow the steps in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_trace_verification.txt[dist_trace_verification.txt]. Or simply download the reference https://zenodo.org/record/3941795/files/dlrm_trace_of_aggregated_samples.txt?download=1[dlrm_trace_of_aggregated_samples.txt] from Zenodo (MD5:3db90209564316f2506c99cc994ad0b2).
+A: DLRMv3 uses a synthetic streaming dataset with sequential recommendation characteristics. Each request contains one user and up to 100 candidates. The dataset includes 5 million users interacting with a billion items over 100 timestamps, with 1% of the dataset used for inference benchmarking.
 
-Q: What is https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_trace_verification.txt[dist_trace_verification.txt]?
+Q: What are the accuracy metrics for DLRMv3?
 
-The benchmark provides a pre-defined quantile distribution in `./tools/dist_quantile.txt` from which the samples will be drawn using the inverse transform algorithm. This algorithm relies on randomly drawn numbers from the interval [0,1) and that depend on the `--numpy-rand-seed`, which specific value will be provided shortly before MLPerf inference submissions.
+A: DLRMv3 uses three metrics: Normalized Entropy (NE), Accuracy, and AUC. For accepted submissions, all three metrics must be within 99.9% of the reference implementation values: NE=86.687%, Accuracy=69.651%, AUC=78.663%.
 
-Q: What is the rational for the distribution of user-item pairs?
+Q: How do I download the DLRMv3 dataset?
 
-In the case of DLRMv2 we have agreed that we should use multiple samples drawn from a distribution, similar to the one shown on Fig. 5: "Queries for personalized recommendation models" in the https://arxiv.org/abs/2001.02772[DeepRecSys] paper.
-
-Q: Generating dlrm_trace_of_aggregated_samples.txt uses a pseudo-random number generator. How can submitters verify their system pseudo-random number generator is compatible?
-
-Submitters can verify their compatibility by using the default `--numpy-rand-seed` and comparing the trace generated on their system with `./tools/dist_trace_verification.txt` using the following command
-```
-./run_local.sh pytorch dlrm terabyte cpu --count-samples=100 --scenario Offline --max-ind-range=40000000 --samples-to-aggregate-quantile-file=./tools/dist_quantile.txt --max-batchsize=128
-```
-
-Q: I understand that `--samples-to-aggregate-quantile-file=./tools/dist_quantile.txt` is the only compliant setting for MLPerf, but what are the alternative settings and what do they do?
-
-The DLRMv2 MLPerf inference code has an option to aggregate multiple consecutive samples together into a single aggregated sample. The number of samples to be aggregated can be selected using either of the following options
-
-1. fixed [`--samples-to-aggregate-fix`]
-2. drawn uniformly from interval [`--samples-to-aggregate-min`, `--samples-to-aggregate-max`]
-3. drawn from a custom distribution, with its quantile (inverse of CDP) specified in `--samples-to-aggregate-quantile-file=./tools/dist_quantile.txt`.
+A: The sampled DLRMv3 dataset and trained checkpoint are available at https://inference.mlcommons-storage.org/. You can also use MLCFlow automation: `mlcr get-dataset-mlperf-inference-dlrmv3-synthetic-streaming,_mlc,_r2-downloader --outdirname=<path_to_download> -j`
 
 === LLM Benchmarks
 
@@ -905,7 +897,7 @@ No, submitter implementations must adhere to the specificied maximum output toke
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
-A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1 and Llama3.1-8B use greedy search.
+A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, GPT-OSS-120B, and Llama3.1-8B use greedy search.
 
 Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
 
@@ -1084,13 +1076,15 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Language |Llama3.1-405B | Subset of LongBench, LongDataCollections, Ruler, GovReport | __num_inputs*max_seq_len*dtype_size__ | __20000*dtype_size__ | __throughput*20000*dtype_size__
 |Language |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __num_inputs*max_seq_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Language |DeepSeek-r1| mlperf_deepseek_r1| __num_inputs*max_seq_len*dtype_size__ | __3136*dtype_size__ | __throughput*3136*dtype_size__
-|Commerce |DLRMv2 | 1TB Click Logs |__avg(num_pairs_per_sample)*(num_numerical_inputs*dtype_size~1~ +num_categorical_inputs*dtype_size~2~))__footnote:[Each DLRMv2 sample consists of up to 700 user-item pairs draw from the distribution specified in https://github.com/mlcommons/inference/blob/master/recommendation/dlrm/pytorch/tools/dist_quantile.txt[dist_quantile.txt].] |__270*(13*dtype_size~1~+26*dtype_size~2~)__ | __throughput*270*(13*dtype_size~1~+26*dtype_size~2~)__
-|Generative |SDXL |Subset of coco-2014 val captions (max_prompt_len=77) | __num_inputs*max_prompt_len*dtype_size__ | __77*dtype_size__ |  __throughput*77*dtype_size__
+|Language |GPT-OSS-120B| AIME25, GPQA Diamond, LiveCodeBench v6| __num_inputs*max_seq_len*dtype_size__ | __TBD*dtype_size__footnote:[GPT-OSS-120B max_seq_len varies by dataset. TBD - to be determined based on final dataset specifications.] | __throughput*TBD*dtype_size__
+|Vision |QWen3-VL-235B-A22B| Shopify product-catalogue| __num_inputs*(image_size+text_len)*dtype_size__ | __TBD*dtype_size__footnote:[QWen3-VL-235B-A22B input size varies based on image dimensions and text prompt length. TBD - to be determined based on final specifications.] | __throughput*TBD*dtype_size__
+|Commerce |DLRMv3 | Synthetic Streaming 100B Dataset |__avg(num_candidates_per_request)*embedding_size*dtype_size__footnote:[Each DLRMv3 request contains one user and up to 100 candidates.] |__TBD*dtype_size__footnote:[DLRMv3 ingress bandwidth calculation TBD - to be determined based on final embedding dimensions and average candidates per request.] | __throughput*TBD*dtype_size__
+|Generative |WAN-2.2-T2V-A14B |VBench prompts (max_prompt_len=TBD) | __num_inputs*max_prompt_len*dtype_size__ | __TBD*dtype_size__footnote:[WAN-2.2-T2V-A14B prompt length TBD - to be determined based on VBench prompts specifications.] |  __throughput*TBD*dtype_size__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
 |===
 === Egress Bandwidth
 
-Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet and SDXL, the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
+Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet, WAN-2.2-T2V-A14B, and LLMs (Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, GPT-OSS-120B), the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
 
 |===
 |Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
@@ -1102,9 +1096,11 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Language |Llama2-70b |OpenOrca (max_seq_len=1024) | __max_output_len*dtype_size__ | __1024*dtype_size__ | __throughput*1024*dtype_size__
 |Language |Llama3.1-405B |Subset of LongBench, LongDataCollections, Ruler, GovReport | __max_output_len*dtype_size__ | __20000*dtype_size__ | __throughput*20000*dtype_size__
 |Language |Mixtral-8x7B  |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __max_output_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
-|Language |DeepSeek-r1| mlperf_deepseek_r1| __num_inputs*max_seq_len*dtype_size__ | __32768*dtype_size__ | __throughput*32768*dtype_size__
-|Commerce |DLRMv2 |Synthetic Multihot Criteo Dataset | negligible | negligible | __> 0__
-|Generative |SDXL |Subset of coco-2014 val captions (max_prompt_len=77) | __3,145,728*dtype_size__ | __throughput*3,145,728*dtype_size__ | __> 0__
+|Language |DeepSeek-r1| mlperf_deepseek_r1| __num_inputs*max_seq_len*dtype_size__ | __20000*dtype_size__ | __throughput*20000*dtype_size__
+|Language |GPT-OSS-120B| AIME25, GPQA Diamond, LiveCodeBench v6| __max_output_len*dtype_size__ | __32768*dtype_size__ (accuracy), __10000*dtype_size__ (performance) | __throughput*max_new_tokens*dtype_size__
+|Vision |QWen3-VL-235B-A22B| Shopify product-catalogue| negligible | negligible | __> 0__
+|Commerce |DLRMv3 |Synthetic Streaming 100B Dataset | negligible | negligible | __> 0__
+|Generative |WAN-2.2-T2V-A14B |VBench prompts | __video_frames*height*width*channels*dtype_size__ | __81*720*1280*3*dtype_size__footnote:[WAN-2.2-T2V-A14B outputs 720p videos with 81 frames.] | __throughput*224,870,400*dtype_size__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
 |===
 
