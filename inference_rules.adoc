@@ -889,7 +889,7 @@ No, submitter implementations must adhere to the specificied maximum output toke
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
-A: The algorithms used by the benchmarks (greedy search and beam search) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, GPT-OSS-120B, and Llama3.1-8B use greedy search.
+A: The algorithms used by the benchmarks (greedy search, beam search, and sampling) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, and Llama3.1-8B use greedy search. GPT-OSS-120B uses sampling with temperature=1.0, top_p=1.0, and top_k disabled.
 
 Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
 
