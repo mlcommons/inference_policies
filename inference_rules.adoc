@@ -182,7 +182,7 @@ Each sample has the following definition:
 |3D UNET	        |one image
 |BERT	            |one sequence
 |DLRMv3	            |one request (containing one user and up to 100 candidates)
-|WAN-2.2-T2V-A14B	            |one text prompt
+|WAN-2.2-T2V-A14B	            |a pair of positive and negative prompts
 |Llama2-70b	            |one sequence
 |Mixtral-8x7B            |one sequence
 |RGAT	            |one node id
@@ -264,13 +264,13 @@ The Datacenter suite includes the following benchmarks:
 |Area |Task |Model |Dataset |QSL Size |Quality |Server latency constraint
 |Vision |Object detection |Retinanet |OpenImages (800x800) | 64 | 99% of FP32 (0.3755 mAP) | 100 ms
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score) | N/A
-|Language |Summarization |Llama3.1-8B |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the total generation length of the texts should be more than 90% of the reference (gen_len=8167644)| Conversational category: TTFT/TPOT: 2000 ms/100 ms. Interactive category: TTFT/TPOT: 500 ms/30 ms. footnote:[For Llama2-70b, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]
-|Language |Question Answering |Llama2-70b |OpenOrca (max_seq_len=1024) | 24576 | 99% of FP32 and 99.9% of FP32 (rouge1=44.4312, rouge2=22.0352, rougeL=28.6162). Additionally, for both cases the generation length of the tokens per sample should be more than 90% of the reference (tokens_per_sample=294.45)| Conversational category: TTFT/TPOT: 2000 ms/200 ms. Interactive category: TTFT/TPOT: 450 ms/40 ms. footnote:[For Llama2-70b, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]
-|Language |Text Generation |Llama3.1-405B |Subset of LongBench, LongDataCollections, Ruler, GovReport | 8313 | 99% of FP16 ((GovReport + LongDataCollections + 65 Sample from LongBench)rougeL=21.6666, (Remaining samples of the dataset)exact_match=90.1335). Additionally, for both cases tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=684.68)| TTFT/TPOT: 6000 ms/175 ms Interactive category: TTFT/TPOT: 4500 ms/80 ms. footnote:[For Llama3.1-405B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 6000 ms/175 ms
-|Language |Text Generation (Question Answering, Math and Code Generation) |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | 15000 | 99% of FP16 ((OpenOrca)rouge1=45.5989, (OpenOrca)rouge2=23.3526, (OpenOrca)rougeL=30.4608, (gsm8k)Accuracy=73.66, (mbxp)Accuracy=60.16). Additionally, for both cases the tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=144.84)| TTFT/TPOTfootnote:[For Mixtral-8x7B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/200 ms
-|Language |Reasoning |DeepSeek-r1 |mlperf_deepseek_r1 | 4388 | 99% of FP16 (exact match 81.9132%).| TTFT/TPOTfootnote:[For DeepSeek-r1, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 2000 ms/80 ms
-|Language |Text Generation (Question Answering, Math and Code Generation) |GPT-OSS-120B |AIME25, GPQA Diamond, LiveCodeBench v6 | 6396 | TBD (Final score based on weighted dataset accuracy)footnote:[GPT-OSS-120B evaluation uses three datasets with different repeat counts: AIME25 (8 repeats), GPQA Diamond (5 repeats), LiveCodeBench v6 (3 repeats). Final score = sum(dataset_correct / dataset_repeats).]| TTFT/TPOTfootnote:[For GPT-OSS-120B, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]: 3000 ms/80 ms
-|Vision |Visual Language Model |QWen3-VL-235B-A22B |Shopify product-catalogue | 48289 | 99% of BF16 (Category Hierarchical F1 Score >= 0.7824)| 12 s (99th percentile)
+|Language |Summarization |Llama3.1-8B |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the total generation length of the texts should be more than 90% of the reference (gen_len=8167644)| Conversational category: TTFT/TPOT: 2000 ms/100 ms. Interactive category: TTFT/TPOT: 500 ms/30 ms.footnote:llm_ttft_tpot[]
+|Language |Question Answering |Llama2-70b |OpenOrca (max_seq_len=1024) | 24576 | 99% of FP32 and 99.9% of FP32 (rouge1=44.4312, rouge2=22.0352, rougeL=28.6162). Additionally, for both cases the generation length of the tokens per sample should be more than 90% of the reference (tokens_per_sample=294.45)| Conversational category: TTFT/TPOT: 2000 ms/200 ms. Interactive category: TTFT/TPOT: 450 ms/40 ms.footnote:llm_ttft_tpot[]
+|Language |Text Generation |Llama3.1-405B |Subset of LongBench, LongDataCollections, Ruler, GovReport | 8313 | 99% of FP16 ((GovReport + LongDataCollections + 65 Sample from LongBench)rougeL=21.6666, (Remaining samples of the dataset)exact_match=90.1335). Additionally, for both cases tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=684.68)| Server: TTFT/TPOT: 6000 ms/175 ms. Interactive: TTFT/TPOT: 4500 ms/80 ms.footnote:llm_ttft_tpot[]
+|Language |Text Generation (Question Answering, Math and Code Generation) |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | 15000 | 99% of FP16 ((OpenOrca)rouge1=45.5989, (OpenOrca)rouge2=23.3526, (OpenOrca)rougeL=30.4608, (gsm8k)Accuracy=73.66, (mbxp)Accuracy=60.16). Additionally, for both cases the tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=144.84)| TTFT/TPOT: 2000 ms/200 ms.footnote:llm_ttft_tpot[]
+|Language |Reasoning |DeepSeek-r1 |mlperf_deepseek_r1 | 4388 | 99% of FP16 (exact match 81.9132%).| Server: TTFT/TPOT: 2000 ms/80 ms. Interactive: TTFT/TPOT: 1500 ms/15 ms.footnote:llm_ttft_tpot[For LLM benchmarks, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]
+|Language |Text Generation (Question Answering, Math and Code Generation) |GPT-OSS-120B |AIME25, GPQA Diamond, LiveCodeBench v6 | 6396 | TBD (Final score based on weighted dataset accuracy)footnote:[GPT-OSS-120B evaluation uses three datasets with different repeat counts: AIME25 (8 repeats), GPQA Diamond (5 repeats), LiveCodeBench v6 (3 repeats). Final score = sum(dataset_correct / dataset_repeats).]| Server: TTFT/TPOT: 3000 ms/80 ms. Interactive: TTFT/TPOT: 2000 ms/20 ms.footnote:llm_ttft_tpot[]
+|Vision |Visual Language Model |QWen3-VL-235B-A22B |Shopify product-catalogue | 48289 | 99% of BF16 (Category Hierarchical F1 Score >= 0.7824)| 12 s
 |Commerce |Recommendation |DLRMv3 |Synthetic Streaming 100B Dataset | 34996 |99.9% of FP32 (NE=86.687%, Accuracy=69.651%, AUC=78.663%) | 80 ms
 |Generative |Text to video |WAN-2.2-T2V-A14B |VBench prompts | 248 |99% of BF16 (VBench score >= 69.7752) | N/A
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
@@ -289,7 +289,7 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Language |Text Generation|(Server\| Interactive), Offline
 |Language |Reasoning |Server, Offline
 |Commerce |Recommendation |Server, Offline
-|Generative |Text to video |Offline
+|Generative |Text to video |Single Stream, Offline
 |Vision |Visual Language Model |Server, Offline
 |Graph |Node classification |Offline
 |Audio |Speech to Text | Offline
@@ -1079,7 +1079,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet, WAN-2.2-T2V-A14B, and LLMs (Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, GPT-OSS-120B), the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
 
 |===
-|Area |Model |Dataset | Symbolic input size formula | Numeric input size formula | Minimum network bandwidth (bytes/sec)
+|Area |Model |Dataset | Symbolic output size formula | Numeric output size formula | Minimum network bandwidth (bytes/sec)
 |Vision |Resnet50-v1.5 |ImageNet (224x224) | negligible | negligible | __> 0__
 |Vision |Retinanet |OpenImages (800x800) | negligible | negligible | __> 0__
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
@@ -1090,7 +1090,7 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Language |Mixtral-8x7B  |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __max_output_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Language |DeepSeek-r1| mlperf_deepseek_r1| __num_inputs*max_seq_len*dtype_size__ | __20000*dtype_size__ | __throughput*20000*dtype_size__
 |Language |GPT-OSS-120B| AIME25, GPQA Diamond, LiveCodeBench v6| __max_output_len*dtype_size__ | __32768*dtype_size__ (accuracy), __10000*dtype_size__ (performance) | __throughput*max_new_tokens*dtype_size__
-|Vision |QWen3-VL-235B-A22B| Shopify product-catalogue| negligible | negligible | __> 0__
+|Vision |QWen3-VL-235B-A22B| Shopify product-catalogue| __json_response_size*dtype_size__footnote:[QWen3-VL-235B-A22B outputs a JSON object containing category (hierarchical path), brand, and is_secondhand fields.] | __~500*dtype_size__ | __throughput*500*dtype_size__
 |Commerce |DLRMv3 |Synthetic Streaming 100B Dataset | negligible | negligible | __> 0__
 |Generative |WAN-2.2-T2V-A14B |VBench prompts | __video_frames*height*width*channels*dtype_size__ | __81*720*1280*3*dtype_size__footnote:[WAN-2.2-T2V-A14B outputs 720p videos with 81 frames.] | __throughput*224,870,400*dtype_size__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
