@@ -1090,7 +1090,7 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Language |Mixtral-8x7B  |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __max_output_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Language |DeepSeek-r1| mlperf_deepseek_r1| __max_seq_len*dtype_size__ | __20000*dtype_size__ | __throughput*20000*dtype_size__
 |Language |GPT-OSS-120B| AIME25, GPQA Diamond, LiveCodeBench v6| __max_output_len*dtype_size__ | __32768*dtype_size__ (accuracy), __10000*dtype_size__ (performance) | __throughput*max_new_tokens*dtype_size__
-|Vision |QWen3-VL-235B-A22B| Shopify product-catalogue| __json_response_size*dtype_size__footnote:[QWen3-VL-235B-A22B outputs a JSON object containing category (hierarchical path), brand, and is_secondhand fields.] | __~500*dtype_size__ | __throughput*500*dtype_size__
+|Vision |QWen3-VL-235B-A22B| Shopify Product Catalogue| __json_response_size__footnote:[QWen3-VL-235B-A22B outputs a JSON object containing category (hierarchical path), brand, and is_secondhand fields.] | __~500*dtype_size__ | __throughput*500*dtype_size__
 |Commerce |DLRMv3 |Synthetic Streaming 100B Dataset | negligible | negligible | __> 0__
 |Generative |WAN-2.2-T2V-A14B |VBench prompts | __video_frames*height*width*channels*dtype_size__ | __81*720*1280*3*dtype_size__footnote:[WAN-2.2-T2V-A14B outputs 720p videos with 81 frames.] | __throughput*224,870,400*dtype_size__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
