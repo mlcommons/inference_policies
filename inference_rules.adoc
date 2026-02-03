@@ -191,7 +191,7 @@ Each sample has the following definition:
 |Llama3.1-8B	            |one sequence
 |DeepSeek-r1            |one sequence
 |GPT-OSS-120B            |one sequence
-|QWen3-VL-235B-A22B            |one image and text prompt
+|Qwen3-VL-235B-A22B            |one prompt that contains some text and a base64-encoded image
 |Whisper	            |one audio
 |===
 
@@ -270,7 +270,7 @@ The Datacenter suite includes the following benchmarks:
 |Language |Text Generation (Question Answering, Math and Code Generation) |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | 15000 | 99% of FP16 ((OpenOrca)rouge1=45.5989, (OpenOrca)rouge2=23.3526, (OpenOrca)rougeL=30.4608, (gsm8k)Accuracy=73.66, (mbxp)Accuracy=60.16). Additionally, for both cases the tokens per sample should be between than 90% and 110% of the reference (tokens_per_sample=144.84)| TTFT/TPOT: 2000 ms/200 ms.footnote:llm_ttft_tpot[]
 |Language |Reasoning |DeepSeek-r1 |mlperf_deepseek_r1 | 4388 | 99% of FP16 (exact match 81.9132%).| Server: TTFT/TPOT: 2000 ms/80 ms. Interactive: TTFT/TPOT: 1500 ms/15 ms.footnote:llm_ttft_tpot[For LLM benchmarks, 2 latency metrics are collected - time to first token (TTFT) which measures the latency of the first token, and time per output token (TPOT) which measures the average interval between all the tokens generated.]
 |Language |Text Generation (Question Answering, Math and Code Generation) |GPT-OSS-120B |AIME25, GPQA Diamond, LiveCodeBench v6 | 6396 | 99% of 83.13%footnote:[GPT-OSS-120B evaluation uses three datasets with different repeat counts: AIME25 (8 repeats), GPQA Diamond (5 repeats), LiveCodeBench v6 (3 repeats). Final score = sum(dataset_correct / dataset_repeats).]| Server: TTFT/TPOT: 3000 ms/80 ms. Interactive: TTFT/TPOT: 2000 ms/20 ms.footnote:llm_ttft_tpot[]
-|Vision |Visual Language Model |QWen3-VL-235B-A22B |Shopify product-catalogue | 48289 | 99% of BF16 (Category Hierarchical F1 Score >= 0.7824)| 12 s
+|Vision |Visual Language Model |Qwen3-VL-235B-A22B |Shopify Product Catalogue | 48289 | 99% of BF16 (Category Hierarchical F1 Score >= 0.7824)| 12 s
 |Commerce |Recommendation |DLRMv3 |Synthetic Streaming 100B Dataset | 34996 |99.9% of FP32 (NE=86.687%, Accuracy=69.651%, AUC=78.663%) | 80 ms
 |Generative |Text to video |WAN-2.2-T2V-A14B |VBench prompts | 248 |99% of BF16 (VBench score >= 69.7752) | N/A
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
@@ -590,7 +590,7 @@ Allow one of the following compression options for pre-processing:
 Allow any lossless compression that will be suitable for production use.
 In Server mode allow per-Query compression.
 |Generative | Text to video | WAN-2.2-T2V-A14B | No compression allowed.
-|Vision | Visual Language Model | QWen3-VL-235B-A22B | No compression allowed.
+|Vision | Visual Language Model | Qwen3-VL-235B-A22B | No compression allowed.
 
 |Graph | Node Classification | RGAT | No compression allowed.
 
@@ -801,7 +801,7 @@ The following techniques are disallowed:
 * Techniques that only improve performance when there are identical
   samples in a query. For example, sorting samples in SSD and R-GAT.
 
-* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all LLM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, GPT-OSS-120B, Llama3.1-8B and Mixtral-8x7B.
+* Techniques that only improve performance by artificially creating batches of identical samples. Sorting samples beyond the boundary of a dataset is prohibited for all (L|V)LM workloads such as - Llama2-70b, Llama2-70b-Interactive, Llama3.1-405B, DeepSeek-r1, Qwen3-VL-235B-A22B, GPT-OSS-120B, Llama3.1-8B and Mixtral-8x7B.
 
 * Modifying the sample duration loaded by a fixed input-length audio model (ex. a shorter audio sample should be padded to match the fixed input-length).
 
@@ -889,7 +889,7 @@ No, submitter implementations must adhere to the specificied maximum output toke
 
 Q: What algorithm is used for the auto-regressive decoding loop?
 
-A: The algorithms used by the benchmarks (greedy search, beam search, and sampling) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, and Llama3.1-8B use greedy search. GPT-OSS-120B uses sampling with temperature=1.0, top_p=1.0, and top_k disabled.
+A: The algorithms used by the benchmarks (greedy search, beam search, and sampling) are described at a high level here: https://huggingface.co/blog/how-to-generate. Specifically, Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, and Llama3.1-8B use greedy search. GPT-OSS-120B and Qwen3-VL-235B-A22B uses sampling with temperature=1.0, top_p=1.0, and top_k disabled.
 
 Q: MLPerf disallows caching queries. Is using a KV-cache in decoding allowed?
 
@@ -1069,14 +1069,14 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Language |Mixtral-8x7B |OpenOrca (5k samples, max_seq_len=2048), GSM8K (5k samples of the train split, max_seq_len=2048), MBXP (5k samples, max_seq_len=2048) | __num_inputs*max_seq_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Language |DeepSeek-r1| mlperf_deepseek_r1| __num_inputs*max_seq_len*dtype_size__ | __3136*dtype_size__ | __throughput*3136*dtype_size__
 |Language |GPT-OSS-120B| AIME25, GPQA Diamond, LiveCodeBench v6| __num_inputs*max_seq_len*dtype_size__ | __15330*dtype_size__ | __throughput*15330*dtype_size__
-|Vision |QWen3-VL-235B-A22B| Shopify product-catalogue| __num_inputs*(image_size+text_len)*dtype_size__ | __TBD*dtype_size__footnote:[QWen3-VL-235B-A22B input size varies based on image dimensions and text prompt length. TBD - to be determined based on final specifications.] | __throughput*TBD*dtype_size__
+|Vision |QWen3-VL-235B-A22B| Shopify Product Catalogue| __(text_size+image_size+chat_completion_template_size+http_header_size)__ | __TBD*dtype_size__footnote:[QWen3-VL-235B-A22B input size varies based on image dimensions and text prompt length. TBD - to be determined based on final specifications.] | __throughput*TBD*dtype_size__
 |Commerce |DLRMv3 | Synthetic Streaming 100B Dataset |__(2 + 6*uih_seq_len + 6*num_candidates)*int64_size__footnote:[Each DLRMv3 request contains 1 UIH sequence (user_id, item_id, ratings, timestamps, weights, category_id) and 2048 candidate features (6 int64 features per candidate).] |__98368__footnote:[DLRMv3: (2 + 6*1 + 6*2048) * 8 = 98368 bytes per sample.] | __throughput*98368__
 |Generative |WAN-2.2-T2V-A14B |VBench prompts | negligible | negligible |  __> 0__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
 |===
 === Egress Bandwidth
 
-Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet, WAN-2.2-T2V-A14B, and LLMs (Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, GPT-OSS-120B), the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
+Datacenter systems must provide at least the following bandwidths from the output location (e.g. DRAM) to the network or I/O device. The minimum bandwidth is a function of the throughput achieved by the SUT and the output data types. For all models except 3D Unet, WAN-2.2-T2V-A14B, and LLMs (Llama2-70b, Llama3.1-405B, Mixtral-8x7B, DeepSeek-r1, GPT-OSS-120B, Qwen3-VL-235B-A22B), the output sizes are negligible. Therefore, for those models, the egress bandwidth must simply be greater than 0.
 
 |===
 |Area |Model |Dataset | Symbolic output size formula | Numeric output size formula | Minimum network bandwidth (bytes/sec)
