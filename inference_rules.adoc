@@ -1062,7 +1062,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Vision |Resnet50-v1.5 |ImageNet (224x224) | __C*H*W*dtype_size__ | __3*224*224*dtype_size__ | __throughput*150528*dtype_size__
 |Vision |Retinanet |OpenImages (800x800) | __C*H*W*dtype_size__ | __3*800*800*dtype_size__ | __throughput*1920000*dtype_size__
 |Vision |3D UNET | KiTS 2019 | __avg(C*D*H*W)*dtype_size__footnote:3d_unet_bw[The average image size above is the average image size of the inference cases specified in https://github.com/mlcommons/inference/blob/master/vision/medical_imaging/3d-unet-kits19/meta/inference_cases.json[inference_cases.json].] | __32944795*dtype_size__ | __throughput*32944795*dtype_size__
-|Language |BERT |SQuAD v1.1 (max_seq_len=384) | __max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
+|Language |BERT |SQuAD v1.1 (max_seq_len=384) | __num_inputs*max_seq_len*dtype_size__ | __3*384*dtype_size__ | __throughput*1152*dtype_size__
 |Language |Llama3.1-8B |CNN Dailymail (v3.0.0, max_seq_len=2048) | __max_seq_len*dtype_size__ | __2048*dtype_size__ | __throughput*2048*dtype_size__
 |Language |Llama2-70b |OpenOrca (max_seq_len=1024) | __max_seq_len*dtype_size__ | __1024*dtype_size__ | __throughput*1024*dtype_size__
 |Language |Llama3.1-405B | Subset of LongBench, LongDataCollections, Ruler, GovReport | __max_seq_len*dtype_size__ | __20000*dtype_size__ | __throughput*20000*dtype_size__
