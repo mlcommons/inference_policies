@@ -181,7 +181,7 @@ Each sample has the following definition:
 |Retinanet	    |one image
 |3D UNET	        |one image
 |BERT	            |one sequence
-|DLRMv3	            |one request (containing one user and up to 100 candidates)
+|DLRMv3	            |one request (containing one user history sequence and 2048 candidates)
 |WAN-2.2-T2V-A14B	            |a pair of positive and negative prompts
 |Llama2-70b	            |one sequence
 |Mixtral-8x7B            |one sequence
@@ -1070,7 +1070,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Language |DeepSeek-r1| mlperf_deepseek_r1| __num_inputs*max_seq_len*dtype_size__ | __3136*dtype_size__ | __throughput*3136*dtype_size__
 |Language |GPT-OSS-120B| AIME25, GPQA Diamond, LiveCodeBench v6| __num_inputs*max_seq_len*dtype_size__ | __15330*dtype_size__ | __throughput*15330*dtype_size__
 |Vision |QWen3-VL-235B-A22B| Shopify product-catalogue| __num_inputs*(image_size+text_len)*dtype_size__ | __TBD*dtype_size__footnote:[QWen3-VL-235B-A22B input size varies based on image dimensions and text prompt length. TBD - to be determined based on final specifications.] | __throughput*TBD*dtype_size__
-|Commerce |DLRMv3 | Synthetic Streaming 100B Dataset |__(2 + 6*uih_seq_len + 6*num_candidates)*int64_size__footnote:[Each DLRMv3 request contains UIH features (user_id, item_id, ratings, timestamps, weights, category_id for each history item) and candidate features (6 features per candidate). All values are int64.] |__TBD__footnote:[DLRMv3 ingress bandwidth TBD - depends on average UIH sequence length and number of candidates per request.] | __throughput*TBD__
+|Commerce |DLRMv3 | Synthetic Streaming 100B Dataset |__(2 + 6*uih_seq_len + 6*num_candidates)*int64_size__footnote:[Each DLRMv3 request contains 1 UIH sequence (user_id, item_id, ratings, timestamps, weights, category_id) and 2048 candidate features (6 int64 features per candidate).] |__98368__footnote:[DLRMv3: (2 + 6*1 + 6*2048) * 8 = 98368 bytes per sample.] | __throughput*98368__
 |Generative |WAN-2.2-T2V-A14B |VBench prompts | negligible | negligible |  __> 0__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
 |===
