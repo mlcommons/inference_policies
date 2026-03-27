@@ -276,7 +276,7 @@ The Datacenter suite includes the following benchmarks:
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
 |===
-<a name="dc-required-scenarios"></a>
+[[dc-required-scenarios]]
 Each Datacenter benchmark *requires* the following scenarios:
 
 |===
@@ -294,7 +294,7 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Graph |Node classification |Offline
 |Audio |Speech to Text | Offline
 |===
-<a name="edge-benchmarks"></a>
+[[edge-benchmarks]]
 The Edge suite includes the following benchmarks:
 
 |===
@@ -307,7 +307,7 @@ The Edge suite includes the following benchmarks:
 |Automotive | 3D Object Detection | PointPainting | Waymo Open Dataset | 1024 | 99.9% of FP32 (0.5425 mAP)
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
 |===
-<a name="edge-required-scenarios"></a>
+[[edge-required-scenarios]]
 Each Edge benchmark *requires* the following scenarios, and sometimes permit an optional scenario:
 
 |===
