@@ -294,7 +294,7 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Graph |Node classification |Offline
 |Audio |Speech to Text | Offline
 |===
-
+<a name="edge-benchmarks"></a>
 The Edge suite includes the following benchmarks:
 
 |===
