@@ -761,7 +761,7 @@ Examples of allowed techniques include, but are not limited to:
   (Submitters should include in their submission details of how the ordering was
   derived.)
 
-* Speculative decoding is allowed subject to constraints in <<appendix-speculative-decoding>>, only for certain LLM workloads including - DeepSeek-r1-Interactive.
+* Speculative decoding is allowed subject to constraints in <<appendix-speculative-decoding>>, only for certain LLM workloads including - DeepSeek-r1-Interactive, GPT-OSS-120B-Interactive.
 
 The following techniques are disallowed:
 
@@ -1109,4 +1109,5 @@ Implementations that artificially manipulate acceptance rates are disallowed, eg
 |Benchmark |Scenario |Speculative Decoding Algorithm |Configuration |MTP Head
 
 |DeepSeek-r1 |Interactive |EAGLE-style decoding with deepseek-ai/deepseek-r1 MTP head |`speculative-num-steps=3`, `speculative-eagle-topk=1.0` |https://huggingface.co/deepseek-ai/DeepSeek-R1
+|GPT-OSS-120B |Interactive |EAGLE3-style decoding with nvidia/gpt-oss-120b-Eagle3-long-context MTP head |`speculative-num-steps=3`, `speculative-eagle-topk=1.0` |https://huggingface.co/nvidia/gpt-oss-120b-Eagle3-long-context
 |===
