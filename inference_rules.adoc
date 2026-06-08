@@ -275,6 +275,7 @@ The Datacenter suite includes the following benchmarks:
 |Generative |Text to video |WAN-2.2-T2V-A14B |VBench prompts | 248 |99% of BF16 (VBench score >= 69.7752) | N/A
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
+|Language |Agentic Function Calling |Qwen3.6-27B |gorilla-llm/gorilla-eval-set (BFCL v4; non_live 20%, live 10%, hallucination 5%, multi-turn 3%) | TBD | 99% of reference (single-turn overall=87.50%, multi-turn overall=TBD)
 |===
 [[dc-required-scenarios]]
 Each Datacenter benchmark *requires* the following scenarios:
