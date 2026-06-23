@@ -193,6 +193,7 @@ Each sample has the following definition:
 |GPT-OSS-120B            |one sequence
 |Qwen3-VL-235B-A22B            |one prompt that contains some text and a base64-encoded image
 |Whisper	            |one audio
+|E2E-RAG	            |one multi-hop question
 |===
 
 == Benchmarks
@@ -275,6 +276,7 @@ The Datacenter suite includes the following benchmarks:
 |Generative |Text to video |WAN-2.2-T2V-A14B |VBench prompts | 248 |99% of BF16 (VBench score >= 69.7752) | N/A
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
+|Language |Retrieval Augmented Generation |E2E-RAG |FRAMES (multi-hop QA over Wikipedia) | 824 |97% of FP32  (LLM Judge score = 27%) | N/A
 |===
 [[dc-required-scenarios]]
 Each Datacenter benchmark *requires* the following scenarios:
@@ -293,6 +295,7 @@ Each Datacenter benchmark *requires* the following scenarios:
 |Vision |Visual Language Model |Server, Offline
 |Graph |Node classification |Offline
 |Audio |Speech to Text | Offline
+|Language |Retrieval Augmented Generation |Offline
 |===
 [[edge-benchmarks]]
 The Edge suite includes the following benchmarks:
@@ -927,6 +930,93 @@ Q: Whisper's native audio input duration is fixed at 30 seconds. Is it permitted
 
 A: No, it is not permitted to modify the loaded duration even if continuing to meet the model's accuracy threshold. Samples must be zero-padded to ensure consistent computation and accuracy criteria.
 
+=== E2E-RAG
+
+Q: What is the E2E-RAG benchmark?
+
+A: E2E-RAG is an end-to-end retrieval-augmented generation benchmark for multi-hop question answering on the FRAMES Wikipedia dataset. It evaluates the complete RAG pipeline including document retrieval, reranking, and answer generation. The benchmark uses dense vector retrieval with FAISS indexing, ColBERTv2 reranking, and iterative multi-shot retrieval with LLM-driven query decomposition.
+
+Q: What is the E2E-DB setup?
+
+A: The E2E-DB setup is the database setup step needed for all RAG workloads. This test measures the performance of building the vector database and ensures the database remains consistent across tests. It is a one-time measured operation that creates the FAISS index from Wikipedia documents.
+
+Q: Why does the accuracy vary in accuracy tests?
+
+A: Due to the non-determinism of GPT-OSS reasoning models, result variation in one step can roll up into a bigger variation as more calls to GPT-OSS are made. Currently, an accuracy range of 29%-32% is observed due to this non-determinism. The non-deterministic behavior comes from the sampling-based generation (temperature=1.0, top_p=1.0) used by GPT-OSS-120B.
+
+Q: Why is the accuracy so low for E2E-RAG?
+
+A: The FRAMES benchmark oracle accuracy with GPT-OSS models is 68%. However, the actual LLM judge accuracy of this workload is 29%-32%. This discrepancy is due to the limitation of context window of models for retrieval, which is a bottleneck. 
+Efforts made in multi-shot retrieval improved the accuracy from 20% to almost 30% by iteratively decomposing queries and retrieving relevant documents across multiple rounds.
+
+Q: What are the key components of the E2E-RAG workload?
+
+A: The key components are:
+
+* Vector Database Construction: Building FAISS index from Wikipedia documents using embedding models (e5-base-v2)
+* Retrieval: Dense vector search with FAISS HNSW
+* Reranking: ColBERTv2 model for improving retrieved document relevance
+* Multi-shot Retrieval: Iterative retrieval with LLM-driven query decomposition
+* Answer Generation: LLM-based question answering using retrieved context
+* Evaluation: Document relevance grading and answer accuracy assessment with LLM as a judge (Llama3.1-8B)
+
+Q: What operations are timed in E2E-RAG?
+
+A: The following operations are timed:
+
+* Document embedding generation (during database construction)
+* Vector database building (FAISS index creation)
+* Query embedding generation
+* Vector search/retrieval
+* Reranking with ColBERTv2
+* LLM inference for query decomposition, document grading, sufficiency checking, and answer generation
+* Full end-to-end question answering pipeline
+
+Loading of models (embedding model, reranker, LLM) is not timed.
+
+Q: What is the difference between performance tests and accuracy tests in E2E-RAG?
+
+A: Performance tests measure system speed (latency, throughput) using cached LLM responses to ensure deterministic workloads for run-to-run comparisons.
+   Accuracy tests measure model quality (precision, recall, F1, answer accuracy) using live LLM inference. 
+
+A: The benchmark supports multiple hardware accelerators via the `--device` flag:
+
+* NVIDIA GPUs (cuda)
+* AMD GPUs (rocm)
+* Intel XPUs (xpu)
+* Intel HPUs (hpu)
+* CPU
+
+Q: What is the maximum number of retrieval iterations ?
+
+A: The maximum number of retrieval iterations is controlled by `--max_iterations 5`.
+
+Q: Can I cache query results or LLM responses across different queries?
+
+A: No. In accordance with MLPerf inference rules, caching across queries is not permitted. Each query must be processed independently. However, within a single query, KV-cache and other standard optimizations are allowed. The performance test mode's response caching is specifically designed to replay the same workload for performance comparisons, not to avoid computation.
+
+Q: How is the FRAMES dataset structured?
+
+A: The FRAMES dataset is a tab-separated values (TSV) file containing multi-hop questions and their answer links to Wikipedia pages. Each query requires information from multiple Wikipedia articles to answer correctly. The dataset can be filtered by difficulty level using the `--difficulty` flag, which filters queries based on the minimum number of answer links required.
+
+Q: Is it allowed to preprocess or cache the vector database?
+
+A: Yes. Building the vector database is a measured one-time operation. The database can be saved and reused across multiple runs using the `--database` flag. 
+Loading a pre-built database is permitted and only the query processing is measured during the question-answering workload. 
+Submitters must ensure they are using the same database that is generated by the one-time measured operation and not a separately optimized or modified version.
+
+Q: Can I use quantized models for embeddings or reranking?
+
+A: Yes, quantization is allowed for the embedding and reranking models according to the standard quantization rules. The quantization must maintain model equivalence and meet the accuracy threshold. KV-cache entries should be handled according to the activation quantization rules.
+
+Q: Why is the submitter required to submit the detailed log JSON file?
+
+A: Since the existing compliance tests do not have a mechanism to verify the correctness of the E2E-RAG workload execution, the detailed log JSON file will be used by reviewers to determine if the test was run fairly. This file contains information about all LLM calls, retrieved documents, query decompositions, and intermediate steps in the multi-shot retrieval process, allowing reviewers to verify compliance with the benchmark rules.
+
+Q: What sampling strategy is used for questions in the dataset?
+
+A: Questions are processed in the order they appear in the FRAMES dataset. For evaluation, the number of queries can be limited using the `--eval` flag with an optional count parameter. Random sampling or reordering of queries is not performed to ensure reproducibility.
+
 === Audit
 
 Q: What characteristics of my submission will make it more likely to be audited?
@@ -1073,6 +1163,7 @@ Datacenter systems must provide at least the following bandwidths from the netwo
 |Commerce |DLRMv3 | Synthetic Streaming 100B Dataset |__(2 + 6*uih_seq_len + 6*num_candidates)*int64_size__footnote:[Each DLRMv3 request contains 1 UIH sequence (user_id, item_id, ratings, timestamps, weights, category_id) and 2048 candidate features (6 int64 features per candidate).] |__98368__footnote:[DLRMv3: (2 + 6*1 + 6*2048) * 8 = 98368 bytes per sample.] | __throughput*98368__
 |Generative |WAN-2.2-T2V-A14B |VBench prompts | negligible | negligible |  __> 0__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
+|Language |E2E-RAG |FRAMES | negligible | negligible | __> 0__
 |===
 === Egress Bandwidth
 
@@ -1094,6 +1185,7 @@ Datacenter systems must provide at least the following bandwidths from the outpu
 |Commerce |DLRMv3 |Synthetic Streaming 100B Dataset | negligible | negligible | __> 0__
 |Generative |WAN-2.2-T2V-A14B |VBench prompts | __video_frames*height*width*channels*dtype_size__ | __81*720*1280*3*dtype_size__footnote:[WAN-2.2-T2V-A14B outputs 720p videos with 81 frames.] | __throughput*224,870,400*dtype_size__
 |Graph |RGAT |IGBH | negligible | negligible | __> 0__
+|Language |E2E-RAG |FRAMES | negligible | negligible | __> 0__
 |===
 
 [[appendix-speculative-decoding]]
