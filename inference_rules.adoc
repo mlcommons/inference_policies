@@ -276,7 +276,7 @@ The Datacenter suite includes the following benchmarks:
 |Generative |Text to video |WAN-2.2-T2V-A14B |VBench prompts | 248 |99% of BF16 (VBench score >= 69.7752) | N/A
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
-|Language |Retrieval Augmented Generation |E2E-RAG |FRAMES (multi-hop QA over Wikipedia) | 824 |97% of FP32  (LLM Judge score = 27%) | N/A
+|Language |Retrieval Augmented Generation |E2E-RAG |FRAMES (multi-hop QA over Wikipedia) | 824 |97% of FP32  (LLM Judge score = 29%) | N/A
 |===
 [[dc-required-scenarios]]
 Each Datacenter benchmark *requires* the following scenarios:
@@ -936,29 +936,38 @@ Q: What is the E2E-RAG benchmark?
 
 A: E2E-RAG is an end-to-end retrieval-augmented generation benchmark for multi-hop question answering on the FRAMES Wikipedia dataset. It evaluates the complete RAG pipeline including document retrieval, reranking, and answer generation. The benchmark uses dense vector retrieval with FAISS indexing, ColBERTv2 reranking, and iterative multi-shot retrieval with LLM-driven query decomposition.
 
-Q: What is the E2E-DB setup?
+Q: What is the RAG-DB setup?
 
-A: The E2E-DB setup is the database setup step needed for all RAG workloads. This test measures the performance of building the vector database and ensures the database remains consistent across tests. It is a one-time measured operation that creates the FAISS index from Wikipedia documents.
+A: Database construction is a critical bottleneck in RAG system deployment, often taking hours or days for large document collections in real world.
+   The RAG-DB benchmarks the database construction step required for all RAG workloads. This test measures the performance of building the vector database from Wikipedia documents and creating the FAISS HNSW index. It is a one-time measured operation that ensures the database remains consistent across tests.
 
 Q: Why does the accuracy vary in accuracy tests?
 
 A: Due to the non-determinism of GPT-OSS reasoning models, result variation in one step can roll up into a bigger variation as more calls to GPT-OSS are made. Currently, an accuracy range of 29%-32% is observed due to this non-determinism. The non-deterministic behavior comes from the sampling-based generation (temperature=1.0, top_p=1.0) used by GPT-OSS-120B.
 
-Q: Why is the accuracy so low for E2E-RAG?
+Q: Why is the accuracy so low for RAG-QnA?
 
-A: The FRAMES benchmark oracle accuracy with GPT-OSS models is 68%. However, the actual LLM judge accuracy of this workload is 29%-32%. This discrepancy is due to the limitation of context window of models for retrieval, which is a bottleneck. 
-Efforts made in multi-shot retrieval improved the accuracy from 20% to almost 30% by iteratively decomposing queries and retrieving relevant documents across multiple rounds.
+A: The FRAMES benchmark oracle accuracy with GPT-OSS models is 68%. However, the actual LLM judge accuracy of this workload is 29%. This discrepancy is due to multiple factors:
+
+* Context window limitations of models for retrieval, which is a bottleneck
+* Embedding quality and approximation errors in vector retrieval
+* Knowledge hierarchy and multi-hop reasoning challenges in complex questions
+* Reranking model limitations in identifying relevant documents
+
+Efforts made in multi-shot retrieval improved the accuracy from 20% to 29% by iteratively decomposing queries and retrieving relevant documents across multiple rounds.
 
 Q: What are the key components of the E2E-RAG workload?
 
 A: The key components are:
 
-* Vector Database Construction: Building FAISS index from Wikipedia documents using embedding models (e5-base-v2)
-* Retrieval: Dense vector search with FAISS HNSW
-* Reranking: ColBERTv2 model for improving retrieved document relevance
-* Multi-shot Retrieval: Iterative retrieval with LLM-driven query decomposition
-* Answer Generation: LLM-based question answering using retrieved context
-* Evaluation: Document relevance grading and answer accuracy assessment with LLM as a judge (Llama3.1-8B)
+1. Vector Database Construction: Building FAISS HNSW index from Wikipedia documents using embedding models (e5-base-v2)
+2. Query Writer (LLM): Using GPT-OSS-120B to decompose complex multi-hop questions into sub-queries for targeted retrieval
+3. Retrieval: Dense vector search using FAISS HNSW index to retrieve relevant documents for each sub-query
+4. Reranking: ColBERTv2 model for re-scoring and improving retrieved document relevance
+5. Document Grading: Using GPT-OSS-20B to assess binary relevance (0/1) of retrieved documents against the question
+6. Sufficiency Checker: Using GPT-OSS-120B to determine if the kept documents contain sufficient information to answer the question
+7. Answer Generation: Using GPT-OSS-120B for final answer generation from relevant documents
+8. Evaluation: Answer accuracy assessment with LLM as a judge (Llama3.1-8B)
 
 Q: What operations are timed in E2E-RAG?
 
@@ -974,10 +983,11 @@ A: The following operations are timed:
 
 Loading of models (embedding model, reranker, LLM) is not timed.
 
-Q: What is the difference between performance tests and accuracy tests in E2E-RAG?
+Q: What is the difference between performance tests and accuracy tests in RAG-QnA?
 
-A: Performance tests measure system speed (latency, throughput) using cached LLM responses to ensure deterministic workloads for run-to-run comparisons.
-   Accuracy tests measure model quality (precision, recall, F1, answer accuracy) using live LLM inference. 
+A: Performance tests measure system throughput of the RAG pipeline using cached LLM responses to ensure deterministic workloads for run-to-run comparisons. Measurement is done from question input to answer generation (end-to-end pipeline timing).
+   Accuracy tests measure answer quality using live LLM inference to generate real-time responses.
+   In both tests, the LLM is invoked to perform the task. However, in performance tests, the actual LLM-generated output is replaced with cached responses for run-to-run consistency, while the LLM call timing is still measured.  
 
 A: The benchmark supports multiple hardware accelerators via the `--device` flag:
 
@@ -1015,7 +1025,8 @@ A: Since the existing compliance tests do not have a mechanism to verify the cor
 
 Q: What sampling strategy is used for questions in the dataset?
 
-A: Questions are processed in the order they appear in the FRAMES dataset. For evaluation, the number of queries can be limited using the `--eval` flag with an optional count parameter. Random sampling or reordering of queries is not performed to ensure reproducibility.
+A: For database construction (RAG-DB), questions are processed in the order they appear in the FRAMES dataset to maintain consistency in the graph structure.
+   For the question-answering workload (RAG-QnA), Loadgen applies seed-based random shuffling to input questions for both accuracy and performance runs, ensuring deterministic but randomized query order across runs.
 
 === Audit
 
