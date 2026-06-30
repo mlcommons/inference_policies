@@ -999,7 +999,7 @@ A: The benchmark supports multiple hardware accelerators via the `--device` flag
 
 Q: What is the maximum number of retrieval iterations ?
 
-A: The maximum number of retrieval iterations is controlled by `--max_iterations 5`.
+A: The maximum number of retrieval iterations is also referred to as multi-hop or multi-shot in this workload, and it is limited to 5. All submitters are required to set it to 5.
 
 Q: Can I cache query results or LLM responses across different queries?
 
