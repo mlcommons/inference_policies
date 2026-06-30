@@ -949,10 +949,10 @@ Q: Why is the accuracy so low for RAG-QnA?
 
 A: The FRAMES benchmark oracle accuracy with GPT-OSS models is 68%. However, the actual LLM judge accuracy of this workload is 29%. This discrepancy is due to multiple factors:
 
-* Context window limitations of models for retrieval, which is a bottleneck
 * Embedding quality and approximation errors in vector retrieval
 * Knowledge hierarchy and multi-hop reasoning challenges in complex questions
 * Reranking model limitations in identifying relevant documents
+* Context window limitations of models for retrieval.
 
 Efforts made in multi-shot retrieval improved the accuracy from 20% to 29% by iteratively decomposing queries and retrieving relevant documents across multiple rounds.
 
@@ -969,9 +969,9 @@ A: The key components are:
 7. Answer Generation: Using GPT-OSS-120B for final answer generation from relevant documents
 8. Evaluation: Answer accuracy assessment with LLM as a judge (Llama3.1-8B)
 
-Q: What operations are timed in E2E-RAG?
+Q: What tasks are timed in E2E-RAG?
 
-A: The following operations are timed:
+A: The following tasks are timed:
 
 * Document embedding generation (during database construction)
 * Vector database building (FAISS index creation)
