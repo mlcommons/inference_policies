@@ -177,8 +177,7 @@ Each sample has the following definition:
 
 |===
 |Model| definition of one sample
-|Resnet50-v1.5	    |one image
-|Retinanet	    |one image
+|YOLO11l	    |one image
 |3D UNET	        |one image
 |BERT	            |one sequence
 |DLRMv3	            |one request (containing one user history sequence and 2048 candidates)
@@ -262,7 +261,6 @@ The Datacenter suite includes the following benchmarks:
 
 |===
 |Area |Task |Model |Dataset |QSL Size |Quality |Server latency constraint
-|Vision |Object detection |Retinanet |OpenImages (800x800) | 64 | 99% of FP32 (0.3755 mAP) | 100 ms
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score) | N/A
 |Language |Summarization |Llama3.1-8B |CNN Dailymail (v3.0.0, max_seq_len=2048) | 13368 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the total generation length of the texts should be more than 90% of the reference (gen_len=8167644)| Conversational category: TTFT/TPOT: 2000 ms/100 ms. Interactive category: TTFT/TPOT: 500 ms/30 ms.footnote:llm_ttft_tpot[]
 |Language |Question Answering |Llama2-70b |OpenOrca (max_seq_len=1024) | 24576 | 99% of FP32 and 99.9% of FP32 (rouge1=44.4312, rouge2=22.0352, rougeL=28.6162). Additionally, for both cases the generation length of the tokens per sample should be more than 90% of the reference (tokens_per_sample=294.45)| Conversational category: TTFT/TPOT: 2000 ms/200 ms. Interactive category: TTFT/TPOT: 450 ms/40 ms.footnote:llm_ttft_tpot[]
@@ -282,7 +280,6 @@ Each Datacenter benchmark *requires* the following scenarios:
 |===
 |Area |Task |Required Scenarios
 |Vision |Image classification |Server, Offline
-|Vision |Object detection |Server, Offline
 |Vision |Medical image segmentation |Offline
 |Language |Summarization |(Server\| Interactive), Offline
 |Language |Question Answering |(Server\| Interactive), Offline
@@ -300,7 +297,7 @@ The Edge suite includes the following benchmarks:
 |===
 |Area |Task |Model |Dataset |QSL Size |Quality
 |Vision |Image classification |Resnet50-v1.5 |ImageNet (224x224) | 1024 | 99% of FP32 (76.46%)
-|Vision |Object detection |Retinanet |OpenImages (800x800) | 64 | 99% of FP32 (0.3755 mAP)
+|Vision |Object detection |YOLO11l |COCO 2017 MLPerf subset (1525 images, 80 classes) | 64 | 95% of FP32 (yolo-95: 0.5073 mAP) and 99 of FP32 (yolo-99: 0.5287 mAP)
 |Vision |Medical image segmentation |3D UNET |KiTS 2019 | 42 | 99% of FP32 and 99.9% of FP32 (0.86330 mean DICE score)
 |Language |Summarization |Llama3.1-8B |CNN Dailymail (v3.0.0, max_seq_len=2048) | 5000 | 99% of FP32 and 99.9% of FP32 (rouge1=42.9865, rouge2=20.1235, rougeL=29.9881). Additionally, for both cases the total generation length of the texts should be more than 90% of the reference (gen_len=8167644)
 |Language |Language processing |BERT |SQuAD v1.1 (max_seq_len=384) | 10833 | 99% of FP32 and 99.9% of FP32(f1_score=90.874%)
