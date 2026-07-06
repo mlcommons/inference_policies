@@ -1028,6 +1028,17 @@ Q: What sampling strategy is used for questions in the dataset?
 A: For database construction (RAG-DB), questions are processed in the order they appear in the FRAMES dataset to maintain consistency in the graph structure.
    For the question-answering workload (RAG-QnA), Loadgen applies seed-based random shuffling to input questions for both accuracy and performance runs, ensuring deterministic but randomized query order across runs.
 
+Q: What is the indexing algorithm and required parameters restriction for RAG-DB?
+
+A: The vector database must be built using FAISS HNSW (Hierarchical Navigable Small World) with the following fixed parameters:
+----
+M = 32
+index = faiss.IndexHNSWFlat(dimension, M)
+index.hnsw.efConstruction = 200
+index.hnsw.efSearch = 100
+----
+Since a retrieval accuracy threshold has not yet been established, submitters are required to use these exact parameters to ensure result parity across submissions.
+
 === Audit
 
 Q: What characteristics of my submission will make it more likely to be audited?
