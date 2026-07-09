@@ -1,6 +1,6 @@
 # MLPerf Inference New Benchmark Checklist Documentation
 
-This document provides guidelines and requirements for setting up and validating a new MLPerf Inference benchmark implementation.
+This document provides guidelines and requirements for setting up and validating a new MLPerf Inference benchmark implementation. An example checklist can be found [here](https://github.com/mlcommons/inference/blob/master/graph/R-GAT/benchmark-checklist.md).
 
 ---
 
@@ -67,3 +67,6 @@ Include sample logs for all applicable scenario runs:
 - `mlperf_log_detail.txt`
   
 These files should successfully pass the submission checker and represent a compliant run.
+
+## 15. Power runs
+Normally for a new benchmark the power runs are expected to run fine. But if the new benchmark is introducing a new scenario or if the scenario metric is new, this may not be the case. In such cases, validating that the power logs are generated fine is essential. 
