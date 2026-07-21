@@ -761,7 +761,7 @@ Examples of allowed techniques include, but are not limited to:
   (Submitters should include in their submission details of how the ordering was
   derived.)
 
-* Speculative decoding is allowed subject to constraints in <<appendix-speculative-decoding>>, only for certain LLM workloads including - DeepSeek-r1-Interactive, GPT-OSS-120B-Interactive.
+* Speculative decoding is allowed subject to constraints in <<appendix-speculative-decoding>>, only for certain LLM workloads including - DeepSeek-r1-Interactive, GPT-OSS-120B-Interactive, Qwen3.6-27B Edge-Agentic.
 
 The following techniques are disallowed:
 
@@ -1216,9 +1216,12 @@ All Implementations must use the reference MTP (Multi-Token Prediction) Head at 
 
 Implementations that artificially manipulate acceptance rates are disallowed, eg: using a different MTP head or continued pre-training of reference MTP head, quantization of the reference MTP head weights, post-training techniques on reference MTP head (like fine-tuning, RLHF etc.)
 
+For quantized edge workloads (e.g. Qwen3.6-27B Edge-Agentic), the reference MTP head MAY be quantized consistently with the base model under the workload's quantization rules, provided decoding remains lossless (greedy-equivalent to the non-speculative result) and the workload's accuracy gate is met. All other head constraints above (reference architecture and weights, no fine-tuning/RLHF/continued pre-training, no acceptance-rate manipulation) continue to apply.
+
 |===
 |Benchmark |Scenario |Speculative Decoding Algorithm |Configuration |MTP Head
 
 |DeepSeek-r1 |Interactive |EAGLE-style decoding with deepseek-ai/deepseek-r1 MTP head |`speculative-num-steps=3`, `speculative-eagle-topk=1.0` |https://huggingface.co/deepseek-ai/DeepSeek-R1
 |GPT-OSS-120B |Interactive |EAGLE3-style decoding with nvidia/gpt-oss-120b-Eagle3-long-context MTP head |`speculative-num-steps=3`, `speculative-eagle-topk=1.0` |https://huggingface.co/nvidia/gpt-oss-120b-Eagle3-long-context
+|Qwen3.6-27B |Edge-Agentic (single-stream) |Chain- or tree-based MTP using the reference Qwen3.6-27B MTP head |Lossless (greedy-equivalent); `num-steps` / tree size submitter-reported, not fixed |https://huggingface.co/Qwen/Qwen3.6-27B
 |===
