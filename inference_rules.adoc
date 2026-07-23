@@ -274,7 +274,7 @@ The Datacenter suite includes the following benchmarks:
 |Generative |Text to video |WAN-2.2-T2V-A14B |VBench prompts | 248 |99% of BF16 (VBench score >= 69.7752) | N/A
 |Graph |Node classification |RGAT |IGBH | 788379 |99% of FP32 (72.86%) | N/A
 |Audio |Speech to Text |Whisper |LibriSpeech | 1633 |99% of FP32 and 99.9% of FP32 (WER=2.0671%) | N/A
-|Language |Retrieval Augmented Generation |E2E-RAG |FRAMES (multi-hop QA over Wikipedia) | 824 |97% of FP32  (LLM Judge score = 29%) | N/A
+|Language |Retrieval Augmented Generation |E2E-RAG |FRAMES (multi-hop QA over Wikipedia) | 824 |97% of FP32  (LLM Judge score = ~35%; +/- ~3%) | N/A
 |===
 [[dc-required-scenarios]]
 Each Datacenter benchmark *requires* the following scenarios:
@@ -941,18 +941,20 @@ A: Database construction is a critical bottleneck in RAG system deployment, ofte
 
 Q: Why does the accuracy vary in accuracy tests?
 
-A: Due to the non-determinism of GPT-OSS reasoning models, result variation in one step can roll up into a bigger variation as more calls to GPT-OSS are made. Currently, an accuracy range of 29%-32% is observed due to this non-determinism. The non-deterministic behavior comes from the sampling-based generation (temperature=1.0, top_p=1.0) used by GPT-OSS-120B.
+A: Due to the non-determinism of GPT-OSS reasoning models, result variation in one step can roll up into a bigger variation as more calls to GPT-OSS are made. Currently, an accuracy range of ~35% (+/- ~3%) is observed due to this non-determinism. The non-deterministic behavior comes from the sampling-based generation (temperature=1.0, top_p=1.0) used by GPT-OSS-120B.
 
 Q: Why is the accuracy so low for RAG-QnA?
 
-A: The FRAMES benchmark oracle accuracy with GPT-OSS models is 68%. However, the actual LLM judge accuracy of this workload is 29%. This discrepancy is due to multiple factors:
+A: The FRAMES benchmark oracle accuracy with GPT-OSS models is 68%. However, the actual LLM judge accuracy of this workload is range of ~35% (+/- ~3%). This discrepancy is due to multiple factors:
 
 * Embedding quality and approximation errors in vector retrieval
 * Knowledge hierarchy and multi-hop reasoning challenges in complex questions
 * Reranking model limitations in identifying relevant documents
 * Context window limitations of models for retrieval.
 
-Efforts made in multi-shot retrieval improved the accuracy from 20% to 29% by iteratively decomposing queries and retrieving relevant documents across multiple rounds.
+Efforts made in multi-shot retrieval improved the accuracy from 20% to range of ~35% (+/- ~3%) by iteratively decomposing queries and retrieving relevant documents across multiple rounds. 
+
+Above accuracy is for the first instantiation of the benchmark release targetting MLPerf 6.1 Submissions. This will be revisited for further improvement going forward. 
 
 Q: What are the key components of the E2E-RAG workload?
 
