@@ -695,6 +695,11 @@ much much smaller than the non-zero weights it produces.
 Calibration is allowed and must only use the calibration data set provided by
 the benchmark owner. Submitters may choose to use only a subset of the calibration data set.
 
+Submitters may either derive a quantized checkpoint from the reference
+checkpoint using only the MLPerf-provided calibration data set, or use a
+publicly available checkpoint pre-approved by the MLPerf Inference Rules Task
+Force.
+
 Additionally, MLPerf may provide an INT8 reference for some models. Model weights and
 input activations are scaled per tensor, and must preserve the same shape modulo
 padding. Convolution layers are allowed to be in either NCHW or NHWC format.  No
