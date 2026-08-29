@@ -1039,6 +1039,33 @@ index.hnsw.efSearch = 100
 ----
 Since a retrieval accuracy threshold has not yet been established, submitters are required to use these exact parameters to ensure result parity across submissions.
 
+Q: Which pipeline parameters are fixed for all submissions?
+
+A: All submitters must use the following parameters. Quantization is allowed within the rules of MLPerf Inference.
+
+|===
+|Component |Parameter |Fixed value
+
+|Chunking |Chunk size / overlap |768 characters / 32 characters
+|Vector index |Algorithm |FAISS-HNSW
+|Vector index |M (connections per layer) |32
+|Vector index |efConstruction (build quality) |200
+|Vector index |efSearch (search beam width) |100
+|Embedding |Model |intfloat/e5-base-v2
+|Embedding |Vector dimension |768
+|Retrieval |`--top_k_retriever` |10
+|Reranking |Model |colbert-ir/colbertv2.0
+|Reranking |`--top_k_reranking` |10
+|Multi-shot |Max retrieval iterations |5
+|Query writer, sufficiency checker, answer generation |Model |gpt-oss-120B-mxfp4
+|Query writer, sufficiency checker, answer generation |reasoning / temperature / top_p / top_k / max_tokens |medium / 1 / 1 / -1 / 10240
+|Document grader |Model |gpt-oss-20B-mxfp4
+|Document grader |reasoning / temperature / top_p / top_k / max_tokens |medium / 1 / 1 / -1 / 4096
+|Evaluation |LLM judge model |meta-llama/Llama-3.1-8B-Instruct
+|===
+
+The prompts used by each component (query writer, document grader, sufficiency checker, answer generation, and LLM judge) must not be modified from the reference implementation.
+
 === Audit
 
 Q: What characteristics of my submission will make it more likely to be audited?
